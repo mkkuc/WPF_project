@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jira", "Jira\Jira.csproj", "{51E47B28-E578-4AC4-AFC2-8F28593FBBAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51E47B28-E578-4AC4-AFC2-8F28593FBBAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51E47B28-E578-4AC4-AFC2-8F28593FBBAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51E47B28-E578-4AC4-AFC2-8F28593FBBAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51E47B28-E578-4AC4-AFC2-8F28593FBBAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7DF4F71-AB0C-4E13-8665-77AD844C5230}
+	EndGlobalSection
+EndGlobal
