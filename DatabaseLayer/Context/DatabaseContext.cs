@@ -13,8 +13,8 @@ namespace DatabaseLayer.Context
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Priority> Priority { get; set; }
         public virtual DbSet<Queue> Queues { get; set; }
-        public virtual DbSet<Rule> Rule { get; set; }
-        public virtual DbSet<Quest> Quests { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Issue> Issues { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

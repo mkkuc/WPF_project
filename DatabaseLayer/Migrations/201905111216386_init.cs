@@ -17,15 +17,43 @@ namespace DatabaseLayer.Migrations
                         Email = c.String(nullable: false),
                         Name = c.String(nullable: false),
                         Surname = c.String(nullable: false),
-                        RuleID = c.Int(nullable: false),
+                        RoleID = c.Int(nullable: false),
                         IsConfirmed = c.Boolean(nullable: false),
                         Group_GroupID = c.Int(),
                     })
                 .PrimaryKey(t => t.AccountID)
                 .ForeignKey("dbo.Group", t => t.Group_GroupID)
-                .ForeignKey("dbo.Rule", t => t.RuleID, cascadeDelete: true)
-                .Index(t => t.RuleID)
+                .ForeignKey("dbo.Role", t => t.RoleID, cascadeDelete: true)
+                .Index(t => t.RoleID)
                 .Index(t => t.Group_GroupID);
+            
+            CreateTable(
+                "dbo.Issue",
+                c => new
+                    {
+                        IssueID = c.Int(nullable: false, identity: true),
+                        Title = c.String(),
+                        Description = c.String(),
+                        PriorityID = c.Int(nullable: false),
+                        Account_AccountID = c.Int(),
+                        Group_GroupID = c.Int(),
+                    })
+                .PrimaryKey(t => t.IssueID)
+                .ForeignKey("dbo.Priority", t => t.PriorityID, cascadeDelete: true)
+                .ForeignKey("dbo.Account", t => t.Account_AccountID)
+                .ForeignKey("dbo.Group", t => t.Group_GroupID)
+                .Index(t => t.PriorityID)
+                .Index(t => t.Account_AccountID)
+                .Index(t => t.Group_GroupID);
+            
+            CreateTable(
+                "dbo.Priority",
+                c => new
+                    {
+                        PriorityID = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                    })
+                .PrimaryKey(t => t.PriorityID);
             
             CreateTable(
                 "dbo.Queue",
@@ -52,65 +80,37 @@ namespace DatabaseLayer.Migrations
                 .PrimaryKey(t => t.GroupID);
             
             CreateTable(
-                "dbo.Quest",
+                "dbo.Role",
                 c => new
                     {
-                        TaskID = c.Int(nullable: false, identity: true),
-                        Title = c.String(),
-                        Description = c.String(),
-                        PriorityID = c.Int(nullable: false),
-                        Group_GroupID = c.Int(),
-                        Account_AccountID = c.Int(),
-                    })
-                .PrimaryKey(t => t.TaskID)
-                .ForeignKey("dbo.Priority", t => t.PriorityID, cascadeDelete: true)
-                .ForeignKey("dbo.Group", t => t.Group_GroupID)
-                .ForeignKey("dbo.Account", t => t.Account_AccountID)
-                .Index(t => t.PriorityID)
-                .Index(t => t.Group_GroupID)
-                .Index(t => t.Account_AccountID);
-            
-            CreateTable(
-                "dbo.Priority",
-                c => new
-                    {
-                        PriorityID = c.Int(nullable: false, identity: true),
+                        RoleID = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                     })
-                .PrimaryKey(t => t.PriorityID);
-            
-            CreateTable(
-                "dbo.Rule",
-                c => new
-                    {
-                        RuleID = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                    })
-                .PrimaryKey(t => t.RuleID);
+                .PrimaryKey(t => t.RoleID);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.Quest", "Account_AccountID", "dbo.Account");
-            DropForeignKey("dbo.Account", "RuleID", "dbo.Rule");
+            DropForeignKey("dbo.Account", "RoleID", "dbo.Role");
             DropForeignKey("dbo.Queue", "GroupID", "dbo.Group");
-            DropForeignKey("dbo.Quest", "Group_GroupID", "dbo.Group");
-            DropForeignKey("dbo.Quest", "PriorityID", "dbo.Priority");
+            DropForeignKey("dbo.Issue", "Group_GroupID", "dbo.Group");
             DropForeignKey("dbo.Account", "Group_GroupID", "dbo.Group");
             DropForeignKey("dbo.Queue", "AccountID", "dbo.Account");
-            DropIndex("dbo.Quest", new[] { "Account_AccountID" });
-            DropIndex("dbo.Quest", new[] { "Group_GroupID" });
-            DropIndex("dbo.Quest", new[] { "PriorityID" });
+            DropForeignKey("dbo.Issue", "Account_AccountID", "dbo.Account");
+            DropForeignKey("dbo.Issue", "PriorityID", "dbo.Priority");
             DropIndex("dbo.Queue", new[] { "AccountID" });
             DropIndex("dbo.Queue", new[] { "GroupID" });
+            DropIndex("dbo.Issue", new[] { "Group_GroupID" });
+            DropIndex("dbo.Issue", new[] { "Account_AccountID" });
+            DropIndex("dbo.Issue", new[] { "PriorityID" });
             DropIndex("dbo.Account", new[] { "Group_GroupID" });
-            DropIndex("dbo.Account", new[] { "RuleID" });
-            DropTable("dbo.Rule");
-            DropTable("dbo.Priority");
-            DropTable("dbo.Quest");
+            DropIndex("dbo.Account", new[] { "RoleID" });
+            DropTable("dbo.Role");
             DropTable("dbo.Group");
             DropTable("dbo.Queue");
+            DropTable("dbo.Priority");
+            DropTable("dbo.Issue");
             DropTable("dbo.Account");
         }
     }

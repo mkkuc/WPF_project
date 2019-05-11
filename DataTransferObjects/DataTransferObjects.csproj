@@ -57,8 +57,8 @@
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Queue.cs" />
-    <Compile Include="Models\Rule.cs" />
-    <Compile Include="Models\Quest.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\Issue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
