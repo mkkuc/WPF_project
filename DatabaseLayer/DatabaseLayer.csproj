@@ -53,14 +53,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\DatabaseContext.cs" />
+    <Compile Include="Migrations\201905111149193_init.cs" />
+    <Compile Include="Migrations\201905111149193_init.Designer.cs">
+      <DependentUpon>201905111149193_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Context\" />
+    <EmbeddedResource Include="Migrations\201905111149193_init.resx">
+      <DependentUpon>201905111149193_init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataTransferObjects\DataTransferObjects.csproj">
+      <Project>{df52660a-7f49-4e19-b3da-d9da8e6d5e01}</Project>
+      <Name>DataTransferObjects</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
