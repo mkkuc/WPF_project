@@ -13,7 +13,7 @@ namespace DatabaseLayer.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201905111216386_init"; }
+            get { return "201905111435298_init"; }
         }
         
         string IMigrationMetadata.Source
