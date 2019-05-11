@@ -53,11 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\Priority.cs" />
+    <Compile Include="Models\Queue.cs" />
+    <Compile Include="Models\Rule.cs" />
+    <Compile Include="Models\Quest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
