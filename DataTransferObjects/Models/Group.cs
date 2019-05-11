@@ -22,7 +22,7 @@ namespace DataTransferObjects.Models
         public int GroupOwnerID { get; set; }
 
         public virtual ICollection<Account> Accounts { get; set; }
-        public virtual ICollection<Queue> Queue { get; set; }
+        public virtual ICollection<Queue> Queues { get; set; }
         public virtual ICollection<Issue> Issues { get; set; }
     }
 }

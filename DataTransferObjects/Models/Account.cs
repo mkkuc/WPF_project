@@ -44,7 +44,7 @@ namespace DataTransferObjects.Models
         [Display(Name = "Confirmed: ")]
         public bool IsConfirmed { get; set; } = true;
 
-        public virtual ICollection<Queue> Queue { get; set; }
+        public virtual ICollection<Queue> Queues { get; set; }
         public virtual ICollection<Issue> Issues { get; set; }
     }
 }
