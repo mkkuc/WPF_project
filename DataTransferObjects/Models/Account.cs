@@ -35,16 +35,16 @@ namespace DataTransferObjects.Models
         [Required]
         public string Surname { get; set; }
 
-        [ForeignKey("Rule")]
-        public int RuleID { get; set; }
+        [ForeignKey("Role")]
+        public int RoleID { get; set; }
 
         [Required]
-        public virtual Rule Rule { get; set; }
+        public virtual Role Role { get; set; }
 
         [Display(Name = "Confirmed: ")]
         public bool IsConfirmed { get; set; } = true;
 
         public virtual ICollection<Queue> Queue { get; set; }
-        public virtual ICollection<Quest> Tasks { get; set; }
+        public virtual ICollection<Issue> Issues { get; set; }
     }
 }

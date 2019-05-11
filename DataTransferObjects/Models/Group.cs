@@ -23,6 +23,6 @@ namespace DataTransferObjects.Models
 
         public virtual ICollection<Account> Accounts { get; set; }
         public virtual ICollection<Queue> Queue { get; set; }
-        public virtual ICollection<Quest> Quests { get; set; }
+        public virtual ICollection<Issue> Issues { get; set; }
     }
 }

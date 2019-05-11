@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace DataTransferObjects.Models
 {
-    [Table("Rule")]
-    public class Rule
+    [Table("Role")]
+    public class Role
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RuleID { get; set; }
+        public int RoleID { get; set; }
 
         [Display(Name = "Name")]
         public string Name { get; set; }
