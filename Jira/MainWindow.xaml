@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Jira"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+     FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
-        
+        <materialDesign:Card Padding="32" Margin="16">
+            <TextBlock HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignTitleTextBlock}">Prosta Jira Projekt</TextBlock>
+        </materialDesign:Card>
+        <Button Content="Rejestracja" HorizontalAlignment="Left" Margin="316,290,0,0" VerticalAlignment="Top" Width="156" Height="55" Click="Button_Click"/>
+        <Button Content="Logowanie" HorizontalAlignment="Left" Margin="316,172,0,0" VerticalAlignment="Top" Width="156" Height="55"/>
     </Grid>
 </Window>

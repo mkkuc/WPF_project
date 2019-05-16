@@ -24,5 +24,10 @@ namespace Jira
         {
             InitializeComponent();
         }
+
+        private void Button_Click()
+        {
+
+        }
     }
 }
