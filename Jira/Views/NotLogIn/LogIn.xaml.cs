@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jira.Views.Admin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,13 @@ namespace Jira.Views.NotLogIn
             InitializeComponent();
         }
 
+        private void Login(object sender, EventArgs e)
+        {
+            AdminPanel adminPanel = new AdminPanel();
+            Close();
+            adminPanel.Show();
+        }
+
         private void LoginEnter(object sender, EventArgs e)
         {
             if(LoginTextBox.Text == "Login")
@@ -44,7 +52,7 @@ namespace Jira.Views.NotLogIn
 
         private void PasswordEnter(object sender, EventArgs e)
         {
-            if (PasswordTextBox.Text == "Hasło")
+            if (PassTextBox.Password == "")
             {
                 PasswordTextBox.Text = "";
                 PasswordTextBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Black"));
@@ -53,7 +61,7 @@ namespace Jira.Views.NotLogIn
 
         private void PasswordLeave(object sender, EventArgs e)
         {
-            if (PasswordTextBox.Text == "" || LoginTextBox.Text == null)
+            if (PassTextBox.Password == "" || PassTextBox.Password == null)
             {
                 PasswordTextBox.Text = "Hasło";
                 PasswordTextBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Silver"));

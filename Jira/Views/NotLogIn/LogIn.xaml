@@ -9,7 +9,8 @@
     <Grid>
         <TextBox Name="LoginTextBox" GotFocus="LoginEnter" LostFocus="LoginLeave" TextAlignment="Center" Foreground="Silver" Height="30" Margin="207,70,207,0" TextWrapping="Wrap" Text="Login" VerticalAlignment="Top"/>
         <TextBox Name="PasswordTextBox" GotFocus="PasswordEnter" LostFocus="PasswordLeave" TextAlignment="Center" Foreground="Silver" Height="30" Margin="207,143,207,0" TextWrapping="Wrap" Text="Hasło" VerticalAlignment="Top"/>
-        <Button Content="Zaloguj się" Height="62" Margin="322,270,322,0" VerticalAlignment="Top"/>
+        <Button Content="Zaloguj się" Height="62" Margin="322,270,322,0" VerticalAlignment="Top" Click="Login"/>
+        <PasswordBox Name="PassTextBox" GotFocus="PasswordEnter" LostFocus="PasswordLeave" Height="30" Margin="207,143,207,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
