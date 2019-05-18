@@ -1,0 +1,23 @@
+﻿<Window x:Class="Jira.Views.NotLogIn.Registration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Jira.Views.NotLogIn"
+        mc:Ignorable="d"
+        Title="Registration" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="39*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="39*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Name="LoginTextBox" GotFocus="LoginEnter" LostFocus="LoginLeave" Foreground="Silver" Height="24" Margin="68,57,32,0" TextWrapping="Wrap" Text="Login" TextAlignment="Center" VerticalAlignment="Top"/>
+        <TextBox Name="PasswordTextBox" GotFocus="PasswordEnter" LostFocus="PasswordLeave" Foreground="Silver" Height="24" Margin="68,115,32,0" TextWrapping="Wrap" Text="Hasło" TextAlignment="Center" VerticalAlignment="Top"/>
+        <TextBox Name="RepeatPasswordTextBox" GotFocus="RepeatPasswordEnter" LostFocus="RepeatPasswordLeave" Foreground="Silver" Height="24" Margin="68,178,32,0" TextWrapping="Wrap" Text="Powtórz hasło" TextAlignment="Center" VerticalAlignment="Top"/>
+        <TextBox Name="NameTextBox" GotFocus="NameEnter" LostFocus="NameLeave" Foreground="Silver" Height="24" Margin="0,57,70,0" TextWrapping="Wrap" Text="Imię" TextAlignment="Center" VerticalAlignment="Top" Grid.Column="2"/>
+        <TextBox Name="SurnameTextBox" GotFocus="SurnameEnter" LostFocus="SurnameLeave" Foreground="Silver" Height="24" Margin="0,115,70,0" TextWrapping="Wrap" Text="Nazwisko" TextAlignment="Center" VerticalAlignment="Top" Grid.Column="2"/>
+        <TextBox Name="EmailTextBox" GotFocus="EmailEnter" LostFocus="EmailLeave" Foreground="Silver" Height="24" Margin="0,178,70,0" TextWrapping="Wrap" Text="Email" TextAlignment="Center" VerticalAlignment="Top" Grid.Column="2"/>
+        <Button Grid.ColumnSpan="3" Content="Zarejestruj się" Height="62" Margin="321,289,323,0" VerticalAlignment="Top"/>
+    </Grid>
+</Window>

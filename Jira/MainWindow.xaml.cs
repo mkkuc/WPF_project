@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jira.Views.NotLogIn;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,9 +26,18 @@ namespace Jira
             InitializeComponent();
         }
 
-        private void Button_Click()
+        private void Registration(object sender, RoutedEventArgs e)
         {
+            Registration registration = new Registration();
+            Close();
+            registration.Show();
+        }
 
+        private void Login(object sender, RoutedEventArgs e)
+        {
+            LogIn logIn = new LogIn();
+            Close();
+            logIn.Show();
         }
     }
 }
