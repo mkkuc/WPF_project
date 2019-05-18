@@ -39,8 +39,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <ListView Grid.Column="0" Name="IssuesListView" Margin="5,5,5,5" SelectionMode="Single" 
-                  ItemsSource="{Binding issues}" DisplayMemberPath="IssueName"
-                  SelectionChanged="IssuesListView_SelectionChanged" />
+                  ItemsSource="{Binding issues}" DisplayMemberPath="IssueName" />
 
                     <DockPanel Grid.Column="1">
                         <Grid>
