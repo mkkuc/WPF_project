@@ -25,6 +25,11 @@ namespace Jira.Views.Admin
         {
             get { return (ListCollectionView)CollectionViewSource.GetDefaultView(list); }
         }
+        List<Group> listGroup = new List<Group>();
+        private ListCollectionView View2
+        {
+            get { return (ListCollectionView)CollectionViewSource.GetDefaultView(listGroup); }
+        }
 
         public AdminPanel()
         {
@@ -34,6 +39,13 @@ namespace Jira.Views.Admin
             list.Add(person);
 
             listOfItems.ItemsSource = list;
+
+            var group = new Group();
+            group.Name = "Grupa1";
+            listGroup.Add(group);
+            listOfGroups.ItemsSource = listGroup;
+
+            listOfUsers.ItemsSource = list;
         }
 
         private void NewPerson(object sender, SelectionChangedEventArgs e)
@@ -46,6 +58,43 @@ namespace Jira.Views.Admin
                 listOfItems.UnselectAll();
             }
             listOfItems.Items.Refresh();
+        }
+
+        private void NewUser(object sender, SelectionChangedEventArgs e)
+        {
+            int quantity = list.Count - 1;
+            if (listOfUsers.SelectedIndex == quantity)
+            {
+                var account = new Account();
+                list.Insert(quantity, account);
+                listOfUsers.UnselectAll();
+            }
+            listOfUsers.Items.Refresh();
+        }
+
+
+        private void NewGroup (object sender, SelectionChangedEventArgs e)
+        {
+            int quantity = list.Count - 1;
+            if (listOfGroups.SelectedIndex == quantity)
+            {
+                var account = new Account();
+                list.Insert(quantity, account);
+                listOfGroups.UnselectAll();
+            }
+            listOfGroups.Items.Refresh();
+        }
+
+        private void DoubleClickGroupItem(object sender, EventArgs e)
+        {
+            var groupDetails = new GroupDetails();
+            groupDetails.Show();
+        }
+
+        private void DoubleClickUserItem(object sender, EventArgs e)
+        {
+            var userDetails = new UserDetails();
+            userDetails.Show();
         }
 
         private void Delete(object sender, ExecutedRoutedEventArgs e)
@@ -191,5 +240,9 @@ namespace Jira.Views.Admin
             }
         }
 
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

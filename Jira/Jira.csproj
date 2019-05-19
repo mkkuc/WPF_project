@@ -79,6 +79,12 @@
     <Compile Include="Views\Admin\AdminPanel.xaml.cs">
       <DependentUpon>AdminPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Admin\GroupDetails.xaml.cs">
+      <DependentUpon>GroupDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\UserDetails.xaml.cs">
+      <DependentUpon>UserDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GroupOwner\IssueEditWindow.xaml.cs">
       <DependentUpon>IssueEditWindow.xaml</DependentUpon>
     </Compile>
@@ -104,6 +110,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Admin\AdminPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Admin\GroupDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Admin\UserDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
