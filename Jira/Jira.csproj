@@ -77,6 +77,9 @@
     <Compile Include="Views\GroupOwner\IssueEditWindow.xaml.cs">
       <DependentUpon>IssueEditWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NormalUser\IssueDetails.xaml.cs">
+      <DependentUpon>IssueDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NormalUser\MainPanel.xaml.cs">
       <DependentUpon>MainPanel.xaml</DependentUpon>
     </Compile>
@@ -99,6 +102,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\GroupOwner\IssueEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NormalUser\IssueDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
