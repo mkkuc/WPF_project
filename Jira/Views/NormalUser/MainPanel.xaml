@@ -63,8 +63,26 @@
                 </Grid>
 <!--TODO: Bindy między listą a szczegółami-->
             </TabItem>
-            <TabItem Header="List grup">
+            <TabItem Header="Lista grup">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="Grupy, do których należysz:" Margin="3,3,3,3" />
+                    <ListView Grid.Column="0" Grid.Row="1" Name="ParticipatingGroupsListView" Margin="5,5,5,5" SelectionMode="Single" 
+                  ItemsSource="{Binding participatingGroups}" DisplayMemberPath="PartGroupName" />
+                    
+                    <Label Grid.Column="1" Grid.Row="0" Content="Pozostałe grupy:" Margin="3,3,3,3" />
+                    <ListView Grid.Column="1" Grid.Row="1" Name="OtherGroupsListView" Margin="5,5,5,5" SelectionMode="Single" 
+                  ItemsSource="{Binding otherGroups}" DisplayMemberPath="OtherGroupName" />
 
+
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>
