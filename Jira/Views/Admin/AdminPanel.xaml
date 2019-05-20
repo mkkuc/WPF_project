@@ -36,9 +36,13 @@
                 <TextBlock Text=" "/>
             </WrapPanel>
         </DataTemplate>
+        <Style x:Key="borderBase" TargetType="Border">
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
     </Window.Resources>
     <Grid>
-        <TabControl>
+        <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="Twój profil">
                 <Grid>
                     <GroupBox Margin="80,5">
@@ -239,6 +243,47 @@
             </TabItem>
             <TabItem Header="Dodaj grupę">
                 <Grid>
+                    <ListBox HorizontalAlignment="Left" Height="329" VerticalAlignment="Top" Width="238" Margin="10,51,0,0" BorderBrush="BlueViolet" BorderThickness="2px">
+                        <ListBoxItem Content="ListBoxItem"/>
+                    </ListBox>
+                    <ListBox HorizontalAlignment="Left" Height="329" VerticalAlignment="Top" Width="238" Margin="253,51,0,0" BorderBrush="BlueViolet" BorderThickness="2px">
+                        <ListBoxItem Content="ListBoxItem"/>
+                    </ListBox>
+                    <GroupBox Header="GroupBox" HorizontalAlignment="Left" Height="370" VerticalAlignment="Top" Width="280" Margin="496,10,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" VerticalAlignment="Center">
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Nazwa grupy"/>
+                                </Label.Content>
+                            </Label>
+
+                            <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Właściciel grupy"/>
+                                </Label.Content>
+                            </Label>
+                            <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="1"/>
+                        </Grid>
+                    </GroupBox>
+                    <Border BorderBrush="BlueViolet" BorderThickness="3" HorizontalAlignment="Left" Height="39" Margin="10,12,0,0" VerticalAlignment="Top" Width="238">
+                        <TextBlock TextAlignment="Center" Text="Nieprzypisani"/>
+                    </Border>
+                    <Border BorderBrush="BlueViolet" BorderThickness="3" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="238" Margin="253,12,0,0">
+                        <TextBlock TextAlignment="Center" Text="Przypisani"/>
+                    </Border>
 
                 </Grid>
             </TabItem>

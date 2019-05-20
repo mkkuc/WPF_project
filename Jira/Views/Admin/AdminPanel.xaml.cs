@@ -34,14 +34,18 @@ namespace Jira.Views.Admin
         public AdminPanel()
         {
             InitializeComponent();
-            var person = new Account();
-            person.Name = "Jan Dodany";
+            var person = new Account
+            {
+                Name = "Jan Dodany"
+            };
             list.Add(person);
 
             listOfItems.ItemsSource = list;
 
-            var group = new Group();
-            group.Name = "Grupa1";
+            var group = new Group
+            {
+                Name = "Grupa1"
+            };
             listGroup.Add(group);
             listOfGroups.ItemsSource = listGroup;
 

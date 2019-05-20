@@ -85,6 +85,9 @@
     <Compile Include="Views\Admin\UserDetails.xaml.cs">
       <DependentUpon>UserDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\GroupOwner\GroupOwnerPanel.xaml.cs">
+      <DependentUpon>GroupOwnerPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GroupOwner\IssueEditWindow.xaml.cs">
       <DependentUpon>IssueEditWindow.xaml</DependentUpon>
     </Compile>
@@ -121,6 +124,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Admin\UserDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GroupOwner\GroupOwnerPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
