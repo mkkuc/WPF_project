@@ -7,6 +7,48 @@
         mc:Ignorable="d"
         Title="IssueEditWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="580*"/>
+            <ColumnDefinition Width="101*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" VerticalAlignment="Center" Margin="0,11">
+            <Label.Content>
+                <AccessText TextWrapping="Wrap" Text="Nazwa"/>
+            </Label.Content>
+        </Label>
+        <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
+
+        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="0,11">
+            <Label.Content>
+                <AccessText TextWrapping="Wrap" Text="Opis"/>
+            </Label.Content>
+        </Label>
+        <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
+
+        <Label Grid.Column="0"  Grid.Row="2" VerticalAlignment="Center" Margin="0,11">
+            <Label.Content>
+                <AccessText TextWrapping="Wrap" Text="Przypisany użytkownik"/>
+            </Label.Content>
+        </Label>
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2"/>
+
+        <Label Grid.Row="3" VerticalAlignment="Center" Margin="0,11">
+            <Label.Content>
+                <AccessText TextWrapping="Wrap" Text="Priorytet"/>
+            </Label.Content>
+        </Label>
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3"/>
+        <Button Content="Dodaj zadanie" Grid.Row="4" Margin="139,6,139,9" Padding="5" Grid.Column="1" />
+
     </Grid>
 </Window>

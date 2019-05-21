@@ -9,59 +9,108 @@
     <Grid>
         <TabControl>
             <TabItem Header="Edycja konta">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Imię:" Margin="0,5,5,0" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox Name="NameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="0" Grid.Column="1"/>
+                <DockPanel>
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Imię:" Margin="0,5,5,0" Grid.Row="0" Grid.Column="0"/>
+                        <TextBox Name="NameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="0" Grid.Column="1"/>
 
-                    <Label Content="Nazwisko:" Margin="0,5,5,0" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox Name="LastnameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1"/>
+                        <Label Content="Nazwisko:" Margin="0,5,5,0" Grid.Row="1" Grid.Column="0"/>
+                        <TextBox Name="LastnameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1"/>
 
-                    <Label Content="Numer telefonu:" Margin="0,5,5,0" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox Name="PhoneTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1"/>
-                </Grid>
+                        <Label Content="Numer telefonu:" Margin="0,5,5,0" Grid.Row="2" Grid.Column="0"/>
+                        <TextBox Name="PhoneTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1"/>
+                    </Grid>
+
+                    <Button DockPanel.Dock="Bottom" Content="Zapisz zmiany" Margin="200,6,200,9"/>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Lista zadań">
-                <Grid>
+                <Grid DataContext="{Binding ElementName=IssuesListView, Path=SelectedItem}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Grid.Column="0" Name="IssuesListView" Margin="5,5,5,5" SelectionMode="Single" 
-                  ItemsSource="{Binding issues}" DisplayMemberPath="IssueName" />
+                    <ListView Grid.Column="0" Name="IssuesListView" Margin="5,5,5,5" SelectionMode="Single"  DisplayMemberPath="Title" ItemsSource="{Binding issues}" Grid.ColumnSpan="2">
+                        <!--<ListViewItem Content="Zadanie 1" />
+                        <ListViewItem Content="Zadanie 2" />-->
 
-                    <DockPanel Grid.Column="1">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                    </ListView>
 
-                            <Label Content="Nazwa" Margin="0,5,5,0" Grid.Row="0" Grid.Column="0"/>
-                            <TextBox Name="IssueNameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="0" Grid.Column="1" IsEnabled="False"/>
+                    <GridSplitter Width="5"/>
+                    <Grid Grid.Column="1" DataContext="{Binding ElementName=IssuesListView, Path=SelectedItem}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Grid.ColumnSpan="3" Margin="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="0" VerticalAlignment="Center">
+                                    <Label.Content>
+                                        <AccessText TextWrapping="Wrap" Text="Nazwa"/>
+                                    </Label.Content>
+                                </Label>
+                                <Label Grid.Column="0"  Grid.Row="1" VerticalAlignment="Center">
+                                    <Label.Content>
+                                        <AccessText TextWrapping="Wrap" Text="Opis"/>
+                                    </Label.Content>
+                                </Label>
+                                <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Label Grid.Row="2" VerticalAlignment="Center">
+                                    <Label.Content>
+                                        <AccessText TextWrapping="Wrap" Text="Przypisany użytkownik"/>
+                                    </Label.Content>
+                                </Label>
+                                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2"/>
+                                <Label Grid.Row="3" VerticalAlignment="Center">
+                                    <Label.Content>
+                                        <AccessText TextWrapping="Wrap" Text="Priorytet"/>
+                                    </Label.Content>
+                                </Label>
+                                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3"/>
+                                <Label Grid.Row="4" VerticalAlignment="Center">
+                                    <Label.Content>
+                                        <AccessText TextWrapping="Wrap" Text="Status"/>
+                                    </Label.Content>
+                                </Label>
+                                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="4"/>
+                                <!--Checked="{Binding Path=IsConfirmed, UpdateSourceTrigger=PropertyChanged}"/>-->
 
-                            <Label Content="Opis" Margin="0,5,5,0" Grid.Row="1" Grid.Column="0"/>
-                            <TextBox Name="IssueDescriptionTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1" IsEnabled="False"/>
-                        </Grid>
-                    </DockPanel>
+                                <Button Content="Zapisz zmiany" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" Padding="5" />
+                                <!--Command="commands:UpdateCommand.Update"/>-->
+                                <Button Content="Usuń zadanie" Grid.Row="6" Grid.ColumnSpan="2" Margin="5" Padding="5"/>
+                                <!--Command="commands:DeleteCommand.Delete"/>-->
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
 
                 </Grid>
-<!--TODO: Bindy między listą a szczegółami-->
+                <!--TODO: Bindy między listą a szczegółami-->
             </TabItem>
             <TabItem Header="Lista grup">
                 <Grid>
@@ -70,15 +119,16 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="56*" />
+                        <ColumnDefinition Width="337*"/>
+                        <ColumnDefinition Width="393*" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" Content="Grupy, do których należysz:" Margin="3,3,3,3" />
+                    <Label Grid.Column="0" Grid.Row="0" Content="Grupy, do których należysz:" Margin="3,3,3,3" Grid.ColumnSpan="2" />
                     <ListView Grid.Column="0" Grid.Row="1" Name="ParticipatingGroupsListView" Margin="5,5,5,5" SelectionMode="Single" 
-                  ItemsSource="{Binding participatingGroups}" DisplayMemberPath="PartGroupName" />
-                    
-                    <Label Grid.Column="1" Grid.Row="0" Content="Pozostałe grupy:" Margin="3,3,3,3" />
-                    <ListView Grid.Column="1" Grid.Row="1" Name="OtherGroupsListView" Margin="5,5,5,5" SelectionMode="Single" 
+                  ItemsSource="{Binding participatingGroups}" DisplayMemberPath="PartGroupName" Grid.ColumnSpan="2" />
+
+                    <Label Grid.Column="2" Grid.Row="0" Content="Pozostałe grupy:" Margin="3,3,3,3" />
+                    <ListView Grid.Column="2" Grid.Row="1" Name="OtherGroupsListView" Margin="5,5,5,5" SelectionMode="Single" 
                   ItemsSource="{Binding otherGroups}" DisplayMemberPath="OtherGroupName" />
 
 
