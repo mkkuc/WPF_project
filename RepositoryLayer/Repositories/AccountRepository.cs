@@ -106,5 +106,71 @@ namespace RepositoryLayer.Repositories
                 throw new Exception();
             }
         }
+
+        public Role GetRole(int? id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException("Null argument");
+            }
+            try
+            {
+                return db.Roles.Find(id);
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        public Account GetAccount(string login, string password)
+        {
+            Account account = db.Accounts.FirstOrDefault(t => t.Login == login && t.Password == password);
+            if (account == null)
+                return null;
+            return db.Accounts.Find(account.AccountID);
+        }
+
+        public Role GetRole(string role)
+        {
+            try
+            {
+                return db.Roles.FirstOrDefault(r => r.Name == role);
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        public bool IsLoginCorrect(string login)
+        {
+            Account account = db.Accounts.FirstOrDefault(t => t.Login == login);
+            if (account == null)
+                    return true;
+            return false;
+        }
+
+        public bool IsEmailCorrect(string email)
+        {
+            Account account = db.Accounts.FirstOrDefault(t => t.Email == email);
+            if (account == null)
+                if (IsValidEmail(email))
+                    return true;
+            return false;
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var check = new System.Net.Mail.MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

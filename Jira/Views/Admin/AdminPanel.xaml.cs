@@ -20,6 +20,29 @@ namespace Jira.Views.Admin
     /// </summary>
     public partial class AdminPanel : Window
     {
+        Account admin;
+        public AdminPanel(Account account)
+        {
+            admin = account;
+            InitializeComponent();
+            var person = new Account
+            {
+                Name = "Jan Dodany"
+            };
+            list.Add(person);
+
+            listOfItems.ItemsSource = list;
+
+            var group = new Group
+            {
+                Name = "Grupa1"
+            };
+            listGroup.Add(group);
+            listOfGroups.ItemsSource = listGroup;
+
+            listOfUsers.ItemsSource = list;
+        }
+
         List<Account> list = new List<Account>();
         private ListCollectionView View
         {

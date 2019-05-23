@@ -21,6 +21,13 @@ namespace Jira.Views.GroupOwner
     /// </summary>
     public partial class GroupOwnerPanel : Window
     {
+        Account groupOwner;
+        public GroupOwnerPanel(Account account)
+        {
+            InitializeComponent();
+            groupOwner = account;
+        }
+
         List<Issue> list = new List<Issue>();
         private ListCollectionView View
         {

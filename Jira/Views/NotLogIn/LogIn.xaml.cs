@@ -1,4 +1,8 @@
-﻿using Jira.Views.Admin;
+﻿using DataTransferObjects.Models;
+using Jira.Views.Admin;
+using Jira.Views.GroupOwner;
+using Jira.Views.NormalUser;
+using RepositoryLayer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +24,9 @@ namespace Jira.Views.NotLogIn
     /// </summary>
     public partial class LogIn : Window
     {
+
+        AccountRepository accountRepository = new AccountRepository();
+
         public LogIn()
         {
             InitializeComponent();
@@ -27,9 +34,52 @@ namespace Jira.Views.NotLogIn
 
         private void Login(object sender, EventArgs e)
         {
-            AdminPanel adminPanel = new AdminPanel();
+            Account account = accountRepository.GetAccount(LoginTextBox.Text, PasswordTextBoxP.Password);
+            if (account != null)
+            {
+                if (account.IsConfirmed)
+                {
+                    if (account.Role.Name.Equals("Admin"))
+                    {
+                        AdminPanel window = new AdminPanel(account);
+                        Close();
+                        window.Show();
+                    }
+                    else if (account.Role.Name.Equals("GroupOwner"))
+                    {
+                        GroupOwnerPanel window = new GroupOwnerPanel(account);
+                        Close();
+                        window.Show();
+                    }
+                    else if (account.Role.Name.Equals("User"))
+                    {
+                        MainPanel window = new MainPanel(account);
+                        Close();
+                        window.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nieznany błąd. Skontaktuj się z administratorem.", "Niezany błąd", MessageBoxButton.OK);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Twoje konto jeszcze nie jest zatwierdzone. Spróbuj ponownie później.", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Błędny login lub hasło.", "Błąd", MessageBoxButton.OK);
+            }
+
+
+        }
+
+        private void SignUp (object sender, EventArgs e)
+        {
+            Registration window = new Registration();
             Close();
-            adminPanel.Show();
+            window.Show();
         }
 
         private void LoginEnter(object sender, EventArgs e)
@@ -52,7 +102,7 @@ namespace Jira.Views.NotLogIn
 
         private void PasswordEnter(object sender, EventArgs e)
         {
-            if (PassTextBox.Password == "")
+            if (PasswordTextBox.Text == "Hasło")
             {
                 PasswordTextBox.Text = "";
                 PasswordTextBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Black"));
@@ -61,7 +111,7 @@ namespace Jira.Views.NotLogIn
 
         private void PasswordLeave(object sender, EventArgs e)
         {
-            if (PassTextBox.Password == "" || PassTextBox.Password == null)
+            if (PasswordTextBoxP.Password == "" || PasswordTextBoxP.Password == null)
             {
                 PasswordTextBox.Text = "Hasło";
                 PasswordTextBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Silver"));
