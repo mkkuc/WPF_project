@@ -14,6 +14,7 @@ namespace DatabaseLayer.Context
         public virtual DbSet<Priority> Priority { get; set; }
         public virtual DbSet<Queue> Queues { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<Issue> Issues { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

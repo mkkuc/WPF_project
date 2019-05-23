@@ -61,7 +61,7 @@
                             <TextBox Grid.Column="1" Grid.Row="3"  Margin="5" Padding="3" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
                             <Button Content="Zapisz zmiany" Grid.Row="4" Margin="139,6,139,9" Padding="5" Grid.Column="1" />
                             <!--Command="commands:UpdateCommand.Update"/>-->
-                            <Button Content="Zmień hasło" Grid.Row="5" Margin="139,6,139,9" Padding="5" Click="ChangePassword" Grid.Column="1"/>
+                            <Button Content="Zmień hasło" Grid.Row="5" Margin="139,6,139,9" Padding="5" Grid.Column="1"/>
                             <Button Content="Usuń konto" Grid.Row="6" Margin="139,6,139,9" Padding="5" Grid.Column="1" />
                             <!--Command="commands:DeleteCommand.Delete"/>-->
                         </Grid>
@@ -74,7 +74,7 @@
                         <ColumnDefinition Width="270"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <ListBox Name="listOfItems" Margin="5,10,5,5" SelectionChanged="NewTask"/>
+                    <ListBox Name="listOfItems" Margin="5,10,5,5" /> <!--SelectionChanged="NewTask"-->
                     <GridSplitter Width="5"/>
                     <Grid Grid.Column="1" DataContext="{Binding ElementName=listOfItems, Path=SelectedItem}">
                         <Grid.ColumnDefinitions>

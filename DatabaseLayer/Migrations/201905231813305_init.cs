@@ -35,14 +35,17 @@ namespace DatabaseLayer.Migrations
                         Title = c.String(),
                         Description = c.String(),
                         PriorityID = c.Int(nullable: false),
+                        StatusID = c.Int(nullable: false),
                         Account_AccountID = c.Int(),
                         Group_GroupID = c.Int(),
                     })
                 .PrimaryKey(t => t.IssueID)
                 .ForeignKey("dbo.Priority", t => t.PriorityID, cascadeDelete: true)
+                .ForeignKey("dbo.Status", t => t.StatusID, cascadeDelete: true)
                 .ForeignKey("dbo.Account", t => t.Account_AccountID)
                 .ForeignKey("dbo.Group", t => t.Group_GroupID)
                 .Index(t => t.PriorityID)
+                .Index(t => t.StatusID)
                 .Index(t => t.Account_AccountID)
                 .Index(t => t.Group_GroupID);
             
@@ -54,6 +57,15 @@ namespace DatabaseLayer.Migrations
                         Name = c.String(),
                     })
                 .PrimaryKey(t => t.PriorityID);
+            
+            CreateTable(
+                "dbo.Status",
+                c => new
+                    {
+                        StatusID = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.StatusID);
             
             CreateTable(
                 "dbo.Queue",
@@ -98,17 +110,20 @@ namespace DatabaseLayer.Migrations
             DropForeignKey("dbo.Account", "Group_GroupID", "dbo.Group");
             DropForeignKey("dbo.Queue", "AccountID", "dbo.Account");
             DropForeignKey("dbo.Issue", "Account_AccountID", "dbo.Account");
+            DropForeignKey("dbo.Issue", "StatusID", "dbo.Status");
             DropForeignKey("dbo.Issue", "PriorityID", "dbo.Priority");
             DropIndex("dbo.Queue", new[] { "AccountID" });
             DropIndex("dbo.Queue", new[] { "GroupID" });
             DropIndex("dbo.Issue", new[] { "Group_GroupID" });
             DropIndex("dbo.Issue", new[] { "Account_AccountID" });
+            DropIndex("dbo.Issue", new[] { "StatusID" });
             DropIndex("dbo.Issue", new[] { "PriorityID" });
             DropIndex("dbo.Account", new[] { "Group_GroupID" });
             DropIndex("dbo.Account", new[] { "RoleID" });
             DropTable("dbo.Role");
             DropTable("dbo.Group");
             DropTable("dbo.Queue");
+            DropTable("dbo.Status");
             DropTable("dbo.Priority");
             DropTable("dbo.Issue");
             DropTable("dbo.Account");
