@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataTransferObjects.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -20,6 +21,22 @@ namespace Jira.Views.NormalUser
     /// </summary>
     public partial class MainPanel : Window
     {
+        Account user;
+        public MainPanel(Account account)
+        {
+            user = account;
+            InitializeComponent();
+
+            issues.Add(new DataTransferObjects.Models.Issue
+            {
+                IssueID = 0,
+                Title = "Testowe zadanie 1",
+                Description = "Opis zadania testowego numer 1",
+                PriorityID = 0,
+                Priority = new DataTransferObjects.Models.Priority { PriorityID = 0, Name = "Ważne" }
+            });
+        }
+
         ObservableCollection<DataTransferObjects.Models.Issue> issues = new ObservableCollection<DataTransferObjects.Models.Issue>();
         public MainPanel()
         {

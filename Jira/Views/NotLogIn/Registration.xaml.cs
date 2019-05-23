@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DataTransferObjects.Models;
+using RepositoryLayer.Interfaces;
+using RepositoryLayer.Repositories;
 
 namespace Jira.Views.NotLogIn
 {
@@ -19,9 +22,108 @@ namespace Jira.Views.NotLogIn
     /// </summary>
     public partial class Registration : Window
     {
+        AccountRepository accountRepository = new AccountRepository();
+
         public Registration()
         {
             InitializeComponent();
+        }
+
+        private void Login(object sender, RoutedEventArgs e)
+        {
+            LogIn logIn = new LogIn();
+            Close();
+            logIn.Show();
+        }
+
+        private void MouseRejestration(object sender, RoutedEventArgs e)
+        {
+            if (!accountRepository.IsLoginCorrect(LoginTextBox.Text))
+            {
+                MessageBox.Show("Login jest zajęty.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (LoginTextBox.Text.Length < 3 || LoginTextBox.Text == null)
+            {
+                MessageBox.Show("Login musi mieć przynajmniej 3 znaki.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (PasswordTextBoxP.Password.Length < 3 || PasswordTextBoxP.Password == null)
+            {
+                MessageBox.Show("Hasło musi mieć przynajmniej 3 znaki.", "Błędne hasło", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (!RepeatPasswordTextBoxP.Password.Equals(PasswordTextBoxP.Password))
+            {
+                MessageBox.Show("Hasła są różne.", "Błędne hasło", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (NameTextBox.Text.Length < 3 || NameTextBox.Text == null || NameTextBox.Text.Equals("Imię"))
+            {
+                MessageBox.Show("Imię musi mieć przynajmniej 3 znaki.", "Błędne imię", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (SurnameTextBox.Text.Length < 3 || SurnameTextBox.Text == null || SurnameTextBox.Text.Equals("Nazwisko"))
+            {
+                MessageBox.Show("Nazwisko musi mieć przynajmniej 3 znaki.", "Błędne nazwisko", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (EmailTextBox.Text.Equals("Email"))
+            {
+                MessageBox.Show("Podaj email", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (!accountRepository.IsEmailCorrect(EmailTextBox.Text))
+            {
+                MessageBox.Show("Email jest zajęty lub niepoprawny.", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBox.Show("Konto założono poprawnie.", "Rejestracja zakończona", MessageBoxButton.OK);
+                Account account = accountRepository.Create(LoginTextBox.Text, PasswordTextBoxP.Password, EmailTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, accountRepository.GetRole("User").RoleID, accountRepository.GetRole("User"), false, null, null);
+                accountRepository.Add(account);
+                LogIn logIn = new LogIn();
+                Close();
+                logIn.Show();
+            }
+        }
+
+        private void FinishRejestration(object sender, RoutedEventArgs e)
+        {
+            if (!accountRepository.IsLoginCorrect(LoginTextBox.Text))
+            {
+                MessageBox.Show("Login jest zajęty.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (LoginTextBox.Text.Length < 3 || LoginTextBox.Text == null)
+            {
+                MessageBox.Show("Login musi mieć przynajmniej 3 znaki.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (PasswordTextBoxP.Password.Length < 3 || PasswordTextBoxP.Password == null)
+            {
+                MessageBox.Show("Hasło musi mieć przynajmniej 3 znaki.", "Błędne hasło", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (!RepeatPasswordTextBoxP.Password.Equals(PasswordTextBoxP.Password))
+            {
+                MessageBox.Show("Hasła są różne.", "Błędne hasło", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (NameTextBox.Text.Length < 3 || NameTextBox.Text == null || NameTextBox.Text.Equals("Imię"))
+            {
+                MessageBox.Show("Imię musi mieć przynajmniej 3 znaki.", "Błędne imię", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (SurnameTextBox.Text.Length < 3 || SurnameTextBox.Text == null || SurnameTextBox.Text.Equals("Nazwisko"))
+            {
+                MessageBox.Show("Nazwisko musi mieć przynajmniej 3 znaki.", "Błędne nazwisko", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (EmailTextBox.Text.Equals("Email"))
+            {
+                MessageBox.Show("Podaj email", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (!accountRepository.IsEmailCorrect(EmailTextBox.Text))
+            {
+                MessageBox.Show("Email jest zajęty lub niepoprawny.", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBox.Show("Konto założono poprawnie.", "Rejestracja zakończona", MessageBoxButton.OK);
+                Account account = accountRepository.Create(LoginTextBox.Text, PasswordTextBoxP.Password, EmailTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, accountRepository.GetRole("User").RoleID, accountRepository.GetRole("User"), false, null, null);
+                accountRepository.Add(account);
+                LogIn logIn = new LogIn();
+                Close();
+                logIn.Show();
+            }
         }
 
         private void LoginEnter(object sender, EventArgs e)
@@ -53,7 +155,7 @@ namespace Jira.Views.NotLogIn
 
         private void PasswordLeave(object sender, EventArgs e)
         {
-            if (PasswordTextBox.Text == "" || PasswordTextBox.Text == null)
+            if (PasswordTextBoxP.Password == "" || PasswordTextBoxP.Password == null)
             {
                 PasswordTextBox.Text = "Hasło";
                 PasswordTextBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Silver"));
@@ -71,7 +173,7 @@ namespace Jira.Views.NotLogIn
 
         private void RepeatPasswordLeave(object sender, EventArgs e)
         {
-            if (RepeatPasswordTextBox.Text == "" || RepeatPasswordTextBox.Text == null)
+            if (RepeatPasswordTextBoxP.Password == "" || RepeatPasswordTextBoxP.Password == null)
             {
                 RepeatPasswordTextBox.Text = "Powtórz hasło";
                 RepeatPasswordTextBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Silver"));

@@ -16,7 +16,7 @@
      FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
         <materialDesign:Card Padding="32" Margin="16">
-            <TextBlock HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignTitleTextBlock}">Prosta Jira Projekt</TextBlock>
+            <TextBlock HorizontalAlignment="Center" Style="{DynamicResource MaterialDesignTitleTextBlock}">Projekt: Prosta Jira</TextBlock>
         </materialDesign:Card>
         <Button Content="Rejestracja" Margin="316,292,320,77" MinWidth="40" Height="Auto" Click="Registration"/>
         <Button Content="Logowanie" Margin="316,172,320,192" MinWidth="40" Height="Auto" Click="Login"/>
