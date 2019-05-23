@@ -25,5 +25,10 @@ namespace DataTransferObjects.Models
         public int PriorityID { get; set; }
 
         public virtual Priority Priority { get; set; }
+
+        [ForeignKey("Status")]
+        public int StatusID { get; set; }
+
+        public virtual Status Status { get; set; }
     }
 }
