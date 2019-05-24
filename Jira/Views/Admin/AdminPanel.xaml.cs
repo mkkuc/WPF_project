@@ -1,4 +1,5 @@
 ﻿using DataTransferObjects.Models;
+using Jira.Views.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Jira.Views.Admin
         {
             admin = account;
             InitializeComponent();
+            EditProfile.DataContext = admin;
             var person = new Account
             {
                 Name = "Jan Dodany"
@@ -52,27 +54,6 @@ namespace Jira.Views.Admin
         private ListCollectionView View2
         {
             get { return (ListCollectionView)CollectionViewSource.GetDefaultView(listGroup); }
-        }
-
-        public AdminPanel()
-        {
-            InitializeComponent();
-            var person = new Account
-            {
-                Name = "Jan Dodany"
-            };
-            list.Add(person);
-
-            listOfItems.ItemsSource = list;
-
-            var group = new Group
-            {
-                Name = "Grupa1"
-            };
-            listGroup.Add(group);
-            listOfGroups.ItemsSource = listGroup;
-
-            listOfUsers.ItemsSource = list;
         }
 
         private void NewPerson(object sender, SelectionChangedEventArgs e)
@@ -152,10 +133,13 @@ namespace Jira.Views.Admin
             //    e.CanExecute = true;
         }
 
-        private void ChangePassword(object sender, EventArgs e)
+        private void ChangePass(object sender, EventArgs e)
         {
-
+            ChangePassword changePassword = new ChangePassword(admin);
+            Close();
+            changePassword.Show();
         }
+
 
 
 

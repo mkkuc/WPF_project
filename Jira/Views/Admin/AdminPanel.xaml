@@ -46,52 +46,53 @@
             <TabItem Header="Twój profil">
                 <Grid>
                     <GroupBox Margin="80,5">
-                        <Grid>
+                        <Grid Name="EditProfile">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="580*"/>
-                                <ColumnDefinition Width="101*"/>
+                                <ColumnDefinition Width="51*" />
+                                <ColumnDefinition Width="208*"/>
+                                <ColumnDefinition Width="45*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
-                            <Label Grid.Column="0" VerticalAlignment="Center" Margin="0,11">
+                            <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,21,27,10" Height="27" Width="60">
                                 <Label.Content>
-                                    <AccessText TextWrapping="Wrap" Text="Login"/>
+                                    <AccessText TextWrapping="Wrap" Text="Imię" TextAlignment="Center" Height="17" Width="50"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
+                            <TextBox TextAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="5,5,0,5" Padding="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.5,0.5">
+                                <TextBox.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="0.297"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </TextBox.RenderTransform>
+                            </TextBox>
 
-                            <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="0,11">
+                            <Label Grid.Column="0"  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,19,18,10" Height="29" Width="69">
                                 <Label.Content>
-                                    <AccessText TextWrapping="Wrap" Text="Imię"/>
+                                    <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="Nazwisko" Width="59" Height="19"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
+                            <TextBox TextAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="5,5,0,5" Padding="3" Text="{Binding Path=Surname, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <Label Grid.Column="0"  Grid.Row="2" VerticalAlignment="Center" Margin="0,11">
+                            <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,19,10,10" Height="29" Width="82">
                                 <Label.Content>
-                                    <AccessText TextWrapping="Wrap" Text="Nazwisko"/>
+                                    <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="Adres e-mail" Height="19" Width="72"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox Grid.Column="1" Grid.Row="2" Margin="5" Padding="3" Text="{Binding Path=Surname, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
-
-                            <Label Grid.Row="3" VerticalAlignment="Center" Margin="0,11">
-                                <Label.Content>
-                                    <AccessText TextWrapping="Wrap" Text="Adres e-mail"/>
-                                </Label.Content>
-                            </Label>
-                            <TextBox Grid.Column="1" Grid.Row="3"  Margin="5" Padding="3" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
-                            <Button Content="Zapisz zmiany" Grid.Row="4" Margin="139,6,139,9" Padding="5" Grid.Column="1" />
+                            <TextBox TextAlignment="Center" Grid.Column="1" Grid.Row="2"  Margin="5,5,0,5" Padding="3" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Content="Zapisz zmiany" Grid.Row="3" Margin="139,11,139,14" Padding="5" Grid.Column="1" Height="Auto" />
                             <!--Command="commands:UpdateCommand.Update"/>-->
-                            <Button Content="Zmień hasło" Grid.Row="5" Margin="139,6,139,9" Padding="5" Click="ChangePassword" Grid.Column="1"/>
-                            <Button Content="Usuń konto" Grid.Row="6" Margin="139,6,139,9" Padding="5" Grid.Column="1" />
+                            <Button Content="Zmień hasło" Grid.Row="4" Margin="139,11,139,14" Padding="5" Click="ChangePass" Grid.Column="1" Height="Auto"/>
+                            <Button Content="Usuń konto" Grid.Row="5" Margin="139,11,139,14" Padding="5" Grid.Column="1" Height="Auto" />
                             <!--Command="commands:DeleteCommand.Delete"/>-->
                         </Grid>
                     </GroupBox>
