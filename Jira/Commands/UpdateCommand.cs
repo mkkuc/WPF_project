@@ -12,7 +12,7 @@ namespace Jira.Commands
         private static RoutedUICommand update;
         static UpdateCommand()
         {
-            update = new RoutedUICommand("Update person", "Update", typeof(UpdateCommand));
+            update = new RoutedUICommand("Update", "Update", typeof(UpdateCommand));
         }
         public static RoutedUICommand Update
         {

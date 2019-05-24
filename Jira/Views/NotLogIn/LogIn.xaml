@@ -9,9 +9,9 @@
     <Grid>
         <TextBox Name="LoginTextBox" GotFocus="LoginEnter" LostFocus="LoginLeave" TextAlignment="Center" Foreground="Silver" Height="30" Margin="207,70,207,0" TextWrapping="Wrap" Text="Login" VerticalAlignment="Top"/>
 
-        <PasswordBox Name="PasswordTextBoxP" GotFocus="PasswordEnter" LostFocus="PasswordLeave" Height="30" Margin="207,143,207,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="378"/>
+        <TextBox IsEnabled="false" Name="PasswordTextBox" TextAlignment="Center" Foreground="Silver" Height="30" Margin="207,143,207,0" Text="Hasło" VerticalAlignment="Top"/>
 
-        <TextBox IsEnabled="false" Name="PasswordTextBox" TextAlignment="Center" Foreground="Silver" Height="30" Margin="207,143,207,0" Text="Hasło" VerticalAlignment="Top" />
+        <PasswordBox Name="PasswordTextBoxP" GotFocus="PasswordEnter" LostFocus="PasswordLeave" Height="30" Margin="207,143,207,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="378" />
 
         <Button Content="Zaloguj się" Height="62" Margin="322,0,322,134" VerticalAlignment="Bottom" Click="Login"/>
 

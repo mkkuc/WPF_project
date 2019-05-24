@@ -65,16 +65,7 @@
                                     <AccessText TextWrapping="Wrap" Text="Imię" TextAlignment="Center" Height="17" Width="50"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox TextAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="5,5,0,5" Padding="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.5,0.5">
-                                <TextBox.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform Angle="0.297"/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </TextBox.RenderTransform>
-                            </TextBox>
+                            <TextBox TextAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="5,5,0,5" Padding="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <Label Grid.Column="0"  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,19,18,10" Height="29" Width="69">
                                 <Label.Content>
@@ -89,11 +80,10 @@
                                 </Label.Content>
                             </Label>
                             <TextBox TextAlignment="Center" Grid.Column="1" Grid.Row="2"  Margin="5,5,0,5" Padding="3" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Button Content="Zapisz zmiany" Grid.Row="3" Margin="139,11,139,14" Padding="5" Grid.Column="1" Height="Auto" />
-                            <!--Command="commands:UpdateCommand.Update"/>-->
-                            <Button Content="Zmień hasło" Grid.Row="4" Margin="139,11,139,14" Padding="5" Click="ChangePass" Grid.Column="1" Height="Auto"/>
-                            <Button Content="Usuń konto" Grid.Row="5" Margin="139,11,139,14" Padding="5" Grid.Column="1" Height="Auto" />
-                            <!--Command="commands:DeleteCommand.Delete"/>-->
+                            
+                            <Button Content="Zapisz zmiany" Grid.Row="3" Margin="139,11,139,14" Padding="5" Grid.Column="1" Height="Auto" Click="SaveChangesInProfile"/>
+                            <Button Content="Zmień hasło" Grid.Row="4" Margin="139,11,139,14" Padding="5" Grid.Column="1" Height="Auto"  Click="ChangePass"/>
+                            <Button Content="Usuń konto" Grid.Row="5" Margin="139,11,139,14" Padding="5" Grid.Column="1" Height="Auto" Click="DeleteAccountInProfile" />
                         </Grid>
                     </GroupBox>
                 </Grid>
