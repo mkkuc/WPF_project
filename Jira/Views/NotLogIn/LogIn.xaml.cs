@@ -59,7 +59,7 @@ namespace Jira.Views.NotLogIn
                     }
                     else
                     {
-                        MessageBox.Show("Nieznany błąd. Skontaktuj się z administratorem.", "Niezany błąd", MessageBoxButton.OK);
+                        MessageBox.Show("Nieznany błąd. Skontaktuj się z administratorem.", "Niezany błąd", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -69,10 +69,8 @@ namespace Jira.Views.NotLogIn
             }
             else
             {
-                MessageBox.Show("Błędny login lub hasło.", "Błąd", MessageBoxButton.OK);
+                MessageBox.Show("Błędny login lub hasło.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-
         }
 
         private void SignUp (object sender, EventArgs e)

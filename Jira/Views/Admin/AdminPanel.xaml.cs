@@ -1,4 +1,6 @@
 ﻿using DataTransferObjects.Models;
+using Jira.Views.Common;
+using RepositoryLayer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +22,14 @@ namespace Jira.Views.Admin
     /// </summary>
     public partial class AdminPanel : Window
     {
-        Account admin;
+        public Account admin { get; set; }
+        AccountRepository accountRepository = new AccountRepository();
+
         public AdminPanel(Account account)
         {
             admin = account;
             InitializeComponent();
+            EditProfile.DataContext = admin;
             var person = new Account
             {
                 Name = "Jan Dodany"
@@ -54,27 +59,6 @@ namespace Jira.Views.Admin
             get { return (ListCollectionView)CollectionViewSource.GetDefaultView(listGroup); }
         }
 
-        public AdminPanel()
-        {
-            InitializeComponent();
-            var person = new Account
-            {
-                Name = "Jan Dodany"
-            };
-            list.Add(person);
-
-            listOfItems.ItemsSource = list;
-
-            var group = new Group
-            {
-                Name = "Grupa1"
-            };
-            listGroup.Add(group);
-            listOfGroups.ItemsSource = listGroup;
-
-            listOfUsers.ItemsSource = list;
-        }
-
         private void NewPerson(object sender, SelectionChangedEventArgs e)
         {
             int quantity = list.Count - 1;
@@ -100,7 +84,7 @@ namespace Jira.Views.Admin
         }
 
 
-        private void NewGroup (object sender, SelectionChangedEventArgs e)
+        private void NewGroup(object sender, SelectionChangedEventArgs e)
         {
             int quantity = list.Count - 1;
             if (listOfGroups.SelectedIndex == quantity)
@@ -152,12 +136,54 @@ namespace Jira.Views.Admin
             //    e.CanExecute = true;
         }
 
-        private void ChangePassword(object sender, EventArgs e)
+        private void ChangePass(object sender, EventArgs e)
         {
-
+            ChangePassword changePassword = new ChangePassword(admin);
+            Close();
+            changePassword.Show();
         }
 
+        private void SaveChangesInProfile(object sender, EventArgs e)
+        {
+            if (admin.Name.Length < 3 || admin.Name == null)
+            {
+                MessageBox.Show("Imię musi mieć przynajmniej 3 znaki.", "Błędne imię", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (admin.Surname.Length < 3 || admin.Surname == null)
+            {
+                MessageBox.Show("Nazwisko musi mieć przynajmniej 3 znaki.", "Błędne nazwisko", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (admin.Email.Equals("Email") || admin.Email == null || admin.Email.Equals(""))
+            {
+                MessageBox.Show("Podaj email", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (!accountRepository.IsEmailCorrect(admin.AccountID, admin.Email))
+            {
+                MessageBox.Show("Email jest zajęty lub niepoprawny.", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                Account edited = accountRepository.Get(admin.AccountID);
+                edited.Name = admin.Name;
+                edited.Surname = admin.Surname;
+                edited.Email = admin.Email;
+                accountRepository.Edit(edited);
+                MessageBox.Show("Zmiany zostały zapisane.", "Aktualizacja danych osobowych", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
 
+        private void DeleteAccountInProfile(object sender, EventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz usunąć swoje konto? Zmiany będą nieodwracalne.", "Usuwanie konta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                accountRepository.Delete(admin.AccountID);
+                MessageBox.Show("Konto zostało usunięte.", "Usuwanie konta zakończone", MessageBoxButton.OK, MessageBoxImage.Information);
+                MainWindow window = new MainWindow();
+                Close();
+                window.Show();
+            }
+        }
 
         private void LoginEnter(object sender, EventArgs e)
         {

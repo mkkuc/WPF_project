@@ -14,8 +14,16 @@ namespace RepositoryLayer.Interfaces
         void Add(Account account);
         void Edit(Account account);
         void Delete(int? id);
+        Account Get(int? id);
         List<Issue> GetIssues(int? id);
         List<Queue> GetQueues(int? id);
+        Role GetRole(int? id);
+        Role GetRole(string role);
+        Account GetAccount(string login, string password);
+        bool IsLoginCorrect(string login);
+        bool IsEmailCorrect(string email);
+        bool IsEmailCorrect(int id, string email);
+
 
     }
 }

@@ -160,6 +160,15 @@ namespace RepositoryLayer.Repositories
             return false;
         }
 
+        public bool IsEmailCorrect(int id, string email)
+        {
+            Account account = db.Accounts.FirstOrDefault(t => t.Email == email && t.AccountID != id);
+            if (account == null)
+                if (IsValidEmail(email))
+                    return true;
+            return false;
+        }
+
         private bool IsValidEmail(string email)
         {
             try
@@ -170,6 +179,22 @@ namespace RepositoryLayer.Repositories
             catch
             {
                 return false;
+            }
+        }
+
+        public Account Get(int? id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException("Null argument");
+            }
+            try
+            {
+                return db.Accounts.FirstOrDefault(a => a.AccountID == id);
+            }
+            catch (Exception e)
+            {
+                throw new Exception();
             }
         }
     }
