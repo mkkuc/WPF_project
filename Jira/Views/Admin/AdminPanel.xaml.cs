@@ -66,7 +66,7 @@ namespace Jira.Views.Admin
             get { return (ListCollectionView)CollectionViewSource.GetDefaultView(usersInGroupList); }
         }
 
-        private void LogOut (object sender, EventArgs e)
+        private void LogOut(object sender, EventArgs e)
         {
             LogIn window = new LogIn();
             Close();
@@ -107,6 +107,72 @@ namespace Jira.Views.Admin
             listOfUsers.Items.Refresh();
         }
 
+        private void CreateAdmin(object sender, EventArgs e)
+        {
+            if (!accountRepository.IsLoginCorrect(LoginTextBox.Text))
+            {
+                MessageBox.Show("Login jest zajęty.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (LoginTextBox.Text.Length < 3 || LoginTextBox.Text == null)
+            {
+                MessageBox.Show("Login musi mieć przynajmniej 3 znaki.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (PasswordTextBoxP.Password.Length < 3 || PasswordTextBoxP.Password == null)
+            {
+                MessageBox.Show("Hasło musi mieć przynajmniej 3 znaki.", "Błędne hasło", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (!RepeatPasswordTextBoxP.Password.Equals(PasswordTextBoxP.Password))
+            {
+                MessageBox.Show("Hasła są różne.", "Błędne hasło", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (NameTextBox.Text.Length < 3 || NameTextBox.Text == null || NameTextBox.Text.Equals("Imię"))
+            {
+                MessageBox.Show("Imię musi mieć przynajmniej 3 znaki.", "Błędne imię", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (SurnameTextBox.Text.Length < 3 || SurnameTextBox.Text == null || SurnameTextBox.Text.Equals("Nazwisko"))
+            {
+                MessageBox.Show("Nazwisko musi mieć przynajmniej 3 znaki.", "Błędne nazwisko", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (EmailTextBox.Text.Equals("Email"))
+            {
+                MessageBox.Show("Podaj email", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (!accountRepository.IsEmailCorrect(EmailTextBox.Text))
+            {
+                MessageBox.Show("Email jest zajęty lub niepoprawny.", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                Account account = accountRepository.Create(LoginTextBox.Text, PasswordTextBoxP.Password, EmailTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, accountRepository.GetRole("Admin").RoleID, accountRepository.GetRole("Admin"), true, null, null);
+                accountRepository.Add(account);
+                MessageBox.Show("Konto administratora założono poprawnie.", "Rejestracja zakończona", MessageBoxButton.OK);
+                if (showAll)
+                {
+                    usersList = accountRepository.GetAll();
+                    Account yourAccount = accountRepository.Get(admin.AccountID);
+                    usersList.Remove(yourAccount);
+                }
+                else if (showConfirmed)
+                {
+                    usersList = accountRepository.GetConfirmed();
+                    Account yourAccount = accountRepository.Get(admin.AccountID);
+                    usersList.Remove(yourAccount);
+                }
+                else if (showNotConfirmed)
+                {
+                    usersList = accountRepository.GetNotConfirmed();
+                }
+                else
+                {
+                    MessageBox.Show("Nieznany błąd. Skontaktuj się z administracją.", "Nieznany błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                listOfUsers.ItemsSource = usersList;
+                listOfUsers.Items.Refresh();
+            }
+
+        }
+
         private void NewUser(object sender, SelectionChangedEventArgs e)
         {
             //int quantity = usersList.Count - 1;
@@ -130,7 +196,6 @@ namespace Jira.Views.Admin
             //}
             //listOfUsersInGroup.Items.Refresh();
         }
-
 
         private void NewGroup(object sender, SelectionChangedEventArgs e)
         {
@@ -163,7 +228,7 @@ namespace Jira.Views.Admin
             {
                 int i = 0;
 
-                while(listOfUsers.SelectedIndex != i)
+                while (listOfUsers.SelectedIndex != i)
                 {
                     i++;
                 }
@@ -312,7 +377,7 @@ namespace Jira.Views.Admin
 
         private void PasswordLeave(object sender, EventArgs e)
         {
-            if (PasswordTextBox.Text == "" || PasswordTextBox.Text == null)
+            if (PasswordTextBoxP.Password == "" || PasswordTextBoxP.Password == null)
             {
                 PasswordTextBox.Text = "Hasło";
                 PasswordTextBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Silver"));
@@ -330,7 +395,7 @@ namespace Jira.Views.Admin
 
         private void RepeatPasswordLeave(object sender, EventArgs e)
         {
-            if (RepeatPasswordTextBox.Text == "" || RepeatPasswordTextBox.Text == null)
+            if (RepeatPasswordTextBoxP.Password == "" || RepeatPasswordTextBoxP.Password == null)
             {
                 RepeatPasswordTextBox.Text = "Powtórz hasło";
                 RepeatPasswordTextBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Silver"));
