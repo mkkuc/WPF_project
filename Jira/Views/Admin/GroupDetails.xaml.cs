@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataTransferObjects.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,27 @@ namespace Jira.Views.Admin
     /// </summary>
     public partial class GroupDetails : Window
     {
-        public GroupDetails()
+        public Group actualGroup { get; set; }
+        public GroupDetails(Group group)
         {
+            actualGroup = group;
             InitializeComponent();
+            GroupDetailsWindow.DataContext = actualGroup;
+        }
+
+        private void SaveChangesInGroup(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DeleteGroup(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ChangeOwner(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

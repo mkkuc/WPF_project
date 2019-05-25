@@ -33,6 +33,7 @@ namespace Jira.Views.Admin
         List<Account> usersList;
         List<Group> groupList;
         List<Account> usersInGroupList;
+
         public AdminPanel(Account account)
         {
             admin = account;
@@ -48,7 +49,8 @@ namespace Jira.Views.Admin
             groupList = groupRepository.GetAll();
             listOfGroups.ItemsSource = groupList;
 
-            listOfUsersInGroup.ItemsSource = null;
+            usersInGroupList = groupList[0].Accounts.ToList();
+            listOfUsersInGroup.ItemsSource = usersInGroupList;
         }
 
         private ListCollectionView UsersList
@@ -173,45 +175,15 @@ namespace Jira.Views.Admin
 
         }
 
-        private void NewUser(object sender, SelectionChangedEventArgs e)
-        {
-            //int quantity = usersList.Count - 1;
-            //if (listOfUsers.SelectedIndex == quantity)
-            //{
-            //    var account = new Account();
-            //    usersList.Insert(quantity, account);
-            //    listOfUsers.UnselectAll();
-            //}
-            //listOfUsers.Items.Refresh();
-        }
-
-        private void NewUserInGroup(object sender, SelectionChangedEventArgs e)
-        {
-            //int quantity = usersInGroupList.Count - 1;
-            //if (listOfUsersInGroup.SelectedIndex == quantity)
-            //{
-            //    var account = new Account();
-            //    usersInGroupList.Insert(quantity, account);
-            //    listOfUsersInGroup.UnselectAll();
-            //}
-            //listOfUsersInGroup.Items.Refresh();
-        }
-
-        private void NewGroup(object sender, SelectionChangedEventArgs e)
-        {
-            //int quantity = groupList.Count - 1;
-            //if (listOfGroups.SelectedIndex == quantity)
-            //{
-            //    var group = new Group();
-            //    groupList.Insert(quantity, group);
-            //    listOfGroups.UnselectAll();
-            //}
-            //listOfGroups.Items.Refresh();
-        }
-
         private void DoubleClickGroupItem(object sender, EventArgs e)
         {
-            var groupDetails = new GroupDetails();
+            int i = 0;
+            while(listOfGroups.SelectedIndex != i)
+            {
+                i++;
+            }
+            Group group = groupList[i];
+            GroupDetails groupDetails = new GroupDetails(group);
             groupDetails.Show();
         }
 
