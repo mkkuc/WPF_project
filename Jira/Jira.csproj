@@ -76,6 +76,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\DeleteUserFromListCommand.cs" />
     <Compile Include="Commands\UpdateUserOnListCommand.cs" />
+    <Compile Include="Models\GroupVM.cs" />
     <Compile Include="Views\Admin\AdminPanel.xaml.cs">
       <DependentUpon>AdminPanel.xaml</DependentUpon>
     </Compile>

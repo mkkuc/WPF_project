@@ -47,7 +47,13 @@
                         <AccessText Text="{Binding Path=Login, StringFormat=Wyloguj: {0}}" TextAlignment="Center"/>
                     </Label.Content>
                 </Label>
+                <Label MouseDown="Refresh">
+                    <Label.Content>
+                        <AccessText Text="Odśwież" TextAlignment="Center"/>
+                    </Label.Content>
+                </Label>
             </MenuItem>
+            <!--<MenuItem Header="Odśwież" Height="40" Width="auto" MouseDown="Refresh"/>-->
         </Menu>
         <TabControl Margin="0,38,0,0">
             <TabItem Header="Twój profil">
@@ -208,7 +214,7 @@
                         <ColumnDefinition Width="0"/>
                     </Grid.ColumnDefinitions>
                     <TextBox IsEnabled="False" Grid.Column="0" TextAlignment="Center" Text="Grupy" FontSize="15" BorderBrush="White" HorizontalAlignment="Right" Margin="0,-9,177,0" Height="35" VerticalAlignment="Top" Width="42"/>
-                    <ListBox Name="listOfGroups" Margin="5,26,10,5" ItemTemplate="{StaticResource GroupList}" MouseDoubleClick="DoubleClickGroupItem"/>
+                    <ListBox Name="listOfGroups" Margin="5,26,10,5" ItemTemplate="{StaticResource GroupList}" MouseDoubleClick="DoubleClickGroupItem" MouseUp="SelectedGroup"/>
 
                     <GridSplitter Width="5"/>
                     <Grid Grid.Column="0" DataContext="{Binding ElementName=listOfGroups, Path=SelectedItem}"/>
