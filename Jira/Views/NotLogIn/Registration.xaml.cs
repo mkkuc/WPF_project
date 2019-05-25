@@ -87,7 +87,7 @@ namespace Jira.Views.NotLogIn
             {
                 MessageBox.Show("Login jest zajęty.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if (LoginTextBox.Text.Length < 3 || LoginTextBox.Text == null)
+            else if (LoginTextBox.Text.Length < 3 || LoginTextBox.Text == null || LoginTextBox.Text.Equals("Login"))
             {
                 MessageBox.Show("Login musi mieć przynajmniej 3 znaki.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
             }
