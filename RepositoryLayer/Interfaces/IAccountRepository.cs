@@ -15,6 +15,9 @@ namespace RepositoryLayer.Interfaces
         void Edit(Account account);
         void Delete(int? id);
         Account Get(int? id);
+        List<Account> GetAll();
+        List<Account> GetConfirmed();
+        List<Account> GetNotConfirmed();
         List<Issue> GetIssues(int? id);
         List<Queue> GetQueues(int? id);
         Role GetRole(int? id);

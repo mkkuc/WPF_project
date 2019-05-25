@@ -14,6 +14,9 @@ namespace RepositoryLayer.Interfaces
         void Add(Group group);
         void Edit(Group group);
         void Delete(int? id);
+        Group Get(int? id);
+        List<Group> GetAll();
+        List<Account> GetUsersFromGroup(int? id);
         List<Issue> GetIssues(int? id);
         List<Queue> GetQueues(int? id);
         List<Account> GetAccounts(int? id);

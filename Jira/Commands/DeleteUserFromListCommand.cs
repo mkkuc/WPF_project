@@ -7,12 +7,12 @@ using System.Windows.Input;
 
 namespace Jira.Commands
 {
-    public class DeleteCommand
+    public class DeleteUserFromListCommand
     {
         private static RoutedUICommand delete;
-        static DeleteCommand()
+        static DeleteUserFromListCommand()
         {
-            delete = new RoutedUICommand("Delete person", "Delete", typeof(DeleteCommand));
+            delete = new RoutedUICommand("Delete user from list", "DeleteFromUserList", typeof(DeleteUserFromListCommand));
         }
         public static RoutedUICommand Delete
         {

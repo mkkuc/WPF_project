@@ -70,6 +70,22 @@ namespace RepositoryLayer.Repositories
             }
         }
 
+        public Group Get(int? id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException("Null argument");
+            }
+            try
+            {
+                return db.Groups.FirstOrDefault(g => g.GroupID == id);
+            }
+            catch(Exception e)
+            {
+                throw new Exception();
+            }
+        }
+
         public List<Account> GetAccounts(int? id)
         {
             if (id == null)
@@ -84,6 +100,11 @@ namespace RepositoryLayer.Repositories
             {
                 throw new Exception();
             }
+        }
+
+        public List<Group> GetAll()
+        {
+            return db.Groups.ToList();
         }
 
         public List<Issue> GetIssues(int? id)
@@ -111,6 +132,22 @@ namespace RepositoryLayer.Repositories
             try
             {
                 return db.Groups.Find(id).Queues.ToList();
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        public List<Account> GetUsersFromGroup(int? id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException("Null argument");
+            }
+            try
+            {
+                return db.Groups.Find(id).Accounts.ToList();
             }
             catch (Exception)
             {
