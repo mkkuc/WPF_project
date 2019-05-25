@@ -186,12 +186,14 @@
                         <ColumnDefinition Width="39*"/>
                     </Grid.ColumnDefinitions>
                     <TextBox Name="LoginTextBox" GotFocus="LoginEnter" LostFocus="LoginLeave" Foreground="Silver" Height="33" Margin="68,48,32,0" TextWrapping="Wrap" Text="Login" TextAlignment="Center" VerticalAlignment="Top"/>
-                    <TextBox Name="PasswordTextBox" GotFocus="PasswordEnter" LostFocus="PasswordLeave" Foreground="Silver" Height="24" Margin="68,115,32,0" TextWrapping="Wrap" Text="Hasło" TextAlignment="Center" VerticalAlignment="Top"/>
-                    <TextBox Name="RepeatPasswordTextBox" GotFocus="RepeatPasswordEnter" LostFocus="RepeatPasswordLeave" Foreground="Silver" Height="24" Margin="68,178,32,0" TextWrapping="Wrap" Text="Powtórz hasło" TextAlignment="Center" VerticalAlignment="Top"/>
+                    <TextBox IsEnabled="False" Name="PasswordTextBox" Foreground="Silver" Height="24" Margin="68,115,32,0" TextWrapping="Wrap" Text="Hasło" TextAlignment="Center" VerticalAlignment="Top"/>
+                    <TextBox IsEnabled="False" Name="RepeatPasswordTextBox" Foreground="Silver" Height="24" Margin="68,178,32,0" TextWrapping="Wrap" Text="Powtórz hasło" TextAlignment="Center" VerticalAlignment="Top"/>
+                    <PasswordBox Name="PasswordTextBoxP" GotFocus="PasswordEnter" LostFocus="PasswordLeave" Foreground="Black" Height="24" Margin="68,115,32,0" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+                    <PasswordBox Name="RepeatPasswordTextBoxP" GotFocus="RepeatPasswordEnter" LostFocus="RepeatPasswordLeave" Foreground="Black" Height="24" Margin="68,178,32,0" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
                     <TextBox Name="NameTextBox" GotFocus="NameEnter" LostFocus="NameLeave" Foreground="Silver" Height="33" Margin="0,48,70,0" TextWrapping="Wrap" Text="Imię" TextAlignment="Center" VerticalAlignment="Top" Grid.Column="2"/>
                     <TextBox Name="SurnameTextBox" GotFocus="SurnameEnter" LostFocus="SurnameLeave" Foreground="Silver" Height="24" Margin="0,115,70,0" TextWrapping="Wrap" Text="Nazwisko" TextAlignment="Center" VerticalAlignment="Top" Grid.Column="2"/>
                     <TextBox Name="EmailTextBox" GotFocus="EmailEnter" LostFocus="EmailLeave" Foreground="Silver" Height="24" Margin="0,178,70,0" TextWrapping="Wrap" Text="Email" TextAlignment="Center" VerticalAlignment="Top" Grid.Column="2"/>
-                    <Button Grid.ColumnSpan="3" Height="62" Margin="321,289,323,0" VerticalAlignment="Top">
+                    <Button Click="CreateAdmin" Grid.ColumnSpan="3" Height="62" Margin="321,289,323,0" VerticalAlignment="Top">
                         <Button.Content>
                             <AccessText TextAlignment="Center" TextWrapping="Wrap" Text="Stwórz administratora"/>
                         </Button.Content>

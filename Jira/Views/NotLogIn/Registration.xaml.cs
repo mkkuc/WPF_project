@@ -116,10 +116,10 @@ namespace Jira.Views.NotLogIn
                 MessageBox.Show("Email jest zajęty lub niepoprawny.", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
-            {
-                MessageBox.Show("Konto założono poprawnie.", "Rejestracja zakończona", MessageBoxButton.OK);
+            {              
                 Account account = accountRepository.Create(LoginTextBox.Text, PasswordTextBoxP.Password, EmailTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, accountRepository.GetRole("User").RoleID, accountRepository.GetRole("User"), false, null, null);
                 accountRepository.Add(account);
+                MessageBox.Show("Konto założono poprawnie.", "Rejestracja zakończona", MessageBoxButton.OK);
                 LogIn logIn = new LogIn();
                 Close();
                 logIn.Show();
