@@ -7,7 +7,44 @@
         mc:Ignorable="d"
         Title="GroupDetails" Height="450" Width="800">
     <Grid>
-        <TextBox FontSize="40" HorizontalAlignment="Left" Height="94" Margin="257,108,0,0" TextWrapping="Wrap" Text="Szczegóły grupy" VerticalAlignment="Top" Width="297"/>
+        <GroupBox Margin="80,5">
+            <Grid Name="GroupDetailsWindow">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="51*" />
+                    <ColumnDefinition Width="208*"/>
+                    <ColumnDefinition Width="45*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,28,10,18" Height="29" Width="83">
+                    <Label.Content>
+                        <AccessText TextWrapping="Wrap" Text="Nazwa grupy" TextAlignment="Center" Height="17" Width="auto"/>
+                    </Label.Content>
+                </Label>
+                <TextBox TextAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="5,23,29,25" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
 
+                <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,17,10,18" Height="40" Width="83">
+                    <Label.Content>
+                        <AccessText TextWrapping="Wrap" Text="Obecny właściciel" TextAlignment="Center" Height="30" Width="73"/>
+                    </Label.Content>
+                </Label>
+                <TextBox IsEnabled="False" TextAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="5,23,29,25" Text="{Binding Path=NameAndSurnameOwner, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Column="0"  Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,5,10" Height="60" Width="93">
+                    <Label.Content>
+                        <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="Wybierz nowego właściciela" Width="83" Height="50"/>
+                    </Label.Content>
+                </Label>
+                <ComboBox HorizontalContentAlignment="Center" Name="PickOwner" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Path=NameAndSurnameList}" VerticalAlignment="Center" Margin="5,20,29,26" Padding="3" Height="29"/>
+
+                <Button Content="Zapisz zmiany" Grid.Row="3" Margin="139,10,139,23" Padding="5" Grid.Column="1" Height="Auto" Click="SaveChangesInGroup"/>
+                <Button Content="Usuń grupę" Grid.Row="4" Margin="139,11,139,25" Padding="5" Grid.Column="1" Height="Auto" Click="DeleteGroup" />
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

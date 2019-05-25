@@ -33,6 +33,7 @@ namespace Jira.Views.Admin
         List<Account> usersList;
         List<Group> groupList;
         List<Account> usersInGroupList;
+
         public AdminPanel(Account account)
         {
             admin = account;
@@ -46,9 +47,17 @@ namespace Jira.Views.Admin
             listOfUsers.ItemsSource = usersList;
 
             groupList = groupRepository.GetAll();
+            if (groupList != null)
+            {
+                usersInGroupList = groupList[0].Accounts.ToList();
+            }
+            else
+            {
+                groupList = new List<Group>();
+                usersInGroupList = new List<Account>();
+            }
             listOfGroups.ItemsSource = groupList;
-
-            listOfUsersInGroup.ItemsSource = null;
+            listOfUsersInGroup.ItemsSource = usersInGroupList;
         }
 
         private ListCollectionView UsersList
@@ -66,13 +75,75 @@ namespace Jira.Views.Admin
             get { return (ListCollectionView)CollectionViewSource.GetDefaultView(usersInGroupList); }
         }
 
+        //Menu
         private void LogOut(object sender, EventArgs e)
         {
             LogIn window = new LogIn();
             Close();
             window.Show();
         }
+        
+        private void Refresh(object sender, EventArgs e)
+        {
+            accountRepository = new AccountRepository();
+            groupRepository = new GroupRepository();
 
+            usersList = accountRepository.GetAll();
+            Account yourAccount = accountRepository.Get(admin.AccountID);
+            usersList.Remove(yourAccount);
+
+            listOfUsers.ItemsSource = usersList;
+            listOfUsers.Items.Refresh();
+
+            groupList = groupRepository.GetAll();
+            if (groupList != null)
+            {
+                usersInGroupList = groupList[0].Accounts.ToList();
+            }
+            else
+            {
+                groupList = new List<Group>();
+                usersInGroupList = new List<Account>();
+            }
+            listOfGroups.ItemsSource = groupList;
+            listOfGroups.Items.Refresh();
+
+            listOfUsersInGroup.ItemsSource = usersInGroupList;
+            listOfUsersInGroup.Items.Refresh();
+        }
+
+        //Groups
+        private void DoubleClickGroupItem(object sender, EventArgs e)
+        {
+            int i = 0;
+            while(listOfGroups.SelectedIndex != i)
+            {
+                i++;
+            }
+            Group group = groupList[i];
+            GroupDetails groupDetails = new GroupDetails(group);
+            groupDetails.Show();
+        }
+
+        private void DoubleClickUserItem(object sender, EventArgs e)
+        {
+            var userDetails = new UserDetails();
+            userDetails.Show();
+        }
+
+        private void SelectedGroup(object sender, MouseButtonEventArgs e)
+        {
+            int i = 0;
+            while (listOfGroups.SelectedIndex != i)
+            {
+                i++;
+            }
+            usersInGroupList = groupList[i].Accounts.ToList();
+            listOfUsersInGroup.ItemsSource = usersInGroupList;
+            listOfUsersInGroup.Items.Refresh();
+        }
+
+        //Users
         private void ShowAll(object sender, EventArgs e)
         {
             usersList = accountRepository.GetAll();
@@ -105,120 +176,6 @@ namespace Jira.Views.Admin
             showNotConfirmed = true;
             listOfUsers.ItemsSource = usersList;
             listOfUsers.Items.Refresh();
-        }
-
-        private void CreateAdmin(object sender, EventArgs e)
-        {
-            if (!accountRepository.IsLoginCorrect(LoginTextBox.Text))
-            {
-                MessageBox.Show("Login jest zajęty.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (LoginTextBox.Text.Length < 3 || LoginTextBox.Text == null || LoginTextBox.Text.Equals("Login"))
-            {
-                MessageBox.Show("Login musi mieć przynajmniej 3 znaki.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (PasswordTextBoxP.Password.Length < 3 || PasswordTextBoxP.Password == null)
-            {
-                MessageBox.Show("Hasło musi mieć przynajmniej 3 znaki.", "Błędne hasło", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (!RepeatPasswordTextBoxP.Password.Equals(PasswordTextBoxP.Password))
-            {
-                MessageBox.Show("Hasła są różne.", "Błędne hasło", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (NameTextBox.Text.Length < 3 || NameTextBox.Text == null || NameTextBox.Text.Equals("Imię"))
-            {
-                MessageBox.Show("Imię musi mieć przynajmniej 3 znaki.", "Błędne imię", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (SurnameTextBox.Text.Length < 3 || SurnameTextBox.Text == null || SurnameTextBox.Text.Equals("Nazwisko"))
-            {
-                MessageBox.Show("Nazwisko musi mieć przynajmniej 3 znaki.", "Błędne nazwisko", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (EmailTextBox.Text.Equals("Email"))
-            {
-                MessageBox.Show("Podaj email", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (!accountRepository.IsEmailCorrect(EmailTextBox.Text))
-            {
-                MessageBox.Show("Email jest zajęty lub niepoprawny.", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else
-            {
-                Account account = accountRepository.Create(LoginTextBox.Text, PasswordTextBoxP.Password, EmailTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, accountRepository.GetRole("Admin").RoleID, accountRepository.GetRole("Admin"), true, null, null);
-                accountRepository.Add(account);
-                MessageBox.Show("Konto administratora założono poprawnie.", "Rejestracja zakończona", MessageBoxButton.OK);
-                if (showAll)
-                {
-                    usersList = accountRepository.GetAll();
-                    Account yourAccount = accountRepository.Get(admin.AccountID);
-                    usersList.Remove(yourAccount);
-                }
-                else if (showConfirmed)
-                {
-                    usersList = accountRepository.GetConfirmed();
-                    Account yourAccount = accountRepository.Get(admin.AccountID);
-                    usersList.Remove(yourAccount);
-                }
-                else if (showNotConfirmed)
-                {
-                    usersList = accountRepository.GetNotConfirmed();
-                }
-                else
-                {
-                    MessageBox.Show("Nieznany błąd. Skontaktuj się z administracją.", "Nieznany błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                listOfUsers.ItemsSource = usersList;
-                listOfUsers.Items.Refresh();
-            }
-
-        }
-
-        private void NewUser(object sender, SelectionChangedEventArgs e)
-        {
-            //int quantity = usersList.Count - 1;
-            //if (listOfUsers.SelectedIndex == quantity)
-            //{
-            //    var account = new Account();
-            //    usersList.Insert(quantity, account);
-            //    listOfUsers.UnselectAll();
-            //}
-            //listOfUsers.Items.Refresh();
-        }
-
-        private void NewUserInGroup(object sender, SelectionChangedEventArgs e)
-        {
-            //int quantity = usersInGroupList.Count - 1;
-            //if (listOfUsersInGroup.SelectedIndex == quantity)
-            //{
-            //    var account = new Account();
-            //    usersInGroupList.Insert(quantity, account);
-            //    listOfUsersInGroup.UnselectAll();
-            //}
-            //listOfUsersInGroup.Items.Refresh();
-        }
-
-        private void NewGroup(object sender, SelectionChangedEventArgs e)
-        {
-            //int quantity = groupList.Count - 1;
-            //if (listOfGroups.SelectedIndex == quantity)
-            //{
-            //    var group = new Group();
-            //    groupList.Insert(quantity, group);
-            //    listOfGroups.UnselectAll();
-            //}
-            //listOfGroups.Items.Refresh();
-        }
-
-        private void DoubleClickGroupItem(object sender, EventArgs e)
-        {
-            var groupDetails = new GroupDetails();
-            groupDetails.Show();
-        }
-
-        private void DoubleClickUserItem(object sender, EventArgs e)
-        {
-            var userDetails = new UserDetails();
-            userDetails.Show();
         }
 
         private void DeleteFromUserList(object sender, ExecutedRoutedEventArgs e)
@@ -299,6 +256,7 @@ namespace Jira.Views.Admin
                 e.CanExecute = true;
         }
 
+        //My profile
         private void ChangePass(object sender, EventArgs e)
         {
             ChangePassword changePassword = new ChangePassword(admin);
@@ -346,6 +304,73 @@ namespace Jira.Views.Admin
                 Close();
                 window.Show();
             }
+        }
+
+        //Main method and placeholders - Create Administrator
+        private void CreateAdmin(object sender, EventArgs e)
+        {
+            if (!accountRepository.IsLoginCorrect(LoginTextBox.Text))
+            {
+                MessageBox.Show("Login jest zajęty.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (LoginTextBox.Text.Length < 3 || LoginTextBox.Text == null || LoginTextBox.Text.Equals("Login"))
+            {
+                MessageBox.Show("Login musi mieć przynajmniej 3 znaki.", "Błędny login", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (PasswordTextBoxP.Password.Length < 3 || PasswordTextBoxP.Password == null)
+            {
+                MessageBox.Show("Hasło musi mieć przynajmniej 3 znaki.", "Błędne hasło", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (!RepeatPasswordTextBoxP.Password.Equals(PasswordTextBoxP.Password))
+            {
+                MessageBox.Show("Hasła są różne.", "Błędne hasło", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (NameTextBox.Text.Length < 3 || NameTextBox.Text == null || NameTextBox.Text.Equals("Imię"))
+            {
+                MessageBox.Show("Imię musi mieć przynajmniej 3 znaki.", "Błędne imię", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (SurnameTextBox.Text.Length < 3 || SurnameTextBox.Text == null || SurnameTextBox.Text.Equals("Nazwisko"))
+            {
+                MessageBox.Show("Nazwisko musi mieć przynajmniej 3 znaki.", "Błędne nazwisko", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (EmailTextBox.Text.Equals("Email"))
+            {
+                MessageBox.Show("Podaj email", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (!accountRepository.IsEmailCorrect(EmailTextBox.Text))
+            {
+                MessageBox.Show("Email jest zajęty lub niepoprawny.", "Błędny email", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                Account account = accountRepository.Create(LoginTextBox.Text, PasswordTextBoxP.Password, EmailTextBox.Text, NameTextBox.Text, SurnameTextBox.Text, accountRepository.GetRole("Admin").RoleID, accountRepository.GetRole("Admin"), true, null, null);
+                accountRepository.Add(account);
+                MessageBox.Show("Konto administratora założono poprawnie.", "Rejestracja zakończona", MessageBoxButton.OK);
+                if (showAll)
+                {
+                    usersList = accountRepository.GetAll();
+                    Account yourAccount = accountRepository.Get(admin.AccountID);
+                    usersList.Remove(yourAccount);
+                }
+                else if (showConfirmed)
+                {
+                    usersList = accountRepository.GetConfirmed();
+                    Account yourAccount = accountRepository.Get(admin.AccountID);
+                    usersList.Remove(yourAccount);
+                }
+                else if (showNotConfirmed)
+                {
+                    usersList = accountRepository.GetNotConfirmed();
+                }
+                else
+                {
+                    MessageBox.Show("Nieznany błąd. Skontaktuj się z administracją.", "Nieznany błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                listOfUsers.ItemsSource = usersList;
+                listOfUsers.Items.Refresh();
+            }
+
         }
 
         private void LoginEnter(object sender, EventArgs e)
