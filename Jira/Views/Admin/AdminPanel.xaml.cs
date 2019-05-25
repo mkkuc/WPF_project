@@ -1,5 +1,6 @@
 ﻿using DataTransferObjects.Models;
 using Jira.Views.Common;
+using Jira.Views.NotLogIn;
 using RepositoryLayer.Repositories;
 using System;
 using System.Collections.Generic;
@@ -23,77 +24,124 @@ namespace Jira.Views.Admin
     public partial class AdminPanel : Window
     {
         public Account admin { get; set; }
+        public Account user { get; set; }
+        public bool showAll { get; set; } = true;
+        public bool showConfirmed { get; set; } = false;
+        public bool showNotConfirmed { get; set; } = false;
         AccountRepository accountRepository = new AccountRepository();
-
+        GroupRepository groupRepository = new GroupRepository();
+        List<Account> usersList;
+        List<Group> groupList;
+        List<Account> usersInGroupList;
         public AdminPanel(Account account)
         {
             admin = account;
             InitializeComponent();
             EditProfile.DataContext = admin;
-            var person = new Account
-            {
-                Name = "Jan Dodany"
-            };
-            list.Add(person);
+            AdminMenu.DataContext = admin;
+            usersList = accountRepository.GetAll();
+            Account yourAccount = accountRepository.Get(admin.AccountID);
+            usersList.Remove(yourAccount);
 
-            listOfItems.ItemsSource = list;
+            listOfUsers.ItemsSource = usersList;
 
-            var group = new Group
-            {
-                Name = "Grupa1"
-            };
-            listGroup.Add(group);
-            listOfGroups.ItemsSource = listGroup;
+            groupList = groupRepository.GetAll();
+            listOfGroups.ItemsSource = groupList;
 
-            listOfUsers.ItemsSource = list;
+            listOfUsersInGroup.ItemsSource = null;
         }
 
-        List<Account> list = new List<Account>();
-        private ListCollectionView View
+        private ListCollectionView UsersList
         {
-            get { return (ListCollectionView)CollectionViewSource.GetDefaultView(list); }
-        }
-        List<Group> listGroup = new List<Group>();
-        private ListCollectionView View2
-        {
-            get { return (ListCollectionView)CollectionViewSource.GetDefaultView(listGroup); }
+            get { return (ListCollectionView)CollectionViewSource.GetDefaultView(usersList); }
         }
 
-        private void NewPerson(object sender, SelectionChangedEventArgs e)
+        private ListCollectionView GroupList
         {
-            int quantity = list.Count - 1;
-            if (listOfItems.SelectedIndex == quantity)
-            {
-                var account = new Account();
-                list.Insert(quantity, account);
-                listOfItems.UnselectAll();
-            }
-            listOfItems.Items.Refresh();
+            get { return (ListCollectionView)CollectionViewSource.GetDefaultView(groupList); }
+        }
+
+        private ListCollectionView UsersInGroupList
+        {
+            get { return (ListCollectionView)CollectionViewSource.GetDefaultView(usersInGroupList); }
+        }
+
+        private void LogOut (object sender, EventArgs e)
+        {
+            LogIn window = new LogIn();
+            Close();
+            window.Show();
+        }
+
+        private void ShowAll(object sender, EventArgs e)
+        {
+            usersList = accountRepository.GetAll();
+            Account yourAccount = accountRepository.Get(admin.AccountID);
+            usersList.Remove(yourAccount);
+            showAll = true;
+            showConfirmed = false;
+            showNotConfirmed = false;
+            listOfUsers.ItemsSource = usersList;
+            listOfUsers.Items.Refresh();
+        }
+
+        private void ShowConfirmed(object sender, EventArgs e)
+        {
+            usersList = accountRepository.GetConfirmed();
+            Account yourAccount = accountRepository.Get(admin.AccountID);
+            usersList.Remove(yourAccount);
+            showAll = false;
+            showConfirmed = true;
+            showNotConfirmed = false;
+            listOfUsers.ItemsSource = usersList;
+            listOfUsers.Items.Refresh();
+        }
+
+        private void ShowNotConfirmed(object sender, EventArgs e)
+        {
+            usersList = accountRepository.GetNotConfirmed();
+            showAll = false;
+            showConfirmed = false;
+            showNotConfirmed = true;
+            listOfUsers.ItemsSource = usersList;
+            listOfUsers.Items.Refresh();
         }
 
         private void NewUser(object sender, SelectionChangedEventArgs e)
         {
-            int quantity = list.Count - 1;
-            if (listOfUsers.SelectedIndex == quantity)
-            {
-                var account = new Account();
-                list.Insert(quantity, account);
-                listOfUsers.UnselectAll();
-            }
-            listOfUsers.Items.Refresh();
+            //int quantity = usersList.Count - 1;
+            //if (listOfUsers.SelectedIndex == quantity)
+            //{
+            //    var account = new Account();
+            //    usersList.Insert(quantity, account);
+            //    listOfUsers.UnselectAll();
+            //}
+            //listOfUsers.Items.Refresh();
+        }
+
+        private void NewUserInGroup(object sender, SelectionChangedEventArgs e)
+        {
+            //int quantity = usersInGroupList.Count - 1;
+            //if (listOfUsersInGroup.SelectedIndex == quantity)
+            //{
+            //    var account = new Account();
+            //    usersInGroupList.Insert(quantity, account);
+            //    listOfUsersInGroup.UnselectAll();
+            //}
+            //listOfUsersInGroup.Items.Refresh();
         }
 
 
         private void NewGroup(object sender, SelectionChangedEventArgs e)
         {
-            int quantity = list.Count - 1;
-            if (listOfGroups.SelectedIndex == quantity)
-            {
-                var account = new Account();
-                list.Insert(quantity, account);
-                listOfGroups.UnselectAll();
-            }
-            listOfGroups.Items.Refresh();
+            //int quantity = groupList.Count - 1;
+            //if (listOfGroups.SelectedIndex == quantity)
+            //{
+            //    var group = new Group();
+            //    groupList.Insert(quantity, group);
+            //    listOfGroups.UnselectAll();
+            //}
+            //listOfGroups.Items.Refresh();
         }
 
         private void DoubleClickGroupItem(object sender, EventArgs e)
@@ -108,32 +156,82 @@ namespace Jira.Views.Admin
             userDetails.Show();
         }
 
-        private void Delete(object sender, ExecutedRoutedEventArgs e)
+        private void DeleteFromUserList(object sender, ExecutedRoutedEventArgs e)
         {
-            list.RemoveAt(listOfItems.SelectedIndex);
-            listOfItems.Items.Refresh();
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz usunąć wybrane konto? Zmiany będą nieodwracalne.", "Usuwanie konta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                int i = 0;
+
+                while(listOfUsers.SelectedIndex != i)
+                {
+                    i++;
+                }
+
+                Account userToDelete = usersList[i];
+                accountRepository.Delete(userToDelete.AccountID);
+
+                usersList.RemoveAt(listOfUsers.SelectedIndex);
+                listOfUsers.Items.Refresh();
+                MessageBox.Show("Konto zostało usunięte.", "Usuwanie konta zakończone", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
-        private void AccessToDelete(object sender, CanExecuteRoutedEventArgs e)
+        private void AccessToDeleteUserFromList(object sender, CanExecuteRoutedEventArgs e)
         {
-            //if (listOfItems.SelectedItem == null)
-            //    e.CanExecute = false;
-            //else
-            //    e.CanExecute = true;
+            if (listOfUsers.SelectedItem == null)
+                e.CanExecute = false;
+            else
+                e.CanExecute = true;
         }
 
-        private void Update(object sender, ExecutedRoutedEventArgs e)
+        private void UpdateUserOnList(object sender, ExecutedRoutedEventArgs e)
         {
-            //list.RemoveAt(listOfItems.SelectedIndex);
-            listOfItems.Items.Refresh();
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz zaktulizować wybrane konto? Zmiany będą nieodwracalne.", "Usuwanie konta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                int i = 0;
+
+                while (listOfUsers.SelectedIndex != i)
+                {
+                    i++;
+                }
+
+                Account userToUpdate = usersList[i];
+                accountRepository.Edit(userToUpdate);
+                if (showAll)
+                {
+                    usersList = accountRepository.GetAll();
+                    Account yourAccount = accountRepository.Get(admin.AccountID);
+                    usersList.Remove(yourAccount);
+                }
+                else if (showConfirmed)
+                {
+                    usersList = accountRepository.GetConfirmed();
+                    Account yourAccount = accountRepository.Get(admin.AccountID);
+                    usersList.Remove(yourAccount);
+                }
+                else if (showNotConfirmed)
+                {
+                    usersList = accountRepository.GetNotConfirmed();
+                }
+                else
+                {
+                    MessageBox.Show("Nieznany błąd. Skontaktuj się z administracją.", "Nieznany błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                listOfUsers.ItemsSource = usersList;
+                listOfUsers.Items.Refresh();
+                MessageBox.Show("Konto zostało zaktualizowane.", "Aktualizacja konta", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
-        private void AccessToUpdate(object sender, CanExecuteRoutedEventArgs e)
+        private void AccessToUpdateUserOnList(object sender, CanExecuteRoutedEventArgs e)
         {
-            //if (listOfItems.SelectedItem == null)
-            //    e.CanExecute = false;
-            //else
-            //    e.CanExecute = true;
+            if (listOfUsers.SelectedItem == null)
+                e.CanExecute = false;
+            else
+                e.CanExecute = true;
         }
 
         private void ChangePass(object sender, EventArgs e)
@@ -293,9 +391,5 @@ namespace Jira.Views.Admin
             }
         }
 
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }

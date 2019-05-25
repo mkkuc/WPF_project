@@ -197,5 +197,20 @@ namespace RepositoryLayer.Repositories
                 throw new Exception();
             }
         }
+
+        public List<Account> GetAll()
+        {
+            return db.Accounts.ToList();
+        }
+
+        public List<Account> GetConfirmed()
+        {
+            return db.Accounts.Where(a => a.IsConfirmed == true).ToList();
+        }
+
+        public List<Account> GetNotConfirmed()
+        {
+            return db.Accounts.Where(a => a.IsConfirmed == false).ToList();
+        }
     }
 }

@@ -7,12 +7,12 @@ using System.Windows.Input;
 
 namespace Jira.Commands
 {
-    public class UpdateCommand
+    public class UpdateUserOnListCommand
     {
         private static RoutedUICommand update;
-        static UpdateCommand()
+        static UpdateUserOnListCommand()
         {
-            update = new RoutedUICommand("Update", "Update", typeof(UpdateCommand));
+            update = new RoutedUICommand("Update user on list", "UpdateUserOnList", typeof(UpdateUserOnListCommand));
         }
         public static RoutedUICommand Update
         {
