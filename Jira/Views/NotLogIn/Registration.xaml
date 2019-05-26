@@ -20,8 +20,8 @@
         <TextBox Name="NameTextBox" GotFocus="NameEnter" LostFocus="NameLeave" Foreground="Silver" Height="24" Margin="0,57,70,0" TextWrapping="Wrap" Text="Imię" TextAlignment="Center" VerticalAlignment="Top" Grid.Column="2"/>
         <TextBox Name="SurnameTextBox" GotFocus="SurnameEnter" LostFocus="SurnameLeave" Foreground="Silver" Height="24" Margin="0,115,70,0" TextWrapping="Wrap" Text="Nazwisko" TextAlignment="Center" VerticalAlignment="Top" Grid.Column="2"/>
         <TextBox Name="EmailTextBox" GotFocus="EmailEnter" LostFocus="EmailLeave" Foreground="Silver" Height="24" Margin="0,178,70,0" TextWrapping="Wrap" Text="Email" TextAlignment="Center" VerticalAlignment="Top" Grid.Column="2"/>
-        <Button Height="62" Margin="0,289,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="148" Click="FinishRejestration">
-            <TextBox Text="Zakończ rejestrację" TextWrapping="Wrap" TextAlignment="Center" BorderBrush="#00000000" PreviewMouseDown="MouseRejestration"/>
+        <Button Height="62" Margin="0,289,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="148" Click="FinishRegistration">
+            <TextBox Text="Zakończ rejestrację" TextWrapping="Wrap" TextAlignment="Center" BorderBrush="#00000000" PreviewMouseDown="MouseRegistration"/>
         </Button>
         <Button Content="Zaloguj się" Height="62" Margin="0,289,203,0" VerticalAlignment="Top" Grid.Column="2" HorizontalAlignment="Right" Width="148" Click="Login"/>
     </Grid>

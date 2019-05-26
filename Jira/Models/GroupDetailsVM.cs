@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Jira.Models
 {
-    public class GroupVM
+    public class GroupDetailsVM
     {
         public string Name { get; set; }
         public string NameAndSurnameOwner { get; set; }
