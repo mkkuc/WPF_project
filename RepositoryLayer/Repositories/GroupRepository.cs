@@ -107,6 +107,33 @@ namespace RepositoryLayer.Repositories
             return db.Groups.ToList();
         }
 
+        public Group GetByUser(Account account)
+        {
+            if (account == null)
+            {
+                throw new ArgumentNullException("Null argument");
+            }
+            try
+            {
+                List<Group> groups = db.Groups.ToList();
+                foreach(Group group in groups)
+                {
+                    foreach (Account a in group.Accounts.ToList())
+                    {
+                        if(a.AccountID == account.AccountID)
+                        {
+                            return group;
+                        }
+                    }
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw new Exception();
+            }
+        }
+
         public List<Issue> GetIssues(int? id)
         {
             if (id == null)
