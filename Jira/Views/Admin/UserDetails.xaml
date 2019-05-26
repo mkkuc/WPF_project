@@ -5,9 +5,67 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Jira.Views.Admin"
         mc:Ignorable="d"
-        Title="UserDetails" Height="450" Width="800">
+        Title="UserDetails" Height="500" Width="800">
     <Grid>
-        <TextBox FontSize="40" HorizontalAlignment="Left" Height="167" Margin="257,108,0,0" TextWrapping="Wrap" Text="Szczegóły członka" VerticalAlignment="Top" Width="297"/>
+        <GroupBox Margin="80,5">
+            <Grid Name="ViewUserDetails">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="51*" />
+                    <ColumnDefinition Width="208*"/>
+                    <ColumnDefinition Width="45*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,21,27,10" Height="27" Width="60">
+                    <Label.Content>
+                        <AccessText TextWrapping="Wrap" Text="Imię" TextAlignment="Center" Height="17" Width="50"/>
+                    </Label.Content>
+                </Label>
+                <TextBox IsEnabled="False" TextAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="5,5,0,5" Padding="3" Text="{Binding Path=Name}"/>
 
+                <Label Grid.Column="0"  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,19,18,10" Height="29" Width="69">
+                    <Label.Content>
+                        <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="Nazwisko" Width="59" Height="19"/>
+                    </Label.Content>
+                </Label>
+                <TextBox IsEnabled="False" TextAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="5,5,0,5" Padding="3" Text="{Binding Path=Surname}"/>
+
+                <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,19,10,10" Height="29" Width="82">
+                    <Label.Content>
+                        <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="Adres e-mail" Height="19" Width="72"/>
+                    </Label.Content>
+                </Label>
+                <TextBox IsEnabled="False" TextAlignment="Center" Grid.Column="1" Grid.Row="2"  Margin="5,5,0,5" Padding="3" Text="{Binding Path=Email}"/>
+
+                <Label Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,19,10,10" Height="29" Width="82">
+                    <Label.Content>
+                        <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="Obecna rola" Height="19" Width="72"/>
+                    </Label.Content>
+                </Label>
+                <TextBox IsEnabled="False" TextAlignment="Center" Grid.Column="1" Grid.Row="3"  Margin="5,5,0,5" Padding="3" Text="{Binding Path=CurrentRoleName}"/>
+
+                <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="7,0,10,0" Height="61" Width="86">
+                    <Label.Content>
+                        <AccessText TextWrapping="Wrap" TextAlignment="Center" Text="Nowy właściciel grupy?" Height="51" Width="79"/>
+                    </Label.Content>
+                </Label>
+                <RadioButton Name="YesRadioButton" Grid.Column="1" Grid.Row="4" IsChecked="False" Margin="153,20,216,20">
+                    Tak
+                </RadioButton>
+                <RadioButton Name="NoRadioButton" Grid.Column="1" Grid.Row="4" IsChecked="True" Margin="221,20,146,20">
+                    Nie
+                </RadioButton>
+
+                <Button Content="Zapisz zmiany" Grid.Row="5" Margin="139,11,139,14" Padding="5" Grid.Column="1" Height="Auto" Click="SaveChangesInUser"/>
+                <Button Content="Usuń z grupy" Grid.Row="6" Margin="139,11,139,14" Padding="5" Grid.Column="1" Height="Auto" Click="DeleteUserFromGroup" />
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

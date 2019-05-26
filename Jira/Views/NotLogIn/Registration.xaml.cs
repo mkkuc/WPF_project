@@ -36,7 +36,7 @@ namespace Jira.Views.NotLogIn
             logIn.Show();
         }
 
-        private void MouseRejestration(object sender, RoutedEventArgs e)
+        private void MouseRegistration(object sender, RoutedEventArgs e)
         {
             if (!accountRepository.IsLoginCorrect(LoginTextBox.Text))
             {
@@ -81,7 +81,7 @@ namespace Jira.Views.NotLogIn
             }
         }
 
-        private void FinishRejestration(object sender, RoutedEventArgs e)
+        private void FinishRegistration(object sender, RoutedEventArgs e)
         {
             if (!accountRepository.IsLoginCorrect(LoginTextBox.Text))
             {

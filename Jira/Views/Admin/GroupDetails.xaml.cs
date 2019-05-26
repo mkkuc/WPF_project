@@ -23,47 +23,47 @@ namespace Jira.Views.Admin
     public partial class GroupDetails : Window
     {
         public Group actualGroup { get; set; }
-        public GroupVM groupVM { get; set; }
+        public GroupDetailsVM groupDetailsVM { get; set; }
         AccountRepository accountRepository = new AccountRepository();
         GroupRepository groupRepository = new GroupRepository();
         public GroupDetails(Group group)
         {
             actualGroup = group;
             InitializeComponent();
-            groupVM = new GroupVM();
-            groupVM.Name = group.Name;
+            groupDetailsVM = new GroupDetailsVM();
+            groupDetailsVM.Name = group.Name;
             Account owner = accountRepository.Get(group.GroupOwnerID);
             if(owner != null)
             {
-                groupVM.NameAndSurnameOwner = owner.Name + " " + owner.Surname;
+                groupDetailsVM.NameAndSurnameOwner = owner.Name + " " + owner.Surname;
             }
             else
             {
-                groupVM.NameAndSurnameOwner = "Brak właściciela grupy";
+                groupDetailsVM.NameAndSurnameOwner = "Brak właściciela grupy";
             }
             List<Account> accountList = groupRepository.GetUsersFromGroup(group.GroupID);
             foreach (Account account in accountList)
             {
-                groupVM.AccountList.Add(account);
-                groupVM.NameAndSurnameList.Add(account.Name + " " + account.Surname + "#" + account.AccountID);
+                groupDetailsVM.AccountList.Add(account);
+                groupDetailsVM.NameAndSurnameList.Add(account.Name + " " + account.Surname + "#" + account.AccountID);
             }
-            GroupDetailsWindow.DataContext = groupVM;
+            GroupDetailsWindow.DataContext = groupDetailsVM;
         }
 
         private void SaveChangesInGroup(object sender, EventArgs e)
         {
             Group updatedGroup = groupRepository.Get(actualGroup.GroupID);
-            if(groupVM.Name.Equals("") || groupVM.Name == null)
+            if(groupDetailsVM.Name.Equals("") || groupDetailsVM.Name == null)
             {
                 MessageBox.Show("Podaj nazwę grupy.", "Nazwa grupy", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if (groupVM.Name.Length < 3)
+            else if (groupDetailsVM.Name.Length < 3)
             {
                 MessageBox.Show("Nazwa grupy nie może być krótsza niż 3 znaki.", "Nazwa grupy", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                updatedGroup.Name = groupVM.Name;
+                updatedGroup.Name = groupDetailsVM.Name;
                 if (PickOwner.Text.Equals("") || PickOwner.Text == null)
                 {
                     groupRepository.Edit(updatedGroup);
@@ -73,13 +73,13 @@ namespace Jira.Views.Admin
                 }
                 else
                 {
-                    foreach(string nameAndSurname in groupVM.NameAndSurnameList)
+                    foreach(string nameAndSurname in groupDetailsVM.NameAndSurnameList)
                     {
                         if (PickOwner.Text.Equals(nameAndSurname))
                         {
                             string[] splited = nameAndSurname.Split('#');
                             int id = Int32.Parse(splited[1]);
-                            Account account = groupVM.AccountList.Find(g => g.AccountID == id);
+                            Account account = groupDetailsVM.AccountList.Find(g => g.AccountID == id);
                             int oldOwnerID = updatedGroup.GroupOwnerID;          
                             updatedGroup.GroupOwnerID = account.AccountID;
 

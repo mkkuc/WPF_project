@@ -127,7 +127,13 @@ namespace Jira.Views.Admin
 
         private void DoubleClickUserItem(object sender, EventArgs e)
         {
-            var userDetails = new UserDetails();
+            int i = 0;
+            while (listOfUsersInGroup.SelectedIndex != i)
+            {
+                i++;
+            }
+            Account account = usersInGroupList[i];
+            UserDetails userDetails = new UserDetails(account);
             userDetails.Show();
         }
 
