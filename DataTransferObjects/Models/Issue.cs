@@ -31,7 +31,15 @@ namespace DataTransferObjects.Models
 
         public virtual Status Status { get; set; }
 
+        [ForeignKey("Assignee")]
+        public int AssigneeID { get; set; }
+
         [Display(Name = "Przypisane do")]
         public virtual Account Assignee { get; set; }
+
+        [ForeignKey("Group")]
+        public int GroupID { get; set; }
+
+        public virtual Group Group { get; set; }
     }
 }

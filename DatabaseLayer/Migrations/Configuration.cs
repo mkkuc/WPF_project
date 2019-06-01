@@ -2,7 +2,6 @@ namespace DatabaseLayer.Migrations
 {
     using DataTransferObjects.Models;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Data.Entity;
@@ -25,7 +24,7 @@ namespace DatabaseLayer.Migrations
                 new Status() { StatusID = 3, Name = "Done"}
             };
 
-            foreach(Status status in statuses)
+            foreach (Status status in statuses)
             {
                 context.Statuses.AddOrUpdate(a => new { a.StatusID, a.Name }, status);
             }
@@ -64,7 +63,7 @@ namespace DatabaseLayer.Migrations
 
                 new Account() { AccountID = 3, Login = "usernot", Password = "usernot", Email = "usernot@usernot.pl", Name = "Niepotwierdzony", Surname = "U¿ytkownik", RoleID = 3, IsConfirmed = false },
 
-                new Account() { AccountID = 4, Login = "user", Password = "user", Email = "user@user.pl", Name = "Zwyk³y", Surname = "U¿ytkownik", RoleID = 3, IsConfirmed = true},             
+                new Account() { AccountID = 4, Login = "user", Password = "user", Email = "user@user.pl", Name = "Zwyk³y", Surname = "U¿ytkownik", RoleID = 3, IsConfirmed = true},
             };
 
             foreach (Account account in accounts)
@@ -91,7 +90,6 @@ namespace DatabaseLayer.Migrations
             listOfGroups.Add(group);
             ICollection<Group> groups = listOfGroups;
             context.Groups.AddRange(groups);
-            
 
         }
     }

@@ -7,13 +7,13 @@ namespace DatabaseLayer.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class addAssigneeToIssue : IMigrationMetadata
+    public sealed partial class new_init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addAssigneeToIssue));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(new_init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201906011604481_addAssigneeToIssue"; }
+            get { return "201906011812480_new_init"; }
         }
         
         string IMigrationMetadata.Source

@@ -55,13 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\DatabaseContext.cs" />
-    <Compile Include="Migrations\201905231813305_init.cs" />
-    <Compile Include="Migrations\201905231813305_init.Designer.cs">
-      <DependentUpon>201905231813305_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906011604481_addAssigneeToIssue.cs" />
-    <Compile Include="Migrations\201906011604481_addAssigneeToIssue.Designer.cs">
-      <DependentUpon>201906011604481_addAssigneeToIssue.cs</DependentUpon>
+    <Compile Include="Migrations\201906011812480_new_init.cs" />
+    <Compile Include="Migrations\201906011812480_new_init.Designer.cs">
+      <DependentUpon>201906011812480_new_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,11 +73,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201905231813305_init.resx">
-      <DependentUpon>201905231813305_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906011604481_addAssigneeToIssue.resx">
-      <DependentUpon>201906011604481_addAssigneeToIssue.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906011812480_new_init.resx">
+      <DependentUpon>201906011812480_new_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
