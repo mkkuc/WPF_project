@@ -30,5 +30,8 @@ namespace DataTransferObjects.Models
         public int StatusID { get; set; }
 
         public virtual Status Status { get; set; }
+
+        [Display(Name = "Przypisane do")]
+        public virtual Account Assignee { get; set; }
     }
 }

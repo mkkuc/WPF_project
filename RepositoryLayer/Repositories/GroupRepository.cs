@@ -142,7 +142,8 @@ namespace RepositoryLayer.Repositories
             }
             try
             {
-                return db.Groups.Find(id).Issues.ToList();
+                Group group = db.Groups.Find(id);
+                return group.Issues.ToList();
             }
             catch (Exception)
             {

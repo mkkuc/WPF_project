@@ -10,7 +10,7 @@
         <TabControl>
             <TabItem Header="Edycja konta">
                 <DockPanel>
-                    <Grid DockPanel.Dock="Top">
+                    <Grid DockPanel.Dock="Top" Name="EditProfile">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -23,27 +23,25 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Content="Login:" Margin="0,5,5,0" Grid.Row="0" Grid.Column="0"/>
-                        <TextBox Name="LoginTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="0" Grid.Column="1"/>
+                        <Label Content="Imię:" Margin="0,5,5,0" Grid.Row="0" Grid.Column="0"/>
+                        <TextBox Name="NameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="0" Grid.Column="1"/>
 
-                        <Label Content="Imię:" Margin="0,5,5,0" Grid.Row="1" Grid.Column="0"/>
-                        <TextBox Name="NameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1"/>
+                        <Label Content="Nazwisko:" Margin="0,5,5,0" Grid.Row="1" Grid.Column="0"/>
+                        <TextBox Name="LastnameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1"/>
 
-                        <Label Content="Nazwisko:" Margin="0,5,5,0" Grid.Row="2" Grid.Column="0"/>
-                        <TextBox Name="LastnameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1"/>
 
-                        <Label Content="Numer telefonu:" Margin="0,5,5,0" Grid.Row="3" Grid.Column="0"/>
-                        <TextBox Name="PhoneTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="3" Grid.Column="1"/>
+                        <Label Content="Adres e-mail:" Margin="0,5,5,0" Grid.Row="2" Grid.Column="0"/>
+                        <TextBox Name="EmailTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1"/>
 
-                        <Label Content="Adres e-mail:" Margin="0,5,5,0" Grid.Row="4" Grid.Column="0"/>
-                        <TextBox Name="EmailTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="4" Grid.Column="1"/>
+                        <Button Content="Zapisz zmiany" Margin="200,6,200,9" Grid.Row="3" Grid.Column="1" Click="SaveChangesInProfile"/>
+                        <Button Content="Zmień hasło" Margin="200,6,200,9" Grid.Row="4" Grid.Column="1" Click="ChangePass"/>
+
                     </Grid>
 
-                    <Button DockPanel.Dock="Bottom" Content="Zapisz zmiany" Margin="200,6,200,9"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Lista zadań">
-                <Grid DataContext="{Binding ElementName=IssuesListView, Path=SelectedItem}">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -51,14 +49,28 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Grid.Column="0" Name="IssuesListView" Margin="5,5,5,5" SelectionMode="Single"  DisplayMemberPath="Title" ItemsSource="{Binding issues}" Grid.ColumnSpan="2">
-                        <!--<ListViewItem Content="Zadanie 1" />
-                        <ListViewItem Content="Zadanie 2" />-->
+                    <ListView Grid.Column="0" Name="IssuesListView" Margin="5,5,5,5" SelectionMode="Single"  DisplayMemberPath="Title" ItemsSource="{Binding issuesList}" Grid.ColumnSpan="2" MouseUp="SelectedIssue">
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="True">
+                                <GridView.Columns>
+                                    <GridViewColumn Header="Id"
+                            DisplayMemberBinding="{Binding IssueId}" />
+                                    <GridViewColumn Header="Tytuł"
+                            DisplayMemberBinding="{Binding Title}" />
+                                    <GridViewColumn Header="Priorytet"
+                            DisplayMemberBinding="{Binding Priority}" />
+                                    <GridViewColumn Header="Status"
+                            DisplayMemberBinding="{Binding Status}" />
+                                    <GridViewColumn Header="Przypisane do"
+                            DisplayMemberBinding="{Binding Assignee.Login}" />
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
 
                     </ListView>
 
                     <GridSplitter Width="5"/>
-                    <Grid Grid.Column="1" DataContext="{Binding ElementName=IssuesListView, Path=SelectedItem}">
+                    <Grid Grid.Column="1" DataContext="{Binding ElementName=IssuesList, Path=SelectedItem}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
