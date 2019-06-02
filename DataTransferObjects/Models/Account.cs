@@ -44,7 +44,13 @@ namespace DataTransferObjects.Models
         [Display(Name = "Confirmed: ")]
         public bool IsConfirmed { get; set; } = true;
 
+        [ForeignKey("Group")]
+        public int? GroupID { get; set; }
+
+        public Group Group { get; set; }
+
         public virtual ICollection<Queue> Queues { get; set; }
+
         public virtual ICollection<Issue> Issues { get; set; }
     }
 }
