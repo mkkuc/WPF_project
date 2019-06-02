@@ -17,5 +17,7 @@ namespace DataTransferObjects.Models
 
         [Required]
         public string Name { get; set; }
+
+        public virtual ICollection<Issue> Issues { get; set; }
     }
 }
