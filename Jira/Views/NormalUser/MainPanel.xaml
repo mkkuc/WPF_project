@@ -49,18 +49,16 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Grid.Column="0" Name="IssuesListView" Margin="5,5,5,5" SelectionMode="Single"  DisplayMemberPath="Title" ItemsSource="{Binding issuesList}" Grid.ColumnSpan="2" MouseUp="SelectedIssue">
+                    <ListView Grid.Column="0" Name="IssuesListView" Margin="5,5,5,5" SelectionMode="Single"  DisplayMemberPath="Title" Grid.ColumnSpan="2" MouseUp="SelectedIssue">
                         <ListView.View>
                             <GridView AllowsColumnReorder="True">
                                 <GridView.Columns>
-                                    <GridViewColumn Header="Id"
-                            DisplayMemberBinding="{Binding IssueId}" />
                                     <GridViewColumn Header="Tytuł"
                             DisplayMemberBinding="{Binding Title}" />
                                     <GridViewColumn Header="Priorytet"
-                            DisplayMemberBinding="{Binding Priority}" />
+                            DisplayMemberBinding="{Binding Priority.Name}" />
                                     <GridViewColumn Header="Status"
-                            DisplayMemberBinding="{Binding Status}" />
+                            DisplayMemberBinding="{Binding Status.Name}" />
                                     <GridViewColumn Header="Przypisane do"
                             DisplayMemberBinding="{Binding Assignee.Login}" />
                                 </GridView.Columns>
@@ -70,7 +68,7 @@
                     </ListView>
 
                     <GridSplitter Width="5"/>
-                    <Grid Grid.Column="1" DataContext="{Binding ElementName=IssuesList, Path=SelectedItem}">
+                    <Grid Name="SelectedItemView" Grid.Column="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>

@@ -39,6 +39,7 @@ namespace Jira.Views.NormalUser
 
             userGroup = groupRepository.GetByUser(yourAccount);
             issuesList = groupRepository.GetIssues(userGroup.GroupID).ToList();
+            IssuesListView.ItemsSource = issuesList;
 
         }
 
@@ -99,15 +100,8 @@ namespace Jira.Views.NormalUser
         //IssuesList---------------------------------------------
         private void SelectedIssue(object sender, MouseButtonEventArgs e)
         {
-            //int i = 0;
-            //while (issuesList.SelectedIndex != i)
-            //{
-            //    i++;
-            //}
-            //selectedIssue = IssuesListView.SelectedItem;
-            //usersInGroupList = groupList[i].Accounts.ToList();
-            //listOfUsersInGroup.ItemsSource = usersInGroupList;
-            //listOfUsersInGroup.Items.Refresh();
+            selectedIssue = (Issue)IssuesListView.SelectedItem;
+            SelectedItemView.DataContext = selectedIssue;
         }
 
     }
