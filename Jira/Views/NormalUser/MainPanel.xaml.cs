@@ -27,35 +27,45 @@ namespace Jira.Views.NormalUser
         AccountRepository accountRepository = new AccountRepository();
         GroupRepository groupRepository = new GroupRepository();
         public List<Issue> issuesList;
+        public List<Group> groupsList { get; set; }
         public Group userGroup;
         public List<Account> usersInGroupList;
         Issue selectedIssue;
+        public bool IsGroupContributor { get; set; }
+        public bool IsNotGroupContributor { get => !IsGroupContributor; }
         public MainPanel(Account account)
         {
             user = account;
             InitializeComponent();
+            MainPanelWindow.DataContext = this;
             EditProfile.DataContext = user;
             Account yourAccount = accountRepository.Get(user.AccountID);
 
             userGroup = groupRepository.GetByUser(yourAccount);
-            issuesList = groupRepository.GetIssues(userGroup.GroupID).ToList();
-            IssuesListView.ItemsSource = issuesList;
+            if (userGroup != null)
+            {
+                IsGroupContributor = true;
+            }
+            else
+            {
+                groupsList = groupRepository.GetAll();
+                AvailableGroupsListView.ItemsSource = groupsList;
+            }
 
+            if (userGroup != null)
+            {
+                issuesList = groupRepository.GetIssues(userGroup.GroupID).ToList();
+            }
+            IssuesListView.ItemsSource = issuesList;
+            StatusComboBox.ItemsSource = issuesList;
+            StatusComboBox.DisplayMemberPath = "Status.Name";
+            StatusComboBox.SelectedValuePath = "Status.Name";
+            StatusComboBox.SelectedValue = "Status.StatusID";
         }
 
-        ObservableCollection<DataTransferObjects.Models.Issue> issues = new ObservableCollection<DataTransferObjects.Models.Issue>();
         public MainPanel()
         {
             InitializeComponent();
-
-            issues.Add(new DataTransferObjects.Models.Issue
-            {
-                IssueID = 0,
-                Title = "Testowe zadanie 1",
-                Description = "Opis zadania testowego numer 1",
-                PriorityID = 0,
-                Priority = new DataTransferObjects.Models.Priority { PriorityID = 0, Name = "Ważne" }
-            });
 
         }
 
@@ -103,6 +113,8 @@ namespace Jira.Views.NormalUser
             selectedIssue = (Issue)IssuesListView.SelectedItem;
             SelectedItemView.DataContext = selectedIssue;
         }
+
+        //Groups-------------------------------------------------
 
     }
 }

@@ -5,7 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Jira.Views.NormalUser"
         mc:Ignorable="d"
-        Title="MainPanel" Height="450" Width="800">
+        Title="MainPanel" Height="450" Width="800"
+        x:Name="MainPanelWindow">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         <TabControl>
             <TabItem Header="Edycja konta">
@@ -71,65 +75,63 @@
                     <Grid Name="SelectedItemView" Grid.Column="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <Label Grid.Column="0" VerticalAlignment="Center">
-                                    <Label.Content>
-                                        <AccessText TextWrapping="Wrap" Text="Nazwa"/>
-                                    </Label.Content>
-                                </Label>
-                                <Label Grid.Column="0"  Grid.Row="1" VerticalAlignment="Center">
-                                    <Label.Content>
-                                        <AccessText TextWrapping="Wrap" Text="Opis"/>
-                                    </Label.Content>
-                                </Label>
-                                <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"/>
-                                <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}"/>
-                                <Label Grid.Row="2" VerticalAlignment="Center">
-                                    <Label.Content>
-                                        <AccessText TextWrapping="Wrap" Text="Przypisany użytkownik"/>
-                                    </Label.Content>
-                                </Label>
-                                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2"/>
-                                <Label Grid.Row="3" VerticalAlignment="Center">
-                                    <Label.Content>
-                                        <AccessText TextWrapping="Wrap" Text="Priorytet"/>
-                                    </Label.Content>
-                                </Label>
-                                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3"/>
-                                <Label Grid.Row="4" VerticalAlignment="Center">
-                                    <Label.Content>
-                                        <AccessText TextWrapping="Wrap" Text="Status"/>
-                                    </Label.Content>
-                                </Label>
-                                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="4"/>
-                                <!--Checked="{Binding Path=IsConfirmed, UpdateSourceTrigger=PropertyChanged}"/>-->
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" VerticalAlignment="Center">
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Nazwa"/>
+                                </Label.Content>
+                            </Label>
+                            <Label Grid.Column="0"  Grid.Row="1" VerticalAlignment="Center">
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Opis"/>
+                                </Label.Content>
+                            </Label>
+                            <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Grid.Row="2" VerticalAlignment="Center">
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Przypisany użytkownik"/>
+                                </Label.Content>
+                            </Label>
+                            <TextBox IsEnabled="False" Name="AssigneeTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2"/>
+                            <Label Grid.Row="3" VerticalAlignment="Center">
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Priorytet"/>
+                                </Label.Content>
+                            </Label>
+                            <TextBox IsEnabled="False" Name="PriorityTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3"/>
+                            <Label Grid.Row="4" VerticalAlignment="Center">
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Status"/>
+                                </Label.Content>
+                            </Label>
+                            <ComboBox Name="StatusComboBox" IsEnabled="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="4"/>
+                            <!--Checked="{Binding Path=IsConfirmed, UpdateSourceTrigger=PropertyChanged}"/>-->
 
-                                <Button Content="Zapisz zmiany" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" Padding="5" />
-                                <!--Command="commands:UpdateCommand.Update"/>-->
-                                <Button Content="Usuń zadanie" Grid.Row="6" Grid.ColumnSpan="2" Margin="5" Padding="5"/>
-                                <!--Command="commands:DeleteCommand.Delete"/>-->
-                            </Grid>
+                            <Button Content="Zapisz zmiany" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" Padding="5" />
+                            <!--Command="commands:UpdateCommand.Update"/>-->
+                            <Button Content="Usuń zadanie" Grid.Row="6" Grid.ColumnSpan="2" Margin="5" Padding="5"/>
+                            <!--Command="commands:DeleteCommand.Delete"/>-->
+                        </Grid>
                     </Grid>
 
                 </Grid>
-                <!--TODO: Bindy między listą a szczegółami-->
             </TabItem>
-            <TabItem Header="Lista grup">
+            <TabItem Header="Grupa">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -143,12 +145,23 @@
                     <GridSplitter Width="5"/>
                     <GridSplitter Grid.Row="1" Width="5"/>
 
-                    <Label Grid.Column="0" Grid.Row="0" Content="Grupy, do których należysz:" Margin="3,3,3,3" Grid.ColumnSpan="2" />
-                    <ListView Grid.Column="0" Grid.Row="1" Name="ParticipatingGroupsListView" Margin="5,5,5,5" SelectionMode="Single" 
-                  ItemsSource="{Binding participatingGroups}" DisplayMemberPath="PartGroupName" Grid.ColumnSpan="2" />
-                    <Label Grid.Column="2" Grid.Row="0" Content="Pozostałe grupy:" Margin="3,3,3,3" />
-                    <ListView Grid.Column="2" Grid.Row="1" Name="OtherGroupsListView" Margin="5,5,5,5" SelectionMode="Single" 
-                  ItemsSource="{Binding otherGroups}" DisplayMemberPath="OtherGroupName" />
+                    <Label Visibility="{Binding IsGroupContributor, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="0" Grid.Row="0" Content="Szczegóły grupy" Margin="3,3,3,3" Grid.ColumnSpan="2" />
+                    <ListView Visibility="{Binding IsGroupContributor, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="0" Grid.Row="1" Name="ParticipatingGroupsListView" Margin="5,5,5,5" SelectionMode="Single" 
+                  ItemsSource="{Binding participatingGroups}" Grid.ColumnSpan="2" />
+                    <Label Visibility="{Binding IsNotGroupContributor, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="2" Grid.Row="0" Content="Dostępne grupy:" Margin="3,3,3,3" />
+                    <ListView Visibility="{Binding IsNotGroupContributor, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="2" Grid.Row="1" Name="AvailableGroupsListView" Margin="5,5,5,5" SelectionMode="Single" 
+                  ItemsSource="{Binding otherGroups}" DisplayMemberPath="OtherGroupName">
+
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="True">
+                                <GridView.Columns>
+                                    <GridViewColumn
+                            DisplayMemberBinding="{Binding Name}" />
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+
+                    </ListView>
 
 
                 </Grid>
