@@ -38,6 +38,11 @@ namespace RepositoryLayer.Repositories
             };
         }
 
+        public List<Issue> GetGroupIssues(int groupId)
+        {
+            return db.Issues.Where(i => i.GroupID == groupId).ToList();
+        }
+
         public void Delete(int? id)
         {
             if (id == null)

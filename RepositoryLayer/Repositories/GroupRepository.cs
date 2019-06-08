@@ -115,18 +115,7 @@ namespace RepositoryLayer.Repositories
             }
             try
             {
-                List<Group> groups = db.Groups.ToList();
-                foreach(Group group in groups)
-                {
-                    foreach (Account a in group.Accounts.ToList())
-                    {
-                        if(a.AccountID == account.AccountID)
-                        {
-                            return group;
-                        }
-                    }
-                }
-                return null;
+                return db.Groups.FirstOrDefault(g => g.GroupID == account.GroupID);
             }
             catch (Exception e)
             {
