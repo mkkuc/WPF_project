@@ -136,7 +136,7 @@ namespace Jira.Views.NormalUser
             selectedIssue.Status = (Status)StatusComboBox.SelectedValue;
             IssuesListView.Items.Refresh();
             RefreshStatusComboBox();
-            Issue issueToChange = selectedIssue;
+            Issue issueToChange = issueRepository.Get(selectedIssue.IssueID);
             issueRepository.Edit(issueToChange);
             //NormalUser.MainPanel window = new NormalUser.MainPanel(user);
             //Close();

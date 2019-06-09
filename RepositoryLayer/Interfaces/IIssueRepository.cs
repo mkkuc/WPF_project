@@ -14,5 +14,6 @@ namespace RepositoryLayer.Interfaces
         void Add(Issue issue);
         void Edit(Issue issue);
         void Delete(int? id);
+        Issue Get(int? id);
     }
 }
