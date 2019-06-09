@@ -137,6 +137,13 @@ namespace Jira.Views.NormalUser
             IssuesListView.Items.Refresh();
             RefreshStatusComboBox();
             Issue issueToChange = issueRepository.Get(selectedIssue.IssueID);
+            issueToChange.Description = selectedIssue.Description;
+            issueToChange.Assignee = selectedIssue.Assignee;
+            issueToChange.AssigneeID = selectedIssue.AssigneeID;
+            issueToChange.Priority = selectedIssue.Priority;
+            issueToChange.PriorityID = selectedIssue.PriorityID;
+            issueToChange.Status = selectedIssue.Status;
+            issueToChange.StatusID = selectedIssue.StatusID;
             issueRepository.Edit(issueToChange);
             //NormalUser.MainPanel window = new NormalUser.MainPanel(user);
             //Close();
