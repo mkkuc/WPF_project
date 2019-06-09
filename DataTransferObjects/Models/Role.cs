@@ -18,6 +18,6 @@ namespace DataTransferObjects.Models
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        public virtual ICollection<Issue> Issues { get; set; }
+        public virtual ICollection<Account> Accounts { get; set; }
     }
 }
