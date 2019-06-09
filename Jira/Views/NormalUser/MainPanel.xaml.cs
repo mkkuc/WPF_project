@@ -26,11 +26,13 @@ namespace Jira.Views.NormalUser
         Account user;
         AccountRepository accountRepository = new AccountRepository();
         GroupRepository groupRepository = new GroupRepository();
+        IssueRepository issueRepository = new IssueRepository();
         public List<Issue> issuesList;
         public List<Group> groupsList { get; set; }
         public Group userGroup;
         public List<Account> usersInGroupList;
         Issue selectedIssue;
+        public List<Status> statuses { get; set; }
         public bool IsGroupContributor { get; set; }
         public bool IsNotGroupContributor { get => !IsGroupContributor; }
         public MainPanel(Account account)
@@ -40,7 +42,7 @@ namespace Jira.Views.NormalUser
             MainPanelWindow.DataContext = this;
             EditProfile.DataContext = user;
             Account yourAccount = accountRepository.Get(user.AccountID);
-
+            statuses = issueRepository.GetAllStatuses();
             userGroup = groupRepository.GetByUser(yourAccount);
             if (userGroup != null)
             {
@@ -56,11 +58,17 @@ namespace Jira.Views.NormalUser
             {
                 issuesList = groupRepository.GetIssues(userGroup.GroupID).ToList();
             }
+
+            RefreshStatusComboBox();
+            UserMenu.DataContext = user;
+        }
+
+        private void RefreshStatusComboBox()
+        {
             IssuesListView.ItemsSource = issuesList;
-            StatusComboBox.ItemsSource = issuesList;
-            StatusComboBox.DisplayMemberPath = "Status.Name";
-            StatusComboBox.SelectedValuePath = "Status.Name";
-            StatusComboBox.SelectedValue = "Status.StatusID";
+            StatusComboBox.ItemsSource = statuses;
+            StatusComboBox.DisplayMemberPath = "Name";
+            StatusComboBox.SelectedValuePath = ".";
         }
 
         public MainPanel()
@@ -106,12 +114,33 @@ namespace Jira.Views.NormalUser
             changePassword.Show();
         }
 
+        private void LogOut(object sender, EventArgs e)
+        {
+            NotLogIn.LogIn window = new NotLogIn.LogIn();
+            Close();
+            window.Show();
+        }
+
 
         //IssuesList---------------------------------------------
         private void SelectedIssue(object sender, MouseButtonEventArgs e)
         {
             selectedIssue = (Issue)IssuesListView.SelectedItem;
             SelectedItemView.DataContext = selectedIssue;
+            //StatusComboBox.SelectedItem = StatusComboBox.Items.IndexOf(selectedIssue.StatusID);
+            StatusComboBox.SelectedValue = selectedIssue.Status;
+        }
+
+        private void SaveIssueUser(object sender, RoutedEventArgs e)
+        {
+            selectedIssue.Status = (Status)StatusComboBox.SelectedValue;
+            IssuesListView.Items.Refresh();
+            RefreshStatusComboBox();
+            Issue issueToChange = selectedIssue;
+            issueRepository.Edit(issueToChange);
+            //NormalUser.MainPanel window = new NormalUser.MainPanel(user);
+            //Close();
+            //window.Show();
         }
 
         //Groups-------------------------------------------------

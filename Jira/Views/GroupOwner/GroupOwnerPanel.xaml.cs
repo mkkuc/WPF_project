@@ -51,9 +51,9 @@ namespace Jira.Views.GroupOwner
             {
                 i++;
             }
-            usersInGroupList = groupList[i].Accounts.ToList();
-            listOfUsersInGroup.ItemsSource = usersInGroupList;
-            listOfUsersInGroup.Items.Refresh();
+            //usersInGroupList = groupList[i].Accounts.ToList();
+            //listOfUsersInGroup.ItemsSource = usersInGroupList;
+            //listOfUsersInGroup.Items.Refresh();
         }
 
         public GroupOwnerPanel()

@@ -11,7 +11,21 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
     <Grid>
-        <TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" HorizontalAlignment="Left" Name="UserMenu" VerticalAlignment="Top" Width="auto">
+            <MenuItem Header="Menu" Height="40" Width="auto">
+                <Label MouseDown="LogOut">
+                    <Label.Content>
+                        <AccessText Text="{Binding Path=Login, StringFormat=Wyloguj: {0}}" TextAlignment="Center"/>
+                    </Label.Content>
+                </Label>
+            </MenuItem>
+            <!--<MenuItem Header="Odśwież" Height="40" Width="auto" MouseDown="Refresh"/>-->
+        </Menu>
+        <TabControl Grid.Row="1">
             <TabItem Header="Edycja konta">
                 <DockPanel>
                     <Grid DockPanel.Dock="Top" Name="EditProfile">
@@ -107,13 +121,13 @@
                                     <AccessText TextWrapping="Wrap" Text="Przypisany użytkownik"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox IsEnabled="False" Name="AssigneeTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2"/>
+                            <TextBox IsEnabled="False" Name="AssigneeTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2" Text="{Binding Path=Assignee.Login, UpdateSourceTrigger=PropertyChanged}" />
                             <Label Grid.Row="3" VerticalAlignment="Center">
                                 <Label.Content>
                                     <AccessText TextWrapping="Wrap" Text="Priorytet"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox IsEnabled="False" Name="PriorityTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3"/>
+                            <TextBox IsEnabled="False" Name="PriorityTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3" Text="{Binding Path=Priority.Name, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Grid.Row="4" VerticalAlignment="Center">
                                 <Label.Content>
                                     <AccessText TextWrapping="Wrap" Text="Status"/>
@@ -122,10 +136,8 @@
                             <ComboBox Name="StatusComboBox" IsEnabled="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="4"/>
                             <!--Checked="{Binding Path=IsConfirmed, UpdateSourceTrigger=PropertyChanged}"/>-->
 
-                            <Button Content="Zapisz zmiany" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" Padding="5" />
+                            <Button Content="Zapisz status" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" Padding="5" Click="SaveIssueUser" />
                             <!--Command="commands:UpdateCommand.Update"/>-->
-                            <Button Content="Usuń zadanie" Grid.Row="6" Grid.ColumnSpan="2" Margin="5" Padding="5"/>
-                            <!--Command="commands:DeleteCommand.Delete"/>-->
                         </Grid>
                     </Grid>
 

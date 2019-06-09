@@ -73,5 +73,10 @@ namespace RepositoryLayer.Repositories
                 throw new Exception();
             }
         }
+
+        public List<Status> GetAllStatuses()
+        {
+            return db.Statuses.ToList();
+        }
     }
 }
