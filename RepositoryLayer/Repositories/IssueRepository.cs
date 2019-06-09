@@ -79,6 +79,23 @@ namespace RepositoryLayer.Repositories
             return db.Statuses.ToList();
         }
 
+        public Status GetStatus(int? id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException("Null argument");
+
+            }
+            try
+            {
+                return db.Statuses.FirstOrDefault(a => a.StatusID == id);
+            }
+            catch (Exception e)
+            {
+                throw new Exception();
+            }
+        }
+
         public Issue Get(int? id)
         {
             if (id == null)

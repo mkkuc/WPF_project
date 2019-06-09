@@ -42,14 +42,14 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Content="Imię:" Margin="0,5,5,0" Grid.Row="0" Grid.Column="0"/>
-                        <TextBox Name="NameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="0" Grid.Column="1"/>
+                        <TextBox Name="NameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="0" Grid.Column="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <Label Content="Nazwisko:" Margin="0,5,5,0" Grid.Row="1" Grid.Column="0"/>
-                        <TextBox Name="LastnameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1"/>
+                        <TextBox Name="LastnameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Surname, UpdateSourceTrigger=PropertyChanged}"/>
 
 
                         <Label Content="Adres e-mail:" Margin="0,5,5,0" Grid.Row="2" Grid.Column="0"/>
-                        <TextBox Name="EmailTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1"/>
+                        <TextBox Name="EmailTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Button Content="Zapisz zmiany" Margin="200,6,200,9" Grid.Row="3" Grid.Column="1" Click="SaveChangesInProfile"/>
                         <Button Content="Zmień hasło" Margin="200,6,200,9" Grid.Row="4" Grid.Column="1" Click="ChangePass"/>
