@@ -148,6 +148,7 @@ namespace Jira.Views.NormalUser
             issueToChange.Status = newStatus;
             issueToChange.StatusID = newStatus.StatusID;
             issueRepository.Edit(issueToChange);
+            MessageBox.Show("Zaktualizowano status zadania.", "Status zadania", MessageBoxButton.OK, MessageBoxImage.Information);
             //NormalUser.MainPanel window = new NormalUser.MainPanel(user);
             //Close();
             //window.Show();
@@ -171,6 +172,7 @@ namespace Jira.Views.NormalUser
                 //    GroupID = GroupToSendRequest.GroupID
                 //};
                 queueRepository.Add(user.AccountID, GroupToSendRequest.GroupID);
+                MessageBox.Show("Wysłano prośbę o przyjęcie do grupy.", "Prośba o przyjęcie do grupy", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
