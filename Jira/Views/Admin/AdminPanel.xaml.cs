@@ -353,6 +353,10 @@ namespace Jira.Views.Admin
                 }
                 listOfUsers.ItemsSource = usersList;
                 listOfUsers.Items.Refresh();
+
+                notAssignedList = accountRepository.GetNotAssigned();
+                listOfNotAssigned.ItemsSource = notAssignedList;
+                listOfNotAssigned.Items.Refresh();
                 MessageBox.Show("Konto zostało zaktualizowane.", "Aktualizacja konta", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
