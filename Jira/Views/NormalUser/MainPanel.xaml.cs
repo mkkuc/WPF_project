@@ -67,6 +67,7 @@ namespace Jira.Views.NormalUser
 
             RefreshStatusComboBox();
             UserMenu.DataContext = user;
+
         }
 
         private void RefreshStatusComboBox()
@@ -162,14 +163,14 @@ namespace Jira.Views.NormalUser
             if (GroupToSendRequest != null)
             {
                 //Queue queue = queueRepository.Create(GroupToSendRequest.GroupID, GroupToSendRequest, user.AccountID, user);
-                Queue queue = new Queue
-                {
-                    Account = user,
-                    AccountID = user.AccountID,
-                    Group = GroupToSendRequest,
-                    GroupID = GroupToSendRequest.GroupID
-                };
-                queueRepository.Add(queue);
+                //Queue queue = new Queue
+                //{
+                //    Account = user,
+                //    AccountID = user.AccountID,
+                //    Group = GroupToSendRequest,
+                //    GroupID = GroupToSendRequest.GroupID
+                //};
+                queueRepository.Add(user.AccountID, GroupToSendRequest.GroupID);
             }
         }
 

@@ -14,11 +14,17 @@ namespace RepositoryLayer.Repositories
     {
         private DatabaseContext db = new DatabaseContext();
 
-        public void Add(Queue queue)
+        public void Add(int AccountID, int GroupID)
         {
             try
             {
+                Queue queue = new Queue
+                {
+                    AccountID = AccountID,
+                    GroupID = GroupID
+                };
                 db.Queues.Add(queue);
+
                 db.SaveChanges();
             }
             catch (Exception)
@@ -26,6 +32,20 @@ namespace RepositoryLayer.Repositories
                 throw new ArgumentNullException();
             }
         }
+
+        //public void Add(Queue queue)
+        //{
+        //    try
+        //    {
+        //        db.Queues.Add(queue);
+                
+        //        db.SaveChanges();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw new ArgumentNullException();
+        //    }
+        //}
 
         public Queue Create(int groupID, Group group, int accountID, Account account)
         {
