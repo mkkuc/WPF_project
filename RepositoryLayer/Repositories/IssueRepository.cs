@@ -40,7 +40,7 @@ namespace RepositoryLayer.Repositories
 
         public List<Issue> GetGroupIssues(int groupId)
         {
-            return db.Issues.Where(i => i.GroupID == groupId).ToList();
+            return db.Issues.Include(i => i.Assignee).Include(i => i.Priority).Include(i => i.Status).Where(i => i.GroupID == groupId).ToList();
         }
 
         public void Delete(int? id)

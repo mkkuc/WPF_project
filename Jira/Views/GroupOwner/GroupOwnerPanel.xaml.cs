@@ -1,4 +1,5 @@
 ﻿using DataTransferObjects.Models;
+using Jira.Models;
 using Jira.Views.Common;
 using Jira.Views.NotLogIn;
 using RepositoryLayer.Repositories;
@@ -29,9 +30,8 @@ namespace Jira.Views.GroupOwner
         AccountRepository accountRepository = new AccountRepository();
         GroupRepository groupRepository = new GroupRepository();
         IssueRepository issueRepository = new IssueRepository();
-        List<Account> usersList;
         List<Account> membersList;
-        List<Issue> tasksList;
+        List<IssueDetailsVM> tasksList;
         List<Status> statuses;
         List<Priority> priorities;
         public GroupOwnerPanel(Account account)
@@ -44,40 +44,99 @@ namespace Jira.Views.GroupOwner
             membersList = groupRepository.GetUsersFromGroup(group.GroupID);
             OwnerMenu.DataContext = groupOwner;
             EditProfile.DataContext = groupOwner;
+            tasksList = new List<IssueDetailsVM>();
 
-            tasksList = issueRepository.GetGroupIssues(group.GroupID);
+            foreach (var task in issueRepository.GetGroupIssues(group.GroupID))
+            {
+                tasksList.Add(new IssueDetailsVM
+                {
+                    IssueID = task.IssueID,
+                    Title = task.Title,
+                    Description = task.Description,
+                    Assignee = task.Assignee.Name + ' ' + task.Assignee.Surname,
+                    PriorityName = task.Priority.Name,
+                    StatusName = task.Status.Name
+                });
+            }
             listOfTasks.ItemsSource = tasksList;
-            RefreshStatusComboBox();
+            RefreshGroupOwner();
 
         }
 
-        private void RefreshStatusComboBox()
+        private void RefreshGroupOwner()
         {
             listOfTasks.ItemsSource = tasksList;
 
             CurrentStatus.ItemsSource = statuses;
             CurrentStatus.DisplayMemberPath = "Name";
             CurrentStatus.SelectedValuePath = ".";
+            CurrentStatus.SelectedIndex = 0;
 
             CurrentPriority.ItemsSource = priorities;
             CurrentPriority.DisplayMemberPath = "Name";
             CurrentPriority.SelectedValuePath = ".";
+            CurrentPriority.SelectedIndex = 0;
 
             CurrentAssignee.ItemsSource = membersList;
-            CurrentAssignee.DisplayMemberPath = "Name";
+            CurrentAssignee.DisplayMemberPath = "Surname";
             CurrentAssignee.SelectedValuePath = ".";
+            CurrentAssignee.SelectedIndex = 0;
+
+            NewAssignee.ItemsSource = membersList;
+            NewAssignee.DisplayMemberPath = "Surname";
+            NewAssignee.SelectedValuePath = ".";
+            NewAssignee.SelectedIndex = 0;
+
+            NewPriority.ItemsSource = priorities;
+            NewPriority.DisplayMemberPath = "Name";
+            NewPriority.SelectedValuePath = ".";
+            NewPriority.SelectedIndex = 0;
+
+            group = groupRepository.GetByUser(groupOwner);
+            statuses = issueRepository.GetAllStatuses();
+            priorities = issueRepository.GetAllPriorities();
+            membersList = groupRepository.GetUsersFromGroup(group.GroupID);
+            OwnerMenu.DataContext = groupOwner;
+            EditProfile.DataContext = groupOwner;
+            tasksList = new List<IssueDetailsVM>();
+
+            foreach (var task in issueRepository.GetGroupIssues(group.GroupID))
+            {
+                tasksList.Add(new IssueDetailsVM
+                {
+                    IssueID = task.IssueID,
+                    Title = task.Title,
+                    Description = task.Description,
+                    Assignee = task.Assignee.Name + ' ' + task.Assignee.Surname,
+                    PriorityName = task.Priority.Name,
+                    StatusName = task.Status.Name
+                });
+            }
+            listOfTasks.ItemsSource = tasksList;
+
         }
 
-        private void SelectedTask(object sender, MouseButtonEventArgs e)
+        private void AddNewIssue(object sender, EventArgs e)
         {
-            int i = 0;
-            while (listOfTasks.SelectedIndex != i)
+
+            var newPriority = (Priority)NewPriority.SelectedValue;
+            var newAssignee = (Account)NewAssignee.SelectedValue;
+
+            var newIssue = new Issue
             {
-                i++;
-            }
-            //usersInGroupList = groupList[i].Accounts.ToList();
-            //listOfUsersInGroup.ItemsSource = usersInGroupList;
-            //listOfUsersInGroup.Items.Refresh();
+                GroupID = group.GroupID,
+                AssigneeID = newAssignee.AccountID,
+                Description = NewDescription.Text,
+                Title = NewTitle.Text,
+                PriorityID = newPriority.PriorityID,
+                StatusID = 1,
+            };
+
+            issueRepository.Add(newIssue);
+            RefreshGroupOwner();
+            NewTitle.Text = "";
+            NewDescription.Text = "";
+            MessageBox.Show("Pomyślnie dodano zadanie", "Dodawanie zadania", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void DeleteFromIssueList(object sender, ExecutedRoutedEventArgs e)
@@ -92,7 +151,7 @@ namespace Jira.Views.GroupOwner
                     i++;
                 }
 
-                Issue issueToDelete = tasksList[i];
+                Issue issueToDelete = issueRepository.Get(tasksList[i].IssueID);
                 issueRepository.Delete(issueToDelete.IssueID);
 
                 tasksList.RemoveAt(listOfTasks.SelectedIndex);
@@ -111,7 +170,7 @@ namespace Jira.Views.GroupOwner
 
         private void UpdateIssueOnList(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz zaktulizować wybrane zadanie? Zmiany będą nieodwracalne.", "Usuwanie zadania", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz zaktulizować wybrane zadanie?", "Aktualizacja zadania", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 int i = 0;
@@ -137,9 +196,22 @@ namespace Jira.Views.GroupOwner
 
                 issueRepository.Edit(taskToUpdate);
 
-                tasksList = groupRepository.GetIssues(group.GroupID);
-                Issue currentIssue = issueRepository.Get(taskToUpdate.IssueID);
-                tasksList.Remove(currentIssue);
+                tasksList.Clear();
+                foreach (var task in issueRepository.GetGroupIssues(group.GroupID))
+                {
+                    tasksList.Add(new IssueDetailsVM
+                    {
+                        IssueID = task.IssueID,
+                        Title = task.Title,
+                        Description = task.Description,
+                        Assignee = task.Assignee.Name + ' ' + task.Assignee.Surname,
+                        PriorityName = task.Priority.Name,
+                        StatusName = task.Status.Name
+                    });
+                }
+
+                //Issue currentIssue = issueRepository.Get(taskToUpdate.IssueID);
+                //tasksList.Remove(currentIssue);
                 
                 
                

@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Jira.Views.GroupOwner"
       xmlns:commands="clr-namespace:Jira.Commands"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="800"
       Title="GroupOwnerPanel">
     <Window.CommandBindings>
         <CommandBinding Command="commands:DeleteIssueFromListCommand.Delete" CanExecute="AccessToDeleteIssueFromList" Executed="DeleteFromIssueList" />
@@ -122,6 +122,9 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <Label Grid.Column="0" VerticalAlignment="Center">
                                     <Label.Content>
@@ -135,29 +138,47 @@
                                 </Label>
                                 <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox IsEnabled="false" Grid.Column="1" Grid.Row="2" Margin="5" Padding="3" Text="{Binding Path=Assignee, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox IsEnabled="false" Grid.Column="1" Grid.Row="3" Margin="5" Padding="3" Text="{Binding Path=PriorityName, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox IsEnabled="false" Grid.Column="1" Grid.Row="4" Margin="5" Padding="3" Text="{Binding Path=StatusName, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Label Grid.Row="5" VerticalAlignment="Center">
+                                    <Label.Content>
+                                        <AccessText TextWrapping="Wrap" Text="Zmień użytkownika"/>
+                                    </Label.Content>
+                                </Label>
+                                <ComboBox Name ="CurrentAssignee" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="5"/>
+                                <Label Grid.Row="6" VerticalAlignment="Center">
+                                    <Label.Content>
+                                        <AccessText TextWrapping="Wrap" Text="Zmień priorytet"/>
+                                    </Label.Content>
+                                </Label>
+                                <ComboBox Name ="CurrentPriority" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="6"/>
+                                <Label Grid.Row="7" VerticalAlignment="Center">
+                                    <Label.Content>
+                                        <AccessText TextWrapping="Wrap" Text="Zmień status"/>
+                                    </Label.Content>
+                                </Label>
                                 <Label Grid.Row="2" VerticalAlignment="Center">
                                     <Label.Content>
                                         <AccessText TextWrapping="Wrap" Text="Przypisany użytkownik"/>
                                     </Label.Content>
                                 </Label>
-                                <ComboBox Name ="CurrentAssignee" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2"/>
                                 <Label Grid.Row="3" VerticalAlignment="Center">
                                     <Label.Content>
                                         <AccessText TextWrapping="Wrap" Text="Priorytet"/>
                                     </Label.Content>
                                 </Label>
-                                <ComboBox Name ="CurrentPriority" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3"/>
                                 <Label Grid.Row="4" VerticalAlignment="Center">
                                     <Label.Content>
                                         <AccessText TextWrapping="Wrap" Text="Status"/>
                                     </Label.Content>
                                 </Label>
-                                <ComboBox Name ="CurrentStatus" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="4"/>
+                                <ComboBox Name ="CurrentStatus" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="7"/>
                                 <!--Checked="{Binding Path=IsConfirmed, UpdateSourceTrigger=PropertyChanged}"/>-->
 
-                                <Button Content="Zapisz zmiany" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" Padding="5" Command="commands:UpdateIssueOnListCommand.Update"/>
+                                <Button Content="Zapisz zmiany" Grid.Row="8" Grid.ColumnSpan="2" Margin="5" Padding="5" Command="commands:UpdateIssueOnListCommand.Update"/>
                                 <!--Command="commands:UpdateCommand.Update"/>-->
-                                <Button Content="Usuń zadanie" Grid.Row="6" Grid.ColumnSpan="2" Margin="5" Padding="5" Command="commands:DeleteIssueFromListCommand.Delete"/>
+                                <Button Content="Usuń zadanie" Grid.Row="9" Grid.ColumnSpan="2" Margin="5" Padding="5" Command="commands:DeleteIssueFromListCommand.Delete"/>
                                 <!--Command="commands:DeleteCommand.Delete"/>-->
                             </Grid>
                         </GroupBox>
@@ -242,29 +263,29 @@
                                     <AccessText TextWrapping="Wrap" Text="Nazwa"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
+                            <TextBox Name="NewTitle" Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
 
                             <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="0,11">
                                 <Label.Content>
                                     <AccessText TextWrapping="Wrap" Text="Opis"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
+                            <TextBox Name="NewDescription" Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2"/>
 
                             <Label Grid.Column="0"  Grid.Row="2" VerticalAlignment="Center" Margin="0,11">
                                 <Label.Content>
                                     <AccessText TextWrapping="Wrap" Text="Przypisany użytkownik"/>
                                 </Label.Content>
                             </Label>
-                            <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2"/>
+                            <ComboBox Name="NewAssignee" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2"/>
 
                             <Label Grid.Row="3" VerticalAlignment="Center" Margin="0,11">
                                 <Label.Content>
                                     <AccessText TextWrapping="Wrap" Text="Priorytet"/>
                                 </Label.Content>
                             </Label>
-                            <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3"/>
-                            <Button Content="Dodaj zadanie" Grid.Row="4" Margin="139,6,139,9" Padding="5" Grid.Column="1" />
+                            <ComboBox Name="NewPriority" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3"/>
+                            <Button Click="AddNewIssue" Content="Dodaj zadanie" Grid.Row="4" Margin="139,6,139,9" Padding="5" Grid.Column="1" />
 
                         </Grid>
                     </GroupBox>
