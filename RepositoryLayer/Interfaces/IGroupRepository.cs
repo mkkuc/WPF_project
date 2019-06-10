@@ -11,7 +11,7 @@ namespace RepositoryLayer.Interfaces
     {
         Group Create(string name, int groupOwnerID, ICollection<Account> accounts, ICollection<Queue> queues, ICollection<Issue> issues);
 
-        void Add(Group group);
+        void Add(string name, int groupOwnerID, ICollection<Account> accounts, ICollection<Queue> queues, ICollection<Issue> issues);
         void Edit(Group group);
         void Delete(int? id);
         Group Get(int? id);

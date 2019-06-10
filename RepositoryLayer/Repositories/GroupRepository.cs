@@ -14,10 +14,18 @@ namespace RepositoryLayer.Repositories
     {
         private DatabaseContext db = new DatabaseContext();
 
-        public void Add(Group group)
+        public void Add(string name, int groupOwnerID, ICollection<Account> accounts, ICollection<Queue> queues, ICollection<Issue> issues)
         {
             try
             {
+                Group group = new Group
+                {
+                    Name = name,
+                    GroupOwnerID = groupOwnerID,
+                    Accounts = accounts,
+                    Queues = queues,
+                    Issues = issues,
+                };
                 db.Groups.Add(group);
                 db.SaveChanges();
             }
