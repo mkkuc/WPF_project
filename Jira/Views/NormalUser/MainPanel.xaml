@@ -119,10 +119,10 @@
                             <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Grid.Row="2" VerticalAlignment="Center">
                                 <Label.Content>
-                                    <AccessText TextWrapping="Wrap" Text="Przypisany użytkownik"/>
+                                    <AccessText TextWrapping="Wrap" Text="Przypisany"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox IsEnabled="False" Name="AssigneeTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2" Text="{Binding Path=Assignee.Login, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox IsEnabled="False" Name="AssigneeTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2" Text="{Binding Path=., UpdateSourceTrigger=PropertyChanged}" />
                             <Label Grid.Row="3" VerticalAlignment="Center">
                                 <Label.Content>
                                     <AccessText TextWrapping="Wrap" Text="Priorytet"/>
@@ -165,14 +165,14 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ListView Grid.Column="2" Grid.RowSpan="4" Name="GroupMembersListView">
+                        <Label Visibility="{Binding IsGroupContributor, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="2" Grid.Row="0" Content="Członkowie grupy" Margin="3,3,3,3" />
+                        <ListView Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Name="GroupMembersListView">
                             <ListView.View>
                                 <GridView AllowsColumnReorder="True">
                                     <GridView.Columns>
@@ -188,8 +188,7 @@
                         <Label Content="Nazwa:" Margin="0,5,5,0" Grid.Row="1" Grid.Column="0"/>
                         <TextBlock Name="GroupNameTextBox" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
                         <Label Content="Właściciel:" Margin="0,5,5,0" Grid.Row="2" Grid.Column="0"/>
-                        <TextBlock Name="GroupOwnerNameTextBox" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock Name="GroupOwnerSurnameTextBox" Margin="0,5,5,0" Grid.Row="3" Grid.Column="1" Text="{Binding Path=Surname, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Name="GroupOwnerNameTextBox" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1" Text="{Binding Path=., UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                     
                     <Label Visibility="{Binding IsNotGroupContributor, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="0" Grid.Row="0" Content="Dostępne grupy:" Margin="3,3,3,3" />

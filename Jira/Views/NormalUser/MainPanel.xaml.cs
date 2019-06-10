@@ -51,8 +51,7 @@ namespace Jira.Views.NormalUser
                 GroupMembersListView.ItemsSource = userGroup.Accounts;
                 GroupDetailsAll.DataContext = userGroup;
                 Account GroupOwner = accountRepository.Get(userGroup.GroupOwnerID);
-                GroupOwnerNameTextBox.DataContext = GroupOwner;
-                GroupOwnerSurnameTextBox.DataContext = GroupOwner;
+                GroupOwnerNameTextBox.DataContext = GroupOwner.Name + " " + GroupOwner.Surname;
             }
             else
             {
@@ -136,6 +135,7 @@ namespace Jira.Views.NormalUser
             SelectedItemView.DataContext = selectedIssue;
             //StatusComboBox.SelectedItem = StatusComboBox.Items.IndexOf(selectedIssue.StatusID);
             StatusComboBox.SelectedValue = selectedIssue.Status;
+            AssigneeTextBox.DataContext = selectedIssue.Assignee.Name + " " + selectedIssue.Assignee.Surname;
         }
 
         private void SaveIssueUser(object sender, RoutedEventArgs e)
@@ -148,6 +148,7 @@ namespace Jira.Views.NormalUser
             issueToChange.Status = newStatus;
             issueToChange.StatusID = newStatus.StatusID;
             issueRepository.Edit(issueToChange);
+            MessageBox.Show("Zaktualizowano status zadania.", "Status zadania", MessageBoxButton.OK, MessageBoxImage.Information);
             //NormalUser.MainPanel window = new NormalUser.MainPanel(user);
             //Close();
             //window.Show();
@@ -171,6 +172,7 @@ namespace Jira.Views.NormalUser
                 //    GroupID = GroupToSendRequest.GroupID
                 //};
                 queueRepository.Add(user.AccountID, GroupToSendRequest.GroupID);
+                MessageBox.Show("Wysłano prośbę o przyjęcie do grupy.", "Prośba o przyjęcie do grupy", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

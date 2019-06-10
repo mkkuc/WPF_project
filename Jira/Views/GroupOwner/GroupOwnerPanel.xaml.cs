@@ -1,4 +1,5 @@
 ﻿using DataTransferObjects.Models;
+using Jira.Models;
 using Jira.Views.Common;
 using Jira.Views.NotLogIn;
 using RepositoryLayer.Repositories;
@@ -29,31 +30,282 @@ namespace Jira.Views.GroupOwner
         AccountRepository accountRepository = new AccountRepository();
         GroupRepository groupRepository = new GroupRepository();
         IssueRepository issueRepository = new IssueRepository();
-        List<Account> usersList;
         List<Account> membersList;
-        List<Issue> tasksList;
+        List<Account> unacceptedList;
+        List<IssueDetailsVM> tasksList;
+        List<Status> statuses;
+        List<Priority> priorities;
         public GroupOwnerPanel(Account account)
         {
             groupOwner = account;
             InitializeComponent();
             group = groupRepository.GetByUser(groupOwner);
+            statuses = issueRepository.GetAllStatuses();
+            priorities = issueRepository.GetAllPriorities();
+            membersList = groupRepository.GetUsersFromGroup(group.GroupID);
+            unacceptedList = groupRepository.GetUnacceptedMembers(group.GroupID);
+
+            listOfMembers.ItemsSource = membersList;
+            listOfUnaccepted.ItemsSource = unacceptedList;
+
             OwnerMenu.DataContext = groupOwner;
             EditProfile.DataContext = groupOwner;
+            tasksList = new List<IssueDetailsVM>();
 
-            tasksList = issueRepository.GetGroupIssues(group.GroupID);
+            foreach (var task in issueRepository.GetGroupIssues(group.GroupID))
+            {
+                tasksList.Add(new IssueDetailsVM
+                {
+                    IssueID = task.IssueID,
+                    Title = task.Title,
+                    Description = task.Description,
+                    Assignee = task.Assignee.Name + ' ' + task.Assignee.Surname,
+                    PriorityName = task.Priority.Name,
+                    StatusName = task.Status.Name
+                });
+            }
+            listOfTasks.ItemsSource = tasksList;
+            RefreshGroupOwner();
+
+        }
+
+        private void RefreshGroupOwner()
+        {
+            group = groupRepository.GetByUser(groupOwner);
+            statuses = issueRepository.GetAllStatuses();
+            priorities = issueRepository.GetAllPriorities();
+            membersList = groupRepository.GetUsersFromGroup(group.GroupID);
+            unacceptedList = groupRepository.GetUnacceptedMembers(group.GroupID);
+            listOfTasks.ItemsSource = tasksList;
+
+            CurrentStatus.ItemsSource = statuses;
+            CurrentStatus.DisplayMemberPath = "Name";
+            CurrentStatus.SelectedValuePath = ".";
+            CurrentStatus.SelectedIndex = 0;
+
+            CurrentPriority.ItemsSource = priorities;
+            CurrentPriority.DisplayMemberPath = "Name";
+            CurrentPriority.SelectedValuePath = ".";
+            CurrentPriority.SelectedIndex = 0;
+
+            CurrentAssignee.ItemsSource = membersList;
+            CurrentAssignee.DisplayMemberPath = "Surname";
+            CurrentAssignee.SelectedValuePath = ".";
+            CurrentAssignee.SelectedIndex = 0;
+
+            NewAssignee.ItemsSource = membersList;
+            NewAssignee.DisplayMemberPath = "Surname";
+            NewAssignee.SelectedValuePath = ".";
+            NewAssignee.SelectedIndex = 0;
+
+            NewPriority.ItemsSource = priorities;
+            NewPriority.DisplayMemberPath = "Name";
+            NewPriority.SelectedValuePath = ".";
+            NewPriority.SelectedIndex = 0;
+
+            group = groupRepository.GetByUser(groupOwner);
+            statuses = issueRepository.GetAllStatuses();
+            priorities = issueRepository.GetAllPriorities();
+            membersList = groupRepository.GetUsersFromGroup(group.GroupID);
+            unacceptedList = groupRepository.GetUnacceptedMembers(group.GroupID);
+
+            listOfMembers.ItemsSource = membersList;
+            listOfUnaccepted.ItemsSource = unacceptedList;
+
+            OwnerMenu.DataContext = groupOwner;
+            EditProfile.DataContext = groupOwner;
+            tasksList = new List<IssueDetailsVM>();
+
+            foreach (var task in issueRepository.GetGroupIssues(group.GroupID))
+            {
+                tasksList.Add(new IssueDetailsVM
+                {
+                    IssueID = task.IssueID,
+                    Title = task.Title,
+                    Description = task.Description,
+                    Assignee = task.Assignee.Name + ' ' + task.Assignee.Surname,
+                    PriorityName = task.Priority.Name,
+                    StatusName = task.Status.Name
+                });
+            }
             listOfTasks.ItemsSource = tasksList;
 
         }
-        private void SelectedTask(object sender, MouseButtonEventArgs e)
+
+        private void AcceptUserRequest(object sender, EventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz zaakceptować wybranego użytkownika do grupy?", "Akceptowanie", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                var userToDeleteFromGroup = (Account)listOfUnaccepted.SelectedItem;
+                groupRepository.AcceptUserToRequest(userToDeleteFromGroup.AccountID, group.GroupID);
+                RefreshGroupOwner();
+
+                MessageBox.Show("Użytkownik został zaakceptowany do grupy", "Akceptowanie zakończone", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void DeleteUserFromGroup(object sender, EventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz usunąć wybranego użytkownika z grupy?", "Usuwanie", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                var userToDeleteFromGroup = (Account)listOfMembers.SelectedItem;
+                groupRepository.DeleteUserFromGroup(userToDeleteFromGroup.AccountID);
+                RefreshGroupOwner();
+
+                MessageBox.Show("Użytkownik został usunięty z grupy", "Usuwanie użytkownika zakończone", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void AddNewIssue(object sender, EventArgs e)
+        {
+
+            var newPriority = (Priority)NewPriority.SelectedValue;
+            var newAssignee = (Account)NewAssignee.SelectedValue;
+            if (newPriority == null)
+            {
+                MessageBox.Show("Należy wybrać priorytet zadania.", "Priorytet", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (newAssignee == null)
+            {
+                MessageBox.Show("Należy wybrać osobę przypisaną do zadania.", "Przypisanie", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (NewDescription.Text.Length < 3 || NewDescription.Text == null)
+            {
+                MessageBox.Show("Opis musi mieć przynajmniej 3 znaki.", "Opis", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (NewTitle.Text.Length < 3 || NewTitle.Text == null)
+            {
+                MessageBox.Show("Tytuł musi mieć przynajmniej 3 znaki.", "Tytuł", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                var newIssue = new Issue
+                {
+                    GroupID = group.GroupID,
+                    AssigneeID = newAssignee.AccountID,
+                    Description = NewDescription.Text,
+                    Title = NewTitle.Text,
+                    PriorityID = newPriority.PriorityID,
+                    StatusID = 1,
+                };
+
+                issueRepository.Add(newIssue);
+                RefreshGroupOwner();
+                NewTitle.Text = "";
+                NewDescription.Text = "";
+                MessageBox.Show("Pomyślnie dodano zadanie", "Dodawanie zadania", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            
+        }
+
+        private void DeleteFromIssueList(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz usunąć wybrane zadanie? Zmiany będą nieodwracalne.", "Usuwanie zadania", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                int i = 0;
+
+                while (listOfTasks.SelectedIndex != i)
+                {
+                    i++;
+                }
+
+                Issue issueToDelete = issueRepository.Get(tasksList[i].IssueID);
+                issueRepository.Delete(issueToDelete.IssueID);
+
+                tasksList.RemoveAt(listOfTasks.SelectedIndex);
+                listOfTasks.Items.Refresh();
+                MessageBox.Show("Zadanie zostało usunięte.", "Usuwanie zadania zakończone", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void AccessToDeleteIssueFromList(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (listOfTasks.SelectedItem == null)
+                e.CanExecute = false;
+            else
+                e.CanExecute = true;
+        }
+
+        private void UpdateIssueOnList(object sender, ExecutedRoutedEventArgs e)
         {
             int i = 0;
+
             while (listOfTasks.SelectedIndex != i)
             {
                 i++;
             }
-            //usersInGroupList = groupList[i].Accounts.ToList();
-            //listOfUsersInGroup.ItemsSource = usersInGroupList;
-            //listOfUsersInGroup.Items.Refresh();
+            if (tasksList[i].Description.Length < 3 || tasksList[i].Description == null)
+            {
+                MessageBox.Show("Opis musi mieć przynajmniej 3 znaki.", "Opis", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (tasksList[i].Title.Length < 3 || tasksList[i].Title == null)
+            {
+                MessageBox.Show("Tytuł musi mieć przynajmniej 3 znaki.", "Tytuł", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz zaktulizować wybrane zadanie?", "Aktualizacja zadania", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+
+
+                    Issue taskToUpdate = issueRepository.Get(tasksList[i].IssueID);
+                    var status = (Status)CurrentStatus.SelectedValue;
+                    var priority = (Priority)CurrentPriority.SelectedValue;
+                    var assignee = (Account)CurrentAssignee.SelectedValue;
+
+                    //taskToUpdate.Status = issueRepository.GetStatus(status.StatusID);
+                    taskToUpdate.StatusID = status.StatusID;
+
+                    //taskToUpdate.Priority = issueRepository.GetPriority(priority.PriorityID);
+                    taskToUpdate.PriorityID = priority.PriorityID;
+
+                    //taskToUpdate.Assignee = accountRepository.Get(assignee.AccountID);
+                    taskToUpdate.AssigneeID = assignee.AccountID;
+
+                    taskToUpdate.Description = tasksList[i].Description;
+                    taskToUpdate.Title = tasksList[i].Title;
+
+                    issueRepository.Edit(taskToUpdate);
+
+                    tasksList.Clear();
+                    foreach (var task in issueRepository.GetGroupIssues(group.GroupID))
+                    {
+                        tasksList.Add(new IssueDetailsVM
+                        {
+                            IssueID = task.IssueID,
+                            Title = task.Title,
+                            Description = task.Description,
+                            Assignee = task.Assignee.Name + ' ' + task.Assignee.Surname,
+                            PriorityName = task.Priority.Name,
+                            StatusName = task.Status.Name
+                        });
+                    }
+
+                    //Issue currentIssue = issueRepository.Get(taskToUpdate.IssueID);
+                    //tasksList.Remove(currentIssue);
+
+
+
+                    listOfTasks.ItemsSource = tasksList;
+                    listOfTasks.Items.Refresh();
+                    MessageBox.Show("Zadanie zostało zaktualizowane.", "Aktualizacja zadania", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            
+                
+                
+            }
+        }
+
+        private void AccessToUpdateIssueOnList(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (listOfTasks.SelectedItem == null)
+                e.CanExecute = false;
+            else
+                e.CanExecute = true;
         }
 
         public GroupOwnerPanel()
