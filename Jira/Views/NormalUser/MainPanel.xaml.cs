@@ -27,6 +27,7 @@ namespace Jira.Views.NormalUser
         AccountRepository accountRepository = new AccountRepository();
         GroupRepository groupRepository = new GroupRepository();
         IssueRepository issueRepository = new IssueRepository();
+        QueueRepository queueRepository = new QueueRepository();
         public List<Issue> issuesList;
         public List<Group> groupsList { get; set; }
         public Group userGroup;
@@ -52,7 +53,6 @@ namespace Jira.Views.NormalUser
                 Account GroupOwner = accountRepository.Get(userGroup.GroupOwnerID);
                 GroupOwnerNameTextBox.DataContext = GroupOwner;
                 GroupOwnerSurnameTextBox.DataContext = GroupOwner;
-
             }
             else
             {
@@ -152,9 +152,26 @@ namespace Jira.Views.NormalUser
             //window.Show();
         }
 
+
         //Groups-------------------------------------------------
 
+        private void SendAddToGroupRequest(object sender, RoutedEventArgs e)
+        {
 
+            Group GroupToSendRequest = AvailableGroupsListView.SelectedItem as Group;
+            if (GroupToSendRequest != null)
+            {
+                //Queue queue = queueRepository.Create(GroupToSendRequest.GroupID, GroupToSendRequest, user.AccountID, user);
+                Queue queue = new Queue
+                {
+                    Account = user,
+                    AccountID = user.AccountID,
+                    Group = GroupToSendRequest,
+                    GroupID = GroupToSendRequest.GroupID
+                };
+                queueRepository.Add(queue);
+            }
+        }
 
     }
 }
