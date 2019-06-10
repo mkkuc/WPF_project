@@ -47,6 +47,12 @@ namespace Jira.Views.NormalUser
             if (userGroup != null)
             {
                 IsGroupContributor = true;
+                GroupMembersListView.ItemsSource = userGroup.Accounts;
+                GroupDetailsAll.DataContext = userGroup;
+                Account GroupOwner = accountRepository.Get(userGroup.GroupOwnerID);
+                GroupOwnerNameTextBox.DataContext = GroupOwner;
+                GroupOwnerSurnameTextBox.DataContext = GroupOwner;
+
             }
             else
             {
@@ -147,6 +153,8 @@ namespace Jira.Views.NormalUser
         }
 
         //Groups-------------------------------------------------
+
+
 
     }
 }
