@@ -9,8 +9,8 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="GroupOwnerPanel">
     <Window.CommandBindings>
-        <!--<CommandBinding Command="commands:DeleteCommand.Delete" CanExecute="AccessToDelete" Executed="Delete" />
-        <CommandBinding Command="commands:UpdateCommand.Update" CanExecute="AccessToUpdate" Executed="Update" />-->
+        <CommandBinding Command="commands:DeleteIssueFromListCommand.Delete" CanExecute="AccessToDeleteIssueFromList" Executed="DeleteFromIssueList" />
+        <CommandBinding Command="commands:UpdateIssueOnListCommand.Update" CanExecute="AccessToUpdateIssueOnList" Executed="UpdateIssueOnList" />
     </Window.CommandBindings>
     <Window.Resources>
         <DataTemplate x:Key="TaskList">
@@ -133,31 +133,31 @@
                                         <AccessText TextWrapping="Wrap" Text="Opis"/>
                                     </Label.Content>
                                 </Label>
-                                <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"/>
-                                <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}"/>
                                 <Label Grid.Row="2" VerticalAlignment="Center">
                                     <Label.Content>
                                         <AccessText TextWrapping="Wrap" Text="Przypisany użytkownik"/>
                                     </Label.Content>
                                 </Label>
-                                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2"/>
+                                <ComboBox Name ="CurrentAssignee" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2"/>
                                 <Label Grid.Row="3" VerticalAlignment="Center">
                                     <Label.Content>
                                         <AccessText TextWrapping="Wrap" Text="Priorytet"/>
                                     </Label.Content>
                                 </Label>
-                                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3"/>
+                                <ComboBox Name ="CurrentPriority" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3"/>
                                 <Label Grid.Row="4" VerticalAlignment="Center">
                                     <Label.Content>
                                         <AccessText TextWrapping="Wrap" Text="Status"/>
                                     </Label.Content>
                                 </Label>
-                                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="4"/>
+                                <ComboBox Name ="CurrentStatus" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="4"/>
                                 <!--Checked="{Binding Path=IsConfirmed, UpdateSourceTrigger=PropertyChanged}"/>-->
 
-                                <Button Content="Zapisz zmiany" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" Padding="5" />
+                                <Button Content="Zapisz zmiany" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" Padding="5" Command="commands:UpdateIssueOnListCommand.Update"/>
                                 <!--Command="commands:UpdateCommand.Update"/>-->
-                                <Button Content="Usuń zadanie" Grid.Row="6" Grid.ColumnSpan="2" Margin="5" Padding="5"/>
+                                <Button Content="Usuń zadanie" Grid.Row="6" Grid.ColumnSpan="2" Margin="5" Padding="5" Command="commands:DeleteIssueFromListCommand.Delete"/>
                                 <!--Command="commands:DeleteCommand.Delete"/>-->
                             </Grid>
                         </GroupBox>

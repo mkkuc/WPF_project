@@ -37,6 +37,7 @@ namespace Jira.Views.GroupOwner
             groupOwner = account;
             InitializeComponent();
             group = groupRepository.GetByUser(groupOwner);
+            membersList = groupRepository.GetUsersFromGroup(group.GroupID);
             OwnerMenu.DataContext = groupOwner;
             EditProfile.DataContext = groupOwner;
 
@@ -54,6 +55,70 @@ namespace Jira.Views.GroupOwner
             //usersInGroupList = groupList[i].Accounts.ToList();
             //listOfUsersInGroup.ItemsSource = usersInGroupList;
             //listOfUsersInGroup.Items.Refresh();
+        }
+
+        private void DeleteFromIssueList(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz usunąć wybrane zadanie? Zmiany będą nieodwracalne.", "Usuwanie zadania", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                int i = 0;
+
+                while (listOfTasks.SelectedIndex != i)
+                {
+                    i++;
+                }
+
+                Issue issueToDelete = tasksList[i];
+                issueRepository.Delete(issueToDelete.IssueID);
+
+                tasksList.RemoveAt(listOfTasks.SelectedIndex);
+                listOfTasks.Items.Refresh();
+                MessageBox.Show("Zadanie zostało usunięte.", "Usuwanie zadania zakończone", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void AccessToDeleteIssueFromList(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (listOfTasks.SelectedItem == null)
+                e.CanExecute = false;
+            else
+                e.CanExecute = true;
+        }
+
+        private void UpdateIssueOnList(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Czy na pewno chcesz zaktulizować wybrane zadanie? Zmiany będą nieodwracalne.", "Usuwanie zadania", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                int i = 0;
+
+                while (listOfTasks.SelectedIndex != i)
+                {
+                    i++;
+                }
+
+                Issue taskToUpdate = tasksList[i];
+                issueRepository.Edit(taskToUpdate);
+
+                tasksList = groupRepository.GetIssues(group.GroupID);
+                Issue currentIssue = issueRepository.Get(taskToUpdate.IssueID);
+                tasksList.Remove(currentIssue);
+                
+                
+               
+                listOfTasks.ItemsSource = tasksList;
+                listOfTasks.Items.Refresh();
+                MessageBox.Show("Zadanie zostało zaktualizowane.", "Aktualizacja zadania", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void AccessToUpdateIssueOnList(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (listOfTasks.SelectedItem == null)
+                e.CanExecute = false;
+            else
+                e.CanExecute = true;
         }
 
         public GroupOwnerPanel()
