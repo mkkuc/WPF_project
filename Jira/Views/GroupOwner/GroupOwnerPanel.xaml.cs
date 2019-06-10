@@ -71,6 +71,11 @@ namespace Jira.Views.GroupOwner
 
         private void RefreshGroupOwner()
         {
+            group = groupRepository.GetByUser(groupOwner);
+            statuses = issueRepository.GetAllStatuses();
+            priorities = issueRepository.GetAllPriorities();
+            membersList = groupRepository.GetUsersFromGroup(group.GroupID);
+            unacceptedList = groupRepository.GetUnacceptedMembers(group.GroupID);
             listOfTasks.ItemsSource = tasksList;
 
             CurrentStatus.ItemsSource = statuses;
