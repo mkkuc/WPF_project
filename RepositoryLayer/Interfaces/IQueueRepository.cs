@@ -11,7 +11,7 @@ namespace RepositoryLayer.Interfaces
     {
         Queue Create(int groupID, Group group, int accountID, Account account);
 
-        void Add(Queue queue);
+        void Add(int AccountID, int GroupID);
         void Edit(Queue queue);
         void Delete(int? id);
     }

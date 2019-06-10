@@ -27,6 +27,7 @@ namespace Jira.Views.NormalUser
         AccountRepository accountRepository = new AccountRepository();
         GroupRepository groupRepository = new GroupRepository();
         IssueRepository issueRepository = new IssueRepository();
+        QueueRepository queueRepository = new QueueRepository();
         public List<Issue> issuesList;
         public List<Group> groupsList { get; set; }
         public Group userGroup;
@@ -47,6 +48,11 @@ namespace Jira.Views.NormalUser
             if (userGroup != null)
             {
                 IsGroupContributor = true;
+                GroupMembersListView.ItemsSource = userGroup.Accounts;
+                GroupDetailsAll.DataContext = userGroup;
+                Account GroupOwner = accountRepository.Get(userGroup.GroupOwnerID);
+                GroupOwnerNameTextBox.DataContext = GroupOwner;
+                GroupOwnerSurnameTextBox.DataContext = GroupOwner;
             }
             else
             {
@@ -61,6 +67,7 @@ namespace Jira.Views.NormalUser
 
             RefreshStatusComboBox();
             UserMenu.DataContext = user;
+
         }
 
         private void RefreshStatusComboBox()
@@ -137,20 +144,35 @@ namespace Jira.Views.NormalUser
             IssuesListView.Items.Refresh();
             RefreshStatusComboBox();
             Issue issueToChange = issueRepository.Get(selectedIssue.IssueID);
-            issueToChange.Description = selectedIssue.Description;
-            issueToChange.Assignee = selectedIssue.Assignee;
-            issueToChange.AssigneeID = selectedIssue.AssigneeID;
-            issueToChange.Priority = selectedIssue.Priority;
-            issueToChange.PriorityID = selectedIssue.PriorityID;
-            issueToChange.Status = selectedIssue.Status;
-            issueToChange.StatusID = selectedIssue.StatusID;
+            Status newStatus = issueRepository.GetStatus(selectedIssue.Status.StatusID);
+            issueToChange.Status = newStatus;
+            issueToChange.StatusID = newStatus.StatusID;
             issueRepository.Edit(issueToChange);
             //NormalUser.MainPanel window = new NormalUser.MainPanel(user);
             //Close();
             //window.Show();
         }
 
+
         //Groups-------------------------------------------------
+
+        private void SendAddToGroupRequest(object sender, RoutedEventArgs e)
+        {
+
+            Group GroupToSendRequest = AvailableGroupsListView.SelectedItem as Group;
+            if (GroupToSendRequest != null)
+            {
+                //Queue queue = queueRepository.Create(GroupToSendRequest.GroupID, GroupToSendRequest, user.AccountID, user);
+                //Queue queue = new Queue
+                //{
+                //    Account = user,
+                //    AccountID = user.AccountID,
+                //    Group = GroupToSendRequest,
+                //    GroupID = GroupToSendRequest.GroupID
+                //};
+                queueRepository.Add(user.AccountID, GroupToSendRequest.GroupID);
+            }
+        }
 
     }
 }
