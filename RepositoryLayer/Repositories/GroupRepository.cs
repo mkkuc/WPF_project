@@ -15,24 +15,25 @@ namespace RepositoryLayer.Repositories
         private DatabaseContext db = new DatabaseContext();
 
         public void Add(string name, int groupOwnerID, ICollection<Account> accounts, ICollection<Queue> queues, ICollection<Issue> issues)
-        {
-            try
+        { 
+            
+            Group group = new Group
             {
-                Group group = new Group
-                {
-                    Name = name,
-                    GroupOwnerID = groupOwnerID,
-                    Accounts = accounts,
-                    Queues = queues,
-                    Issues = issues,
-                };
-                db.Groups.Add(group);
-                db.SaveChanges();
-            }
-            catch (Exception)
+                Name = name,
+                GroupOwnerID = groupOwnerID,
+                Queues = queues,
+                Issues = issues,
+            };
+
+            var accountsToAdd = new List<Account>();
+            foreach(var account in accounts)
             {
-                throw new ArgumentNullException();
+                accountsToAdd.Add(db.Accounts.Find(account.AccountID));
             }
+            group.Accounts = accountsToAdd;
+            db.Groups.Add(group);
+            db.SaveChanges();
+
         }
 
         public Group Create(string name, int groupOwnerID, ICollection<Account> accounts, ICollection<Queue> queues, ICollection<Issue> issues)

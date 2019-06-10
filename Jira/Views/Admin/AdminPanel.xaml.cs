@@ -224,20 +224,19 @@ namespace Jira.Views.Admin
             }        
             else
             {
-                ICollection<Account> list = assignedList;
-                List<Issue> issue = new List<Issue>();
-                ICollection<Issue> issues = issue;
-                List<Queue> queue = new List<Queue>();
-                ICollection<Queue> queues = queue;
+                
+
 
                 var newOwner = accountRepository.Get(owner.AccountID);
                 Role role = accountRepository.GetRole("GroupOwner");
                 newOwner.RoleID = role.RoleID;
                 newOwner.Role = role;
                 accountRepository.Edit(newOwner);
+                assignedList.Remove(assignedList.FirstOrDefault(a => a.AccountID == newOwner.AccountID));
+                assignedList.Add(newOwner);
 
                 //Group group = groupRepository.Create();
-                groupRepository.Add(GroupName.Text, owner.AccountID, list, queues, issues);
+                groupRepository.Add(GroupName.Text, owner.AccountID, assignedList, null, null);
                 MessageBox.Show("Grupa została założona!", "Tworzenie grupy", MessageBoxButton.OK);
 
                 assignedList = new List<Account>();
