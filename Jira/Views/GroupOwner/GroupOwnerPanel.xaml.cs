@@ -32,19 +32,42 @@ namespace Jira.Views.GroupOwner
         List<Account> usersList;
         List<Account> membersList;
         List<Issue> tasksList;
+        List<Status> statuses;
+        List<Priority> priorities;
         public GroupOwnerPanel(Account account)
         {
             groupOwner = account;
             InitializeComponent();
             group = groupRepository.GetByUser(groupOwner);
+            statuses = issueRepository.GetAllStatuses();
+            priorities = issueRepository.GetAllPriorities();
             membersList = groupRepository.GetUsersFromGroup(group.GroupID);
             OwnerMenu.DataContext = groupOwner;
             EditProfile.DataContext = groupOwner;
 
             tasksList = issueRepository.GetGroupIssues(group.GroupID);
             listOfTasks.ItemsSource = tasksList;
+            RefreshStatusComboBox();
 
         }
+
+        private void RefreshStatusComboBox()
+        {
+            listOfTasks.ItemsSource = tasksList;
+
+            CurrentStatus.ItemsSource = statuses;
+            CurrentStatus.DisplayMemberPath = "Name";
+            CurrentStatus.SelectedValuePath = ".";
+
+            CurrentPriority.ItemsSource = priorities;
+            CurrentPriority.DisplayMemberPath = "Name";
+            CurrentPriority.SelectedValuePath = ".";
+
+            CurrentAssignee.ItemsSource = membersList;
+            CurrentAssignee.DisplayMemberPath = "Name";
+            CurrentAssignee.SelectedValuePath = ".";
+        }
+
         private void SelectedTask(object sender, MouseButtonEventArgs e)
         {
             int i = 0;
@@ -98,7 +121,20 @@ namespace Jira.Views.GroupOwner
                     i++;
                 }
 
-                Issue taskToUpdate = tasksList[i];
+                Issue taskToUpdate = issueRepository.Get(tasksList[i].IssueID);
+                var status = (Status)CurrentStatus.SelectedValue;
+                var priority = (Priority)CurrentPriority.SelectedValue;
+                var assignee = (Account)CurrentAssignee.SelectedValue;
+
+                //taskToUpdate.Status = issueRepository.GetStatus(status.StatusID);
+                taskToUpdate.StatusID = status.StatusID;
+
+                //taskToUpdate.Priority = issueRepository.GetPriority(priority.PriorityID);
+                taskToUpdate.PriorityID = priority.PriorityID;
+
+                //taskToUpdate.Assignee = accountRepository.Get(assignee.AccountID);
+                taskToUpdate.AssigneeID = assignee.AccountID;
+
                 issueRepository.Edit(taskToUpdate);
 
                 tasksList = groupRepository.GetIssues(group.GroupID);
