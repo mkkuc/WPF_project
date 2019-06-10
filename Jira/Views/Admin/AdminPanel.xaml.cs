@@ -139,6 +139,9 @@ namespace Jira.Views.Admin
 
             listOfUsersInGroup.ItemsSource = usersInGroupList;
             listOfUsersInGroup.Items.Refresh();
+
+            notAssignedList = accountRepository.GetNotAssigned();
+            listOfNotAssigned.ItemsSource = notAssignedList;   
         }
 
         //Groups
@@ -223,10 +226,7 @@ namespace Jira.Views.Admin
                 MessageBox.Show("Wybierz właściciela grupy.", "Brak właściciela grupy", MessageBoxButton.OK, MessageBoxImage.Error);
             }        
             else
-            {
-                
-
-
+            {              
                 var newOwner = accountRepository.Get(owner.AccountID);
                 Role role = accountRepository.GetRole("GroupOwner");
                 newOwner.RoleID = role.RoleID;
@@ -235,12 +235,20 @@ namespace Jira.Views.Admin
                 assignedList.Remove(assignedList.FirstOrDefault(a => a.AccountID == newOwner.AccountID));
                 assignedList.Add(newOwner);
 
-                //Group group = groupRepository.Create();
                 groupRepository.Add(GroupName.Text, owner.AccountID, assignedList, null, null);
                 MessageBox.Show("Grupa została założona!", "Tworzenie grupy", MessageBoxButton.OK);
-
+                GroupName.Text = "";
                 assignedList = new List<Account>();
+                listOfAssigned.ItemsSource = assignedList;
                 listOfAssigned.Items.Refresh();
+
+                groupList = groupRepository.GetAll();
+                listOfGroups.ItemsSource = groupList;
+                listOfGroups.Items.Refresh();
+                usersList = accountRepository.GetAll();
+                listOfUsers.ItemsSource = usersList;
+                listOfUsers.Items.Refresh();
+
             }
         }
 
