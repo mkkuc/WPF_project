@@ -51,8 +51,7 @@ namespace Jira.Views.NormalUser
                 GroupMembersListView.ItemsSource = userGroup.Accounts;
                 GroupDetailsAll.DataContext = userGroup;
                 Account GroupOwner = accountRepository.Get(userGroup.GroupOwnerID);
-                GroupOwnerNameTextBox.DataContext = GroupOwner;
-                GroupOwnerSurnameTextBox.DataContext = GroupOwner;
+                GroupOwnerNameTextBox.DataContext = GroupOwner.Name + " " + GroupOwner.Surname;
             }
             else
             {
@@ -136,6 +135,7 @@ namespace Jira.Views.NormalUser
             SelectedItemView.DataContext = selectedIssue;
             //StatusComboBox.SelectedItem = StatusComboBox.Items.IndexOf(selectedIssue.StatusID);
             StatusComboBox.SelectedValue = selectedIssue.Status;
+            AssigneeTextBox.DataContext = selectedIssue.Assignee.Name + " " + selectedIssue.Assignee.Surname;
         }
 
         private void SaveIssueUser(object sender, RoutedEventArgs e)
