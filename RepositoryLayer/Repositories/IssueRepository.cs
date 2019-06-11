@@ -40,7 +40,7 @@ namespace RepositoryLayer.Repositories
 
         public List<Issue> GetGroupIssues(int groupId)
         {
-            return db.Issues.Where(i => i.GroupID == groupId).ToList();
+            return db.Issues.Include(i => i.Assignee).Include(i => i.Priority).Include(i => i.Status).Where(i => i.GroupID == groupId).ToList();
         }
 
         public void Delete(int? id)
@@ -79,6 +79,11 @@ namespace RepositoryLayer.Repositories
             return db.Statuses.ToList();
         }
 
+        public List<Priority> GetAllPriorities()
+        {
+            return db.Priority.ToList();
+        }
+
         public Status GetStatus(int? id)
         {
             if (id == null)
@@ -89,6 +94,23 @@ namespace RepositoryLayer.Repositories
             try
             {
                 return db.Statuses.FirstOrDefault(a => a.StatusID == id);
+            }
+            catch (Exception e)
+            {
+                throw new Exception();
+            }
+        }
+
+        public Priority GetPriority(int? id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException("Null argument");
+
+            }
+            try
+            {
+                return db.Priority.FirstOrDefault(a => a.PriorityID == id);
             }
             catch (Exception e)
             {

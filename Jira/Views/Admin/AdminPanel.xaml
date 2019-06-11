@@ -34,6 +34,20 @@
                 <TextBlock Text=" "/>
             </WrapPanel>
         </DataTemplate>
+        <DataTemplate x:Key="NotAssignedList">
+            <WrapPanel>
+                <TextBlock Text="{Binding Path=Name}"/>
+                <TextBlock Text=" "/>
+                <TextBlock Text="{Binding Path=Surname}"/>
+            </WrapPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="AssignedList">
+            <WrapPanel>
+                <TextBlock Text="{Binding Path=Name}"/>
+                <TextBlock Text=" "/>
+                <TextBlock Text="{Binding Path=Surname}"/>
+            </WrapPanel>
+        </DataTemplate>
         <Style x:Key="borderBase" TargetType="Border">
             <Setter Property="BorderBrush" Value="Black" />
             <Setter Property="BorderThickness" Value="1" />
@@ -228,12 +242,14 @@
             </TabItem>
             <TabItem Header="Dodaj grupę">
                 <Grid>
-                    <ListBox HorizontalAlignment="Left" Height="329" VerticalAlignment="Top" Width="238" Margin="10,51,0,0" BorderBrush="BlueViolet" BorderThickness="2px">
-                        <ListBoxItem Content="ListBoxItem"/>
+                    <ListBox Name="listOfNotAssigned" ItemTemplate="{StaticResource NotAssignedList}" MouseDoubleClick="DoubleClickNotAssigned" HorizontalAlignment="Left" Height="329" VerticalAlignment="Top" Width="238" Margin="10,51,0,0" BorderBrush="BlueViolet" BorderThickness="2px">
+
                     </ListBox>
-                    <ListBox HorizontalAlignment="Left" Height="329" VerticalAlignment="Top" Width="238" Margin="253,51,0,0" BorderBrush="BlueViolet" BorderThickness="2px">
-                        <ListBoxItem Content="ListBoxItem"/>
+                    <ListBox Name="listOfAssigned" ItemTemplate="{StaticResource AssignedList}" MouseDoubleClick="DoubleClickAssigned" HorizontalAlignment="Left" Height="329" VerticalAlignment="Top" Width="238" Margin="253,51,0,0" BorderBrush="BlueViolet" BorderThickness="2px">
+
                     </ListBox>
+                    <Grid Grid.Column="0" DataContext="{Binding ElementName=listOfNotAssigned, Path=SelectedItem}" Margin="19,56,545,29"/>
+                    <Grid DataContext="{Binding ElementName=listOfAssigned, Path=SelectedItem}" Margin="258,56,295,29"/>
                     <GroupBox Header="GroupBox" HorizontalAlignment="Left" Height="370" VerticalAlignment="Top" Width="280" Margin="496,10,0,0">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -242,10 +258,7 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="48"/>
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Column="0" VerticalAlignment="Center">
@@ -254,13 +267,14 @@
                                 </Label.Content>
                             </Label>
 
-                            <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Name="GroupName" TextAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="10,5" Padding="3" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">
                                 <Label.Content>
                                     <AccessText TextWrapping="Wrap" Text="Właściciel grupy"/>
                                 </Label.Content>
                             </Label>
-                            <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="1"/>
+                            <ComboBox Name="AssignOwnerCombobox" Padding="3" HorizontalAlignment="Left" VerticalAlignment="Top" Width="146" Grid.Column="1" Margin="10,12,0,0" Grid.Row="1" Height="31"/>
+                            <Button Click="CreateGroupButton" Content="Stwórz grupę" Grid.Row="5" Grid.ColumnSpan="2" Margin="5,53,5,-42" Padding="5"/>
                         </Grid>
                     </GroupBox>
                     <Border BorderBrush="BlueViolet" BorderThickness="3" HorizontalAlignment="Left" Height="39" Margin="10,12,0,0" VerticalAlignment="Top" Width="238">

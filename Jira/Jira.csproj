@@ -74,9 +74,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\DeleteIssueFromListCommand.cs" />
     <Compile Include="Commands\DeleteUserFromListCommand.cs" />
+    <Compile Include="Commands\UpdateIssueOnListCommand.cs" />
     <Compile Include="Commands\UpdateUserOnListCommand.cs" />
     <Compile Include="Models\GroupDetailsVM.cs" />
+    <Compile Include="Models\IssueDetailsVM.cs" />
     <Compile Include="Models\UserDetailsVM.cs" />
     <Compile Include="Views\Admin\AdminPanel.xaml.cs">
       <DependentUpon>AdminPanel.xaml</DependentUpon>
