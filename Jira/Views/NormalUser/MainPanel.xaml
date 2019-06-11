@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Jira.Views.NormalUser"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainPanel" Height="550" Width="800"
+        Title="MainPanel" Height="600" Width="800"
         x:Name="MainPanelWindow">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -43,14 +43,14 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Content="Imię:" Margin="0,5,5,0" Grid.Row="0" Grid.Column="0"/>
-                        <TextBox Name="NameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="0" Grid.Column="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Name="NameTextBox" TextAlignment="Center" MinWidth="180" Margin="0,5,5,0" Grid.Row="0" Grid.Column="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <Label Content="Nazwisko:" Margin="0,5,5,0" Grid.Row="1" Grid.Column="0"/>
-                        <TextBox Name="LastnameTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Surname, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Name="LastnameTextBox" TextAlignment="Center" MinWidth="180" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Surname, UpdateSourceTrigger=PropertyChanged}"/>
 
 
                         <Label Content="Adres e-mail:" Margin="0,5,5,0" Grid.Row="2" Grid.Column="0"/>
-                        <TextBox Name="EmailTextBox" MinWidth="180" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Name="EmailTextBox" TextAlignment="Center" MinWidth="180" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Button Content="Zapisz zmiany" Margin="200,6,200,9" Grid.Row="3" Grid.Column="1" Click="SaveChangesInProfile"/>
                         <Button Content="Zmień hasło" Margin="200,6,200,9" Grid.Row="4" Grid.Column="1" Click="ChangePass"/>
@@ -79,8 +79,6 @@
                             DisplayMemberBinding="{Binding Priority.Name}" />
                                     <GridViewColumn Header="Status"
                             DisplayMemberBinding="{Binding Status.Name}" />
-                                    <GridViewColumn Header="Przypisane do"
-                            DisplayMemberBinding="{Binding Assignee.Login}" />
                                 </GridView.Columns>
                             </GridView>
                         </ListView.View>
@@ -92,10 +90,10 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Grid>
+                        <Grid Width="auto" Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -116,26 +114,20 @@
                                     <AccessText TextWrapping="Wrap" Text="Opis"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="0" Margin="5" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="1" Margin="5" Padding="3" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Label Grid.Row="2" VerticalAlignment="Center">
-                                <Label.Content>
-                                    <AccessText TextWrapping="Wrap" Text="Przypisany"/>
-                                </Label.Content>
-                            </Label>
-                            <TextBox IsEnabled="False" Name="AssigneeTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="2" Text="{Binding Path=., UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox IsEnabled="False" TextAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="0,5,5,0" Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox IsEnabled="False" TextAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="0,5,5,0" Padding="3" Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Grid.Row="3" VerticalAlignment="Center">
                                 <Label.Content>
                                     <AccessText TextWrapping="Wrap" Text="Priorytet"/>
                                 </Label.Content>
                             </Label>
-                            <TextBox IsEnabled="False" Name="PriorityTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="3" Text="{Binding Path=Priority.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox IsEnabled="False" TextAlignment="Center" Name="PriorityTextBox" Grid.Column="1" Margin="0,5,5,0" Padding="3" Grid.Row="3" Text="{Binding Path=Priority.Name, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Grid.Row="4" VerticalAlignment="Center">
                                 <Label.Content>
                                     <AccessText TextWrapping="Wrap" Text="Status"/>
                                 </Label.Content>
                             </Label>
-                            <ComboBox Name="StatusComboBox" IsEnabled="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Grid.Column="1" Margin="10,0.2,0,0" Grid.Row="4"/>
+                            <ComboBox Name="StatusComboBox" IsEnabled="True" HorizontalContentAlignment="Center" Padding="3" Grid.Column="1" Height="35" Margin="0,5,5,0" Grid.Row="4"/>
                             <!--Checked="{Binding Path=IsConfirmed, UpdateSourceTrigger=PropertyChanged}"/>-->
 
                             <Button Content="Zapisz status" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" Padding="5" Click="SaveIssueUser" />
@@ -178,7 +170,6 @@
                             <ListView.View>
                                 <GridView AllowsColumnReorder="True">
                                     <GridView.Columns>
-                                        <GridViewColumn Header="Login" DisplayMemberBinding="{Binding Login}" />
                                         <GridViewColumn Header="Imię" DisplayMemberBinding="{Binding Name}" />
                                         <GridViewColumn Header="Nazwisko" DisplayMemberBinding="{Binding Surname}" />
                                     </GridView.Columns>
@@ -192,13 +183,13 @@
                         <Label Content="Właściciel:" Margin="0,5,5,0" Grid.Row="2" Grid.Column="0"/>
                         <TextBlock Name="GroupOwnerNameTextBox" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1" Text="{Binding Path=., UpdateSourceTrigger=PropertyChanged}"/>
                         <Grid Name="Chart" Margin="5" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
-                            <lvc:PieChart LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}">
+                            <lvc:PieChart LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}" Margin="-37,0,37,0">
                                 <lvc:PieChart.Series>
-                                    <lvc:PieSeries Title="Done" Values="{Binding Path=IssuesDone}" DataLabels="True"
+                                    <lvc:PieSeries Title="Done" Name="DoneStatus" Values="1" DataLabels="True"
                                LabelPoint="{Binding PointLabel}"/>
-                                    <lvc:PieSeries Title="New" Values="{Binding Path=IssuesNew}" DataLabels="True" 
+                                    <lvc:PieSeries Title="New" Name="NewStatus" Values="1" DataLabels="True" 
                                LabelPoint="{Binding PointLabel}"/>
-                                    <lvc:PieSeries Title="In Progress" Values="{Binding Path=IssuesInProgress}" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                                    <lvc:PieSeries Title="In Progress" Name="InProgressStatus" Values="1" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
                                 </lvc:PieChart.Series>
                             </lvc:PieChart>
                         </Grid>
