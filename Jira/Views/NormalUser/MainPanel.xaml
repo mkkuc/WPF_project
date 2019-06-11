@@ -177,11 +177,11 @@
                             </ListView.View>
                         </ListView>
                         <Label Content="ID grupy:" Margin="0,5,5,0" Grid.Row="0" Grid.Column="0"/>
-                        <TextBlock Name="GroupIDTextBox" Margin="0,5,5,0" Grid.Row="0" Grid.Column="1" Text="{Binding Path=GroupID, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Name="GroupIDTextBox" Margin="0,5,5,0" Padding="0, 5, 0, 0" Grid.Row="0" Grid.Column="1" Text="{Binding Path=GroupID, UpdateSourceTrigger=PropertyChanged}"/>
                         <Label Content="Nazwa:" Margin="0,5,5,0" Grid.Row="1" Grid.Column="0"/>
-                        <TextBlock Name="GroupNameTextBox" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Name="GroupNameTextBox" Margin="0,5,5,0" Padding="0, 5, 0, 0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
                         <Label Content="Właściciel:" Margin="0,5,5,0" Grid.Row="2" Grid.Column="0"/>
-                        <TextBlock Name="GroupOwnerNameTextBox" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1" Text="{Binding Path=., UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Name="GroupOwnerNameTextBox" Margin="0,5,5,0" Padding="0, 5, 0, 0" Grid.Row="2" Grid.Column="1" Text="{Binding Path=., UpdateSourceTrigger=PropertyChanged}"/>
                         <Grid Name="Chart" Margin="5" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
                             <lvc:PieChart LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}" Margin="-37,0,37,0">
                                 <lvc:PieChart.Series>

@@ -39,32 +39,7 @@ namespace Jira.Views.GroupOwner
         {
             groupOwner = account;
             InitializeComponent();
-            group = groupRepository.GetByUser(groupOwner);
-            statuses = issueRepository.GetAllStatuses();
-            priorities = issueRepository.GetAllPriorities();
-            membersList = groupRepository.GetUsersFromGroup(group.GroupID);
-            unacceptedList = groupRepository.GetUnacceptedMembers(group.GroupID);
-
-            listOfMembers.ItemsSource = membersList;
-            listOfUnaccepted.ItemsSource = unacceptedList;
-
-            OwnerMenu.DataContext = groupOwner;
-            EditProfile.DataContext = groupOwner;
-            tasksList = new List<IssueDetailsVM>();
-
-            foreach (var task in issueRepository.GetGroupIssues(group.GroupID))
-            {
-                tasksList.Add(new IssueDetailsVM
-                {
-                    IssueID = task.IssueID,
-                    Title = task.Title,
-                    Description = task.Description,
-                    Assignee = task.Assignee.Name + ' ' + task.Assignee.Surname,
-                    PriorityName = task.Priority.Name,
-                    StatusName = task.Status.Name
-                });
-            }
-            listOfTasks.ItemsSource = tasksList;
+            
             RefreshGroupOwner();
 
         }
