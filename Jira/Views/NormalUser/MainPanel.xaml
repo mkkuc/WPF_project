@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Jira.Views.NormalUser"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainPanel" Height="450" Width="800"
+        Title="MainPanel" Height="550" Width="800"
         x:Name="MainPanelWindow">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -165,6 +166,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="270"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -189,6 +191,17 @@
                         <TextBlock Name="GroupNameTextBox" Margin="0,5,5,0" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
                         <Label Content="Właściciel:" Margin="0,5,5,0" Grid.Row="2" Grid.Column="0"/>
                         <TextBlock Name="GroupOwnerNameTextBox" Margin="0,5,5,0" Grid.Row="2" Grid.Column="1" Text="{Binding Path=., UpdateSourceTrigger=PropertyChanged}"/>
+                        <Grid Name="Chart" Margin="5" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+                            <lvc:PieChart LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}">
+                                <lvc:PieChart.Series>
+                                    <lvc:PieSeries Title="Done" Values="{Binding Path=IssuesDone}" DataLabels="True"
+                               LabelPoint="{Binding PointLabel}"/>
+                                    <lvc:PieSeries Title="New" Values="{Binding Path=IssuesNew}" DataLabels="True" 
+                               LabelPoint="{Binding PointLabel}"/>
+                                    <lvc:PieSeries Title="In Progress" Values="{Binding Path=IssuesInProgress}" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                                </lvc:PieChart.Series>
+                            </lvc:PieChart>
+                        </Grid>
                     </Grid>
                     
                     <Label Visibility="{Binding IsNotGroupContributor, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="0" Grid.Row="0" Content="Dostępne grupy:" Margin="3,3,3,3" />

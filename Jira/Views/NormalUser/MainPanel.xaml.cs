@@ -15,6 +15,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace Jira.Views.NormalUser
 {
@@ -36,6 +38,9 @@ namespace Jira.Views.NormalUser
         public List<Status> statuses { get; set; }
         public bool IsGroupContributor { get; set; }
         public bool IsNotGroupContributor { get => !IsGroupContributor; }
+        //public int IssuesInProgress { get; set; }
+        //public int IssuesNew { get; set; }
+        //public int IssuesDone { get; set; }
         public MainPanel(Account account)
         {
             user = account;
@@ -45,6 +50,12 @@ namespace Jira.Views.NormalUser
             Account yourAccount = accountRepository.Get(user.AccountID);
             statuses = issueRepository.GetAllStatuses();
             userGroup = groupRepository.GetByUser(yourAccount);
+            ChartValues<int> IssuesNew = new ChartValues<int> { userGroup.Issues.Where(e => e.Status.Name == "New").Count() };
+            ChartValues<int> IssuesDone = new ChartValues<int> { userGroup.Issues.Where(e => e.Status.Name == "Done").Count() };
+            ChartValues<int> IssuesInProgress = new ChartValues<int> { userGroup.Issues.Where(e => e.Status.Name == "In Progress").Count() };
+
+            Chart.DataContext = this;
+
             if (userGroup != null)
             {
                 IsGroupContributor = true;
@@ -66,8 +77,10 @@ namespace Jira.Views.NormalUser
 
             RefreshStatusComboBox();
             UserMenu.DataContext = user;
+            PointLabel = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
 
         }
+        public Func<ChartPoint, string> PointLabel { get; set; }
 
         private void RefreshStatusComboBox()
         {
