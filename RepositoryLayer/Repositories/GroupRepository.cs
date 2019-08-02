@@ -14,17 +14,26 @@ namespace RepositoryLayer.Repositories
     {
         private DatabaseContext db = new DatabaseContext();
 
-        public void Add(Group group)
-        {
-            try
+        public void Add(string name, int groupOwnerID, ICollection<Account> accounts, ICollection<Queue> queues, ICollection<Issue> issues)
+        { 
+            
+            Group group = new Group
             {
-                db.Groups.Add(group);
-                db.SaveChanges();
-            }
-            catch (Exception)
+                Name = name,
+                GroupOwnerID = groupOwnerID,
+                Queues = queues,
+                Issues = issues,
+            };
+
+            var accountsToAdd = new List<Account>();
+            foreach(var account in accounts)
             {
-                throw new ArgumentNullException();
+                accountsToAdd.Add(db.Accounts.Find(account.AccountID));
             }
+            group.Accounts = accountsToAdd;
+            db.Groups.Add(group);
+            db.SaveChanges();
+
         }
 
         public Group Create(string name, int groupOwnerID, ICollection<Account> accounts, ICollection<Queue> queues, ICollection<Issue> issues)
@@ -156,6 +165,22 @@ namespace RepositoryLayer.Repositories
             }
         }
 
+        public List<Account> GetUnacceptedMembers(int? id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException("Null argument");
+            }
+            try
+            {
+                return db.Accounts.Where(a => a.Queues.Any(q => q.GroupID == id)).ToList();
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
         public List<Account> GetUsersFromGroup(int? id)
         {
             if (id == null)
@@ -164,7 +189,51 @@ namespace RepositoryLayer.Repositories
             }
             try
             {
-                return db.Groups.Find(id).Accounts.ToList();
+                return db.Groups.Find(id).Accounts.Where(a => a.AccountID != db.Groups.Find(id).GroupOwnerID).ToList();
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        public void DeleteUserFromGroup(int? userId)
+        {
+            if (userId == null)
+            {
+                throw new ArgumentNullException("Null argument");
+            }
+            try
+            {
+                var user = db.Accounts.Find(userId);
+                
+                user.GroupID = null;
+                db.Entry(user).State = EntityState.Modified;
+                db.Issues.RemoveRange(db.Issues.Where(i => i.AssigneeID == userId));
+
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        public void AcceptUserToRequest(int? userId, int? groupId)
+        {
+            if (userId == null || groupId == null)
+            {
+                throw new ArgumentNullException("Null argument");
+            }
+            try
+            {
+                var user = db.Accounts.Find(userId);
+
+                user.GroupID = groupId;
+                db.Entry(user).State = EntityState.Modified;
+                db.Queues.RemoveRange(db.Queues.Where(i => i.AccountID == userId));
+
+                db.SaveChanges();
             }
             catch (Exception)
             {

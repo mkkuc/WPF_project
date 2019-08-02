@@ -18,6 +18,7 @@ namespace RepositoryLayer.Interfaces
         List<Account> GetAll();
         List<Account> GetConfirmed();
         List<Account> GetNotConfirmed();
+        List<Account> GetNotAssigned();
         List<Issue> GetIssues(int? id);
         List<Queue> GetQueues(int? id);
         Role GetRole(int? id);

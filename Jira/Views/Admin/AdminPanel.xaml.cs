@@ -33,6 +33,8 @@ namespace Jira.Views.Admin
         List<Account> usersList;
         List<Group> groupList;
         List<Account> usersInGroupList;
+        List<Account> notAssignedList;
+        List<Account> assignedList;
 
         public AdminPanel(Account account)
         {
@@ -58,6 +60,24 @@ namespace Jira.Views.Admin
             }
             listOfGroups.ItemsSource = groupList;
             listOfUsersInGroup.ItemsSource = usersInGroupList;
+
+            notAssignedList = accountRepository.GetNotAssigned();
+            assignedList = new List<Account>();
+            listOfNotAssigned.ItemsSource = notAssignedList;
+            listOfAssigned.ItemsSource = assignedList;
+
+            RefreshAddGroup();
+
+        }
+
+        private ListCollectionView NotAssignedList
+        {
+            get { return (ListCollectionView)CollectionViewSource.GetDefaultView(notAssignedList); }
+        }
+
+        private ListCollectionView AssignedList
+        {
+            get { return (ListCollectionView)CollectionViewSource.GetDefaultView(assignedList); }
         }
 
         private ListCollectionView UsersList
@@ -75,6 +95,15 @@ namespace Jira.Views.Admin
             get { return (ListCollectionView)CollectionViewSource.GetDefaultView(usersInGroupList); }
         }
 
+        private void RefreshAddGroup()
+        {
+            AssignOwnerCombobox.ItemsSource = assignedList;
+            AssignOwnerCombobox.DisplayMemberPath = "Surname";
+            AssignOwnerCombobox.SelectedValuePath = ".";
+            AssignOwnerCombobox.SelectedIndex = 0;
+            AssignOwnerCombobox.Items.Refresh();
+        }
+
         //Menu
         private void LogOut(object sender, EventArgs e)
         {
@@ -82,7 +111,7 @@ namespace Jira.Views.Admin
             Close();
             window.Show();
         }
-        
+
         private void Refresh(object sender, EventArgs e)
         {
             accountRepository = new AccountRepository();
@@ -110,13 +139,16 @@ namespace Jira.Views.Admin
 
             listOfUsersInGroup.ItemsSource = usersInGroupList;
             listOfUsersInGroup.Items.Refresh();
+
+            notAssignedList = accountRepository.GetNotAssigned();
+            listOfNotAssigned.ItemsSource = notAssignedList;   
         }
 
         //Groups
         private void DoubleClickGroupItem(object sender, EventArgs e)
         {
             int i = 0;
-            while(listOfGroups.SelectedIndex != i)
+            while (listOfGroups.SelectedIndex != i)
             {
                 i++;
             }
@@ -147,6 +179,77 @@ namespace Jira.Views.Admin
             usersInGroupList = groupList[i].Accounts.ToList();
             listOfUsersInGroup.ItemsSource = usersInGroupList;
             listOfUsersInGroup.Items.Refresh();
+        }
+
+        private void DoubleClickNotAssigned(object sender, EventArgs e)
+        {
+            int i = 0;
+            while (listOfNotAssigned.SelectedIndex != i)
+            {
+                i++;
+            }
+            assignedList.Add(notAssignedList[i]);
+            notAssignedList.Remove(notAssignedList[i]);
+            listOfNotAssigned.Items.Refresh();
+            listOfAssigned.Items.Refresh();
+            RefreshAddGroup();
+        }
+
+        private void DoubleClickAssigned(object sender, EventArgs e)
+        {
+            int i = 0;
+            while (listOfAssigned.SelectedIndex != i)
+            {
+                i++;
+            }
+            notAssignedList.Add(assignedList[i]);
+            assignedList.Remove(assignedList[i]);
+            listOfNotAssigned.Items.Refresh();
+            listOfAssigned.Items.Refresh();
+            RefreshAddGroup();
+        }
+
+        private void CreateGroupButton(object sender, EventArgs e)
+        {
+            var owner = (Account)AssignOwnerCombobox.SelectedValue;
+
+            if (GroupName.Text == null || GroupName.Text.Equals("") || GroupName.Text.Length < 3)
+            {
+                MessageBox.Show("Nazwa grupy musi mieć przynajmniej 3 znaki.", "Błędna nazwa grupy", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (assignedList.Count == 0)
+            {
+                MessageBox.Show("Przypisz użytkowników do grupy.", "Brak użytkowników", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (owner == null || owner.Surname.Equals(""))
+            {
+                MessageBox.Show("Wybierz właściciela grupy.", "Brak właściciela grupy", MessageBoxButton.OK, MessageBoxImage.Error);
+            }        
+            else
+            {              
+                var newOwner = accountRepository.Get(owner.AccountID);
+                Role role = accountRepository.GetRole("GroupOwner");
+                newOwner.RoleID = role.RoleID;
+                newOwner.Role = role;
+                accountRepository.Edit(newOwner);
+                assignedList.Remove(assignedList.FirstOrDefault(a => a.AccountID == newOwner.AccountID));
+                assignedList.Add(newOwner);
+
+                groupRepository.Add(GroupName.Text, owner.AccountID, assignedList, null, null);
+                MessageBox.Show("Grupa została założona!", "Tworzenie grupy", MessageBoxButton.OK);
+                GroupName.Text = "";
+                assignedList = new List<Account>();
+                listOfAssigned.ItemsSource = assignedList;
+                listOfAssigned.Items.Refresh();
+
+                groupList = groupRepository.GetAll();
+                listOfGroups.ItemsSource = groupList;
+                listOfGroups.Items.Refresh();
+                usersList = accountRepository.GetAll();
+                listOfUsers.ItemsSource = usersList;
+                listOfUsers.Items.Refresh();
+
+            }
         }
 
         //Users
@@ -250,6 +353,10 @@ namespace Jira.Views.Admin
                 }
                 listOfUsers.ItemsSource = usersList;
                 listOfUsers.Items.Refresh();
+
+                notAssignedList = accountRepository.GetNotAssigned();
+                listOfNotAssigned.ItemsSource = notAssignedList;
+                listOfNotAssigned.Items.Refresh();
                 MessageBox.Show("Konto zostało zaktualizowane.", "Aktualizacja konta", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }

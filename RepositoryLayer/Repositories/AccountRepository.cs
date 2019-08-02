@@ -212,5 +212,10 @@ namespace RepositoryLayer.Repositories
         {
             return db.Accounts.Where(a => a.IsConfirmed == false).ToList();
         }
+
+        public List<Account> GetNotAssigned()
+        {
+            return db.Accounts.Where(a => a.GroupID == null && !a.Role.Name.Equals("Admin") && a.IsConfirmed).ToList();
+        }
     }
 }

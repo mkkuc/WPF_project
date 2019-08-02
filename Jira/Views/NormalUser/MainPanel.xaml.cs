@@ -15,6 +15,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace Jira.Views.NormalUser
 {
@@ -36,6 +38,9 @@ namespace Jira.Views.NormalUser
         public List<Status> statuses { get; set; }
         public bool IsGroupContributor { get; set; }
         public bool IsNotGroupContributor { get => !IsGroupContributor; }
+        //ChartValues<int> IssuesNew;
+        //ChartValues<int> IssuesDone;
+        //ChartValues<int> IssuesInProgress;
         public MainPanel(Account account)
         {
             user = account;
@@ -44,15 +49,27 @@ namespace Jira.Views.NormalUser
             EditProfile.DataContext = user;
             Account yourAccount = accountRepository.Get(user.AccountID);
             statuses = issueRepository.GetAllStatuses();
-            userGroup = groupRepository.GetByUser(yourAccount);
+            userGroup = groupRepository.GetByUser(yourAccount);      
+
             if (userGroup != null)
             {
                 IsGroupContributor = true;
                 GroupMembersListView.ItemsSource = userGroup.Accounts;
                 GroupDetailsAll.DataContext = userGroup;
                 Account GroupOwner = accountRepository.Get(userGroup.GroupOwnerID);
-                GroupOwnerNameTextBox.DataContext = GroupOwner;
-                GroupOwnerSurnameTextBox.DataContext = GroupOwner;
+                GroupOwnerNameTextBox.DataContext = GroupOwner.Name + " " + GroupOwner.Surname;
+
+                if (userGroup.Issues != null)
+                {
+                    ChartValues<int> IssuesNew = new ChartValues<int> { userGroup.Issues.Where(e => e.Status.Name == "New").Count() };
+                    ChartValues<int> IssuesDone = new ChartValues<int> { userGroup.Issues.Where(e => e.Status.Name == "Done").Count() };
+                    ChartValues<int> IssuesInProgress = new ChartValues<int> { userGroup.Issues.Where(e => e.Status.Name == "In progress").Count() };
+                    PointLabel = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+                    DoneStatus.Values = IssuesDone;
+                    NewStatus.Values = IssuesNew;
+                    InProgressStatus.Values = IssuesInProgress;
+                    Chart.DataContext = this;
+                }
             }
             else
             {
@@ -68,7 +85,9 @@ namespace Jira.Views.NormalUser
             RefreshStatusComboBox();
             UserMenu.DataContext = user;
 
+
         }
+        public Func<ChartPoint, string> PointLabel { get; set; }
 
         private void RefreshStatusComboBox()
         {
@@ -135,19 +154,49 @@ namespace Jira.Views.NormalUser
             selectedIssue = (Issue)IssuesListView.SelectedItem;
             SelectedItemView.DataContext = selectedIssue;
             //StatusComboBox.SelectedItem = StatusComboBox.Items.IndexOf(selectedIssue.StatusID);
-            StatusComboBox.SelectedValue = selectedIssue.Status;
+            if (selectedIssue != null)
+            {
+                StatusComboBox.SelectedValue = selectedIssue.Status;
+            }
+
+
         }
 
         private void SaveIssueUser(object sender, RoutedEventArgs e)
         {
-            selectedIssue.Status = (Status)StatusComboBox.SelectedValue;
-            IssuesListView.Items.Refresh();
-            RefreshStatusComboBox();
-            Issue issueToChange = issueRepository.Get(selectedIssue.IssueID);
-            Status newStatus = issueRepository.GetStatus(selectedIssue.Status.StatusID);
-            issueToChange.Status = newStatus;
-            issueToChange.StatusID = newStatus.StatusID;
-            issueRepository.Edit(issueToChange);
+            if(selectedIssue != null)
+            {
+                if (StatusComboBox.SelectedValue != null)
+                {
+                    selectedIssue.Status = (Status)StatusComboBox.SelectedValue;
+                    IssuesListView.Items.Refresh();
+                    RefreshStatusComboBox();
+                    Issue issueToChange = issueRepository.Get(selectedIssue.IssueID);
+                    Status newStatus = issueRepository.GetStatus(selectedIssue.Status.StatusID);
+                    issueToChange.Status = newStatus;
+                    issueToChange.StatusID = newStatus.StatusID;
+                    issueRepository.Edit(issueToChange);
+                    MessageBox.Show("Zaktualizowano status zadania.", "Status zadania", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Account yourAccount = accountRepository.Get(user.AccountID);
+                    userGroup = groupRepository.GetByUser(yourAccount);
+                    ChartValues<int> IssuesNew = new ChartValues<int> { userGroup.Issues.Where(a => a.Status.Name == "New").Count() };
+                    ChartValues<int> IssuesDone = new ChartValues<int> { userGroup.Issues.Where(a => a.Status.Name == "Done").Count() };
+                    ChartValues<int> IssuesInProgress = new ChartValues<int> { userGroup.Issues.Where(a => a.Status.Name == "In progress").Count() };
+                    DoneStatus.Values = IssuesDone;
+                    NewStatus.Values = IssuesNew;
+                    InProgressStatus.Values = IssuesInProgress;
+                }
+                else
+                {
+                    MessageBox.Show("Wybierz status.", "Status", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Wybierz zadanie.", "Zadanie", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+           
+
             //NormalUser.MainPanel window = new NormalUser.MainPanel(user);
             //Close();
             //window.Show();
@@ -171,6 +220,7 @@ namespace Jira.Views.NormalUser
                 //    GroupID = GroupToSendRequest.GroupID
                 //};
                 queueRepository.Add(user.AccountID, GroupToSendRequest.GroupID);
+                MessageBox.Show("Wysłano prośbę o przyjęcie do grupy.", "Prośba o przyjęcie do grupy", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
